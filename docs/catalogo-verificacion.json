@@ -1,0 +1,1432 @@
+{
+  "ReviewedOn": "2026-10-15",
+  "UpstreamCommit": "07ccd8e2e755a706f31569808b31f5b77acad6a9",
+  "IndexUrl": "https://cdn.winget.microsoft.com/cache/source2.msix",
+  "IndexSha256": "5be00752cc7f603c464f2b7381a94b890dc9c4a5b9877233e1afb398fd821647",
+  "IndexMetadata": {
+    "databaseIdentifier": "{43EFAB06-C6EF-49E2-AB0F-7EF010DAD9D3}",
+    "lastwritetime": "1792078840",
+    "majorVersion": "2",
+    "minorVersion": "0",
+    "updateTrackingBase": "1792077647"
+  },
+  "Note": "Presence and identity checks only. These versions are not a live update feed, recommendations, install tests or anticheat certification.",
+  "Packages": [
+    {
+      "Id": "AgileBits.1Password",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.12.36.40"
+    },
+    {
+      "Id": "7zip.7zip",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.04"
+    },
+    {
+      "Id": "amir1376.ABDownloadManager",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.11.1"
+    },
+    {
+      "Id": "Adobe.Acrobat.Reader.64-bit",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.002.22031"
+    },
+    {
+      "Id": "Famatech.AdvancedIPScanner",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.5.4594.1"
+    },
+    {
+      "Id": "AIMP.AIMP",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.10.2418"
+    },
+    {
+      "Id": "angryziber.AngryIPScanner",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.10.0"
+    },
+    {
+      "Id": "AnyDesk.AnyDesk",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "9.8.1"
+    },
+    {
+      "Id": "Audacity.Audacity",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.0.1.262721353"
+    },
+    {
+      "Id": "Microsoft.Sysinternals.Autoruns",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "14.3"
+    },
+    {
+      "Id": "Microsoft.Sysinternals.RDCMan",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.21"
+    },
+    {
+      "Id": "AutoHotkey.AutoHotkey",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.0.30"
+    },
+    {
+      "Id": "Blizzard.BattleNet",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.19.3.3219"
+    },
+    {
+      "Id": "Bitwarden.Bitwarden",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.9.1"
+    },
+    {
+      "Id": "BlenderFoundation.Blender",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.2.2"
+    },
+    {
+      "Id": "Brave.Brave",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "155.1.97.56"
+    },
+    {
+      "Id": "Bruno.Bruno",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.2.1"
+    },
+    {
+      "Id": "Klocman.BulkCrapUninstaller",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.3.0.0"
+    },
+    {
+      "Id": "Blur009.BlurAutoClicker",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.9.6"
+    },
+    {
+      "Id": "calibre.calibre",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "9.16.0"
+    },
+    {
+      "Id": "Cemu.Cemu",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.6"
+    },
+    {
+      "Id": "msstore:9NT1R1C2HH7J",
+      "Source": "msstore",
+      "Evidence": "Microsoft Store product page",
+      "IndexVersionAtReview": null
+    },
+    {
+      "Id": "ChatterinoTeam.Chatterino",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.5.5"
+    },
+    {
+      "Id": "Google.Chrome",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "155.0.8059.40"
+    },
+    {
+      "Id": "Hibbiki.Chromium",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "155.0.8059.80"
+    },
+    {
+      "Id": "Maxon.CinebenchR23",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "23.200"
+    },
+    {
+      "Id": "Anthropic.Claude",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.19675.1"
+    },
+    {
+      "Id": "Anthropic.ClaudeCode",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.1.292"
+    },
+    {
+      "Id": "Kitware.CMake",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.4.4"
+    },
+    {
+      "Id": "OpenAI.Codex",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.161.0"
+    },
+    {
+      "Id": "CPUID.CPU-Z",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.01"
+    },
+    {
+      "Id": "CrystalDewWorld.CrystalDiskInfo",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "9.9.3"
+    },
+    {
+      "Id": "CrystalDewWorld.CrystalDiskMark",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "9.0.3"
+    },
+    {
+      "Id": "Anysphere.Cursor",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.19.7"
+    },
+    {
+      "Id": "Wagnardsoft.DisplayDriverUninstaller",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "18.1.5.3"
+    },
+    {
+      "Id": "Discord.Discord",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.0.9262"
+    },
+    {
+      "Id": "CodingWondersSoftware.DISMTools.Stable",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.8.1.26092"
+    },
+    {
+      "Id": "Nlitesoft.NTLite",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.10.12522"
+    },
+    {
+      "Id": "SpikeHD.Dorion",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.13.2"
+    },
+    {
+      "Id": "Docker.DockerDesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.95.0"
+    },
+    {
+      "Id": "Microsoft.DotNet.DesktopRuntime.6",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.0.36"
+    },
+    {
+      "Id": "Microsoft.DotNet.DesktopRuntime.8",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.0.32"
+    },
+    {
+      "Id": "Microsoft.DotNet.DesktopRuntime.9",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "9.0.21"
+    },
+    {
+      "Id": "Microsoft.DotNet.DesktopRuntime.10",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "10.0.13"
+    },
+    {
+      "Id": "Dropbox.Dropbox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "262.4.3183"
+    },
+    {
+      "Id": "ElectronicArts.EADesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "13.809.0.6322"
+    },
+    {
+      "Id": "File-New-Project.EarTrumpet",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.3.0.0"
+    },
+    {
+      "Id": "Microsoft.Edge",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "155.0.4283.45"
+    },
+    {
+      "Id": "ES-DE.EmulationStation-DE",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.5.0"
+    },
+    {
+      "Id": "ente-io.auth-desktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.4.25"
+    },
+    {
+      "Id": "EpicGames.EpicGamesLauncher",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.3.210.0"
+    },
+    {
+      "Id": "FilesCommunity.Files",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.2.9.0"
+    },
+    {
+      "Id": "AdrienAllard.FileConverter",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.2"
+    },
+    {
+      "Id": "Mozilla.Firefox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "157.0.1"
+    },
+    {
+      "Id": "Mozilla.Firefox.ESR",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "153.4.0"
+    },
+    {
+      "Id": "Ablaze.Floorp",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "12.18.1@156.0.1"
+    },
+    {
+      "Id": "flux.flux",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.141"
+    },
+    {
+      "Id": "PeterPawlowski.foobar2000",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.26.1"
+    },
+    {
+      "Id": "Schniz.fnm",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.39.0"
+    },
+    {
+      "Id": "Foxit.FoxitReader",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.2.1.39815"
+    },
+    {
+      "Id": "Nvidia.GeForceNow",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.0.89.154"
+    },
+    {
+      "Id": "GIMP.GIMP.3",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.2.6.0"
+    },
+    {
+      "Id": "Git.Git",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.55.0.5"
+    },
+    {
+      "Id": "GitExtensionsTeam.GitExtensions",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.2.1.7"
+    },
+    {
+      "Id": "GitHub.cli",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.102.0"
+    },
+    {
+      "Id": "GitHub.GitHubDesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.6.7"
+    },
+    {
+      "Id": "GOG.Galaxy",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.1.10.56"
+    },
+    {
+      "Id": "GoLang.Go",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.27.0"
+    },
+    {
+      "Id": "Google.GoogleDrive",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "132.0.0.0"
+    },
+    {
+      "Id": "TechPowerUp.GPU-Z",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.71.0"
+    },
+    {
+      "Id": "gerardog.gsudo",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.6.1"
+    },
+    {
+      "Id": "ImputNet.Helium",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.19.3.1"
+    },
+    {
+      "Id": "Hugo.Hugo.Extended",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.168.0"
+    },
+    {
+      "Id": "HandBrake.HandBrake",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.11.2"
+    },
+    {
+      "Id": "HeroicGamesLauncher.HeroicGamesLauncher",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.22.4"
+    },
+    {
+      "Id": "REALiX.HWiNFO",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.54"
+    },
+    {
+      "Id": "CPUID.HWMonitor",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.68"
+    },
+    {
+      "Id": "DuongDieuPhap.ImageGlass",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "10.0.906.0"
+    },
+    {
+      "Id": "Tonec.InternetDownloadManager",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.43.15"
+    },
+    {
+      "Id": "IrfanSkiljan.IrfanView",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.76"
+    },
+    {
+      "Id": "ItchIo.Itch",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.22.0"
+    },
+    {
+      "Id": "Apple.iTunes",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "12.13.11.1"
+    },
+    {
+      "Id": "Amazon.Corretto.8.JDK",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.8.0.504"
+    },
+    {
+      "Id": "Amazon.Corretto.21.JDK",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "21.0.12.12"
+    },
+    {
+      "Id": "Amazon.Corretto.25.JDK",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "25.0.4.10"
+    },
+    {
+      "Id": "Jellyfin.JellyfinMediaPlayer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.12.0"
+    },
+    {
+      "Id": "Jellyfin.Server",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "12.1"
+    },
+    {
+      "Id": "JetBrains.Toolbox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.8.1.0"
+    },
+    {
+      "Id": "sylikc.JPEGView",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.3.46.0"
+    },
+    {
+      "Id": "Joplin.Joplin",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.7.21"
+    },
+    {
+      "Id": "KeePassXCTeam.KeePassXC",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.7.12"
+    },
+    {
+      "Id": "CodecGuide.K-LiteCodecPack.Standard",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "20.0.5"
+    },
+    {
+      "Id": "XBMCFoundation.Kodi",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "21.3.0.0"
+    },
+    {
+      "Id": "JesseDuffield.lazygit",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.65.1"
+    },
+    {
+      "Id": "TheDocumentFoundation.LibreOffice",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.8.1.1"
+    },
+    {
+      "Id": "LibreWolf.LibreWolf",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "158.0-1"
+    },
+    {
+      "Id": "LocalSend.LocalSend",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.18.2"
+    },
+    {
+      "Id": "mpc-qt.mpc-qt",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.07"
+    },
+    {
+      "Id": "shinchiro.mpv",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.41.0"
+    },
+    {
+      "Id": "Element.Element",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.12.31"
+    },
+    {
+      "Id": "MiniTool.PartitionWizard.Free",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "13.9"
+    },
+    {
+      "Id": "Modrinth.ModrinthApp",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.21.9"
+    },
+    {
+      "Id": "MoonlightGameStreamingProject.Moonlight",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.2.0.0"
+    },
+    {
+      "Id": "clsid2.mpc-hc",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.8.3"
+    },
+    {
+      "Id": "rcmaehl.MSEdgeRedirect",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.8.0.0"
+    },
+    {
+      "Id": "Guru3D.Afterburner",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.6.6"
+    },
+    {
+      "Id": "MullvadVPN.MullvadVPN",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.4"
+    },
+    {
+      "Id": "MullvadVPN.MullvadBrowser",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "15.0.25"
+    },
+    {
+      "Id": "nomacs.nomacs",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.22.4"
+    },
+    {
+      "Id": "M2Team.NanaZip",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.0.1843.0"
+    },
+    {
+      "Id": "Netbird.Netbird",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.80.0"
+    },
+    {
+      "Id": "Tailscale.Tailscale",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.104.1"
+    },
+    {
+      "Id": "Cyanfish.NAPS2",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.5.1"
+    },
+    {
+      "Id": "Neovim.Neovim",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.12.6"
+    },
+    {
+      "Id": "Nextcloud.NextcloudDesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "35.0.0"
+    },
+    {
+      "Id": "Insecure.Nmap",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.80"
+    },
+    {
+      "Id": "OpenJS.NodeJS",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.8.1"
+    },
+    {
+      "Id": "OpenJS.NodeJS.LTS",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "24.20.0"
+    },
+    {
+      "Id": "pnpm.pnpm",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "12.11.2"
+    },
+    {
+      "Id": "Notepad++.Notepad++",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.9.8.1"
+    },
+    {
+      "Id": "Microsoft.NuGet",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.9.0"
+    },
+    {
+      "Id": "TechPowerUp.NVCleanstall",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.19.0"
+    },
+    {
+      "Id": "OBSProject.OBSStudio",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "32.2.2"
+    },
+    {
+      "Id": "Obsidian.Obsidian",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.14.4"
+    },
+    {
+      "Id": "KDE.Okular",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.08.1"
+    },
+    {
+      "Id": "Microsoft.OneDrive",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.150.0804.0011"
+    },
+    {
+      "Id": "ONLYOFFICE.DesktopEditors",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "10.0.0"
+    },
+    {
+      "Id": "OPAutoClicker.OPAutoClicker",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.1"
+    },
+    {
+      "Id": "OpenRGB.OpenRGB",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.0.0"
+    },
+    {
+      "Id": "OpenVPNTechnologies.OpenVPNConnect",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.9.0"
+    },
+    {
+      "Id": "Oracle.VirtualBox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.2.20"
+    },
+    {
+      "Id": "Fleex255.PolicyPlus",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "June2021"
+    },
+    {
+      "Id": "Microsoft.Sysinternals.ProcessExplorer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "17.14"
+    },
+    {
+      "Id": "dotPDN.PaintDotNet",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.1.12"
+    },
+    {
+      "Id": "Parsec.Parsec",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "150.104.1.0"
+    },
+    {
+      "Id": "Giorgiotani.Peazip",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "11.2.0"
+    },
+    {
+      "Id": "TrackerSoftware.PDF-XChangeEditor",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "11.1.0.0"
+    },
+    {
+      "Id": "geeksoftwareGmbH.PDF24Creator",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "11.30.1"
+    },
+    {
+      "Id": "PDFgear.PDFgear",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.0.0"
+    },
+    {
+      "Id": "PDFsam.PDFsam",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.0.6.0"
+    },
+    {
+      "Id": "Playnite.Playnite",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "10.58"
+    },
+    {
+      "Id": "Plex.PlexMediaServer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.43.4.10903"
+    },
+    {
+      "Id": "Plex.Plex",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.115.0"
+    },
+    {
+      "Id": "JanDeDobbeleer.OhMyPosh",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "31.8.0"
+    },
+    {
+      "Id": "Postman.Postman",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "12.32.3"
+    },
+    {
+      "Id": "Microsoft.PowerShell",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.6.7.0"
+    },
+    {
+      "Id": "Microsoft.PowerToys",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.101.2362.0"
+    },
+    {
+      "Id": "PrismLauncher.PrismLauncher",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "11.1.1"
+    },
+    {
+      "Id": "BitSum.ProcessLasso",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "18.4.0.48"
+    },
+    {
+      "Id": "Proton.ProtonAuthenticator",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.1.6"
+    },
+    {
+      "Id": "Proton.ProtonMail",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.14.0"
+    },
+    {
+      "Id": "Proton.ProtonDrive",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.0.9"
+    },
+    {
+      "Id": "Proton.ProtonPass",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.42.0"
+    },
+    {
+      "Id": "Proton.ProtonVPN",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.1.8"
+    },
+    {
+      "Id": "Microsoft.Sysinternals.ProcessMonitor",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.11"
+    },
+    {
+      "Id": "PuTTY.PuTTY",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.85.0.0"
+    },
+    {
+      "Id": "Python.Python.3.14",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.14.7"
+    },
+    {
+      "Id": "qBittorrent.qBittorrent",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.2.4"
+    },
+    {
+      "Id": "pbek.QOwnNotes",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.10.2"
+    },
+    {
+      "Id": "Tox.qTox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.18.5"
+    },
+    {
+      "Id": "RevoUninstaller.RevoUninstaller",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.7.2"
+    },
+    {
+      "Id": "WiseCleaner.WiseProgramUninstaller",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.2.7"
+    },
+    {
+      "Id": "Rufus.Rufus",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.15"
+    },
+    {
+      "Id": "Rustlang.Rust.MSVC",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.99.0"
+    },
+    {
+      "Id": "GlennDelahoy.SnappyDriverInstallerOrigin",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.0.4.887"
+    },
+    {
+      "Id": "ShareX.ShareX",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "21.0.0"
+    },
+    {
+      "Id": "Nilesoft.Shell",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.9.18"
+    },
+    {
+      "Id": "WinsiderSS.SystemInformer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.0.26241.138"
+    },
+    {
+      "Id": "OpenWhisperSystems.Signal",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.30.0"
+    },
+    {
+      "Id": "WhirlwindFX.SignalRgb",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.5.74"
+    },
+    {
+      "Id": "Automattic.Simplenote",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.24.0"
+    },
+    {
+      "Id": "Henry++.simplewall",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.8.7"
+    },
+    {
+      "Id": "SlackTechnologies.Slack",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.52.178"
+    },
+    {
+      "Id": "StartIsBack.StartAllBack",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.9.24"
+    },
+    {
+      "Id": "Starship.Starship",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.26.0"
+    },
+    {
+      "Id": "Valve.Steam",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.10.91.91"
+    },
+    {
+      "Id": "Roblox.Roblox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.726"
+    },
+    {
+      "Id": "SublimeHQ.SublimeText.4",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.0.0.421500"
+    },
+    {
+      "Id": "SumatraPDF.SumatraPDF",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.6.1"
+    },
+    {
+      "Id": "LizardByte.Sunshine",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.914.233613"
+    },
+    {
+      "Id": "GermanCoding.SyncTrayzor",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.2.0"
+    },
+    {
+      "Id": "Syncthing.Syncthing",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.1.6"
+    },
+    {
+      "Id": "Microsoft.Sysinternals.TCPView",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.19"
+    },
+    {
+      "Id": "Microsoft.Teams",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26198.304.4946.9672"
+    },
+    {
+      "Id": "TeamViewer.TeamViewer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "15.82.6"
+    },
+    {
+      "Id": "TeamSpeakSystems.TeamSpeakClient",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.6.2"
+    },
+    {
+      "Id": "TeamSpeakSystems.TeamSpeakClient.Beta.6",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.0.0-beta4.1"
+    },
+    {
+      "Id": "Telegram.TelegramDesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.3.1"
+    },
+    {
+      "Id": "Microsoft.WindowsTerminal",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.25.2733.0"
+    },
+    {
+      "Id": "Mozilla.Thunderbird",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "158.0"
+    },
+    {
+      "Id": "Betterbird.Betterbird",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "153.5.0"
+    },
+    {
+      "Id": "TorProject.TorBrowser",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "15.0.25"
+    },
+    {
+      "Id": "Ghisler.TotalCommander",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "11.58"
+    },
+    {
+      "Id": "JAMSoftware.TreeSize.Free",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.8.1.610"
+    },
+    {
+      "Id": "CharlesMilette.TranslucentTB",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.2.0.0"
+    },
+    {
+      "Id": "Ubisoft.Connect",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "174.2.0.13389"
+    },
+    {
+      "Id": "eloston.ungoogled-chromium",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "153.0.8010.52"
+    },
+    {
+      "Id": "Unity.UnityHub",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.22.3.65535"
+    },
+    {
+      "Id": "Hashicorp.Vagrant",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.4.9"
+    },
+    {
+      "Id": "voidtools.Everything",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.4.1.1032"
+    },
+    {
+      "Id": "Microsoft.VCRedist.2015+.x86",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "14.51.36247.0"
+    },
+    {
+      "Id": "Microsoft.VCRedist.2015+.x64",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "14.51.36247.0"
+    },
+    {
+      "Id": "Ventoy.Ventoy",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.1.17"
+    },
+    {
+      "Id": "Vencord.Vesktop",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.6.7"
+    },
+    {
+      "Id": "Rakuten.Viber",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "29.1.0.0"
+    },
+    {
+      "Id": "Microsoft.VisualStudio.2022.Community",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "17.14.42"
+    },
+    {
+      "Id": "Microsoft.VisualStudio.Community",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "18.11.0"
+    },
+    {
+      "Id": "Vivaldi.Vivaldi",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "8.2.4133.87"
+    },
+    {
+      "Id": "VideoLAN.VLC",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.0.24"
+    },
+    {
+      "Id": "VirtualDesktop.Streamer",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.34.22"
+    },
+    {
+      "Id": "Microsoft.VisualStudioCode",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.142.0"
+    },
+    {
+      "Id": "VSCodium.VSCodium",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.140.06880"
+    },
+    {
+      "Id": "Waterfox.Waterfox",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.7.6"
+    },
+    {
+      "Id": "msstore:9NKSQGP7F2NH",
+      "Source": "msstore",
+      "Evidence": "Microsoft Store product page",
+      "IndexVersionAtReview": null
+    },
+    {
+      "Id": "Devolutions.UniGetUI",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2026.3.1"
+    },
+    {
+      "Id": "RARLab.WinRAR",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.23.0"
+    },
+    {
+      "Id": "WinSCP.WinSCP",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "6.7"
+    },
+    {
+      "Id": "WireGuard.WireGuard",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.1.1"
+    },
+    {
+      "Id": "WiresharkFoundation.Wireshark",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.6.9"
+    },
+    {
+      "Id": "AntibodySoftware.WizTree",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.33"
+    },
+    {
+      "Id": "MHNexus.HxD",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.5"
+    },
+    {
+      "Id": "Xournal++.Xournal++",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.3.8"
+    },
+    {
+      "Id": "Yarn.Yarn",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.22.22"
+    },
+    {
+      "Id": "Zoom.Zoom",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "7.2.48556"
+    },
+    {
+      "Id": "astral-sh.uv",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.13.1"
+    },
+    {
+      "Id": "GlavSoft.TightVNC",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "2.8.89"
+    },
+    {
+      "Id": "glzr-io.glazewm",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "3.10.1"
+    },
+    {
+      "Id": "Overwolf.CurseForge",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.220.1-9343"
+    },
+    {
+      "Id": "xM4ddy.OFGB",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "0.4"
+    },
+    {
+      "Id": "Zen-Team.Zen-Browser",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.23.2b"
+    },
+    {
+      "Id": "ZedIndustries.Zed",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.24.2"
+    },
+    {
+      "Id": "DigitalScholar.Zotero",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "10.0.6"
+    },
+    {
+      "Id": "Deskflow.Deskflow",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "1.27.0"
+    },
+    {
+      "Id": "RubyInstallerTeam.Ruby.4.0",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "4.0.7-1"
+    },
+    {
+      "Id": "rjpcomputing.luaforwindows",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "5.1.5.52"
+    },
+    {
+      "Id": "Cloudflare.Warp",
+      "Source": "winget",
+      "Evidence": "Microsoft public WinGet index",
+      "IndexVersionAtReview": "26.8.2110.0"
+    }
+  ]
+}
