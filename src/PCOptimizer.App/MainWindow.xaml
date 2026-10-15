@@ -197,6 +197,7 @@
       <Button Content="Abrir opciones de la barra de tareas" Tag="Taskbar" Click="OpenWindowsSettings" HorizontalAlignment="Left" Margin="0,12,0,20" />
      </StackPanel>
      <StackPanel x:Name="OptimizationPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,0,0,20">
+      <TextBlock Text="{Binding TweakBackupIssue}" Foreground="#F0CB83" FontWeight="SemiBold" Margin="0,0,0,12" AutomationProperties.LiveSetting="Polite" />
       <TextBlock Text="01  ELIGE TU PUNTO DE PARTIDA" Foreground="#A99BFF" FontSize="11" FontWeight="Bold" Margin="0,0,0,14" />
       <UniformGrid Columns="4" Margin="0,0,0,14">
        <Button Tag="minimal" Click="ChooseTweakProfile" Padding="16,20" Margin="0,0,10,0"><StackPanel><TextBlock Text="Mínimo" FontSize="17" FontWeight="SemiBold" /><TextBlock Text="Solo Modo Juego" Foreground="#A8A8BA" FontSize="12" Margin="0,8,0,0" /></StackPanel></Button>

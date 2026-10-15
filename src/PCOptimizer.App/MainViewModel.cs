@@ -67,6 +67,7 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     private string executableSearch = "";
     private string selectedProfile = "Personalizado · selecciona los ajustes";
     private TweakOperation? selectedTweakOperation;
+    private string tweakBackupIssue = "";
 
     public MainViewModel()
     {
@@ -105,6 +106,7 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<ExecutableTweakChoice> ExecutableChoices { get; } = new(ExecutableTweaks.Items.Select(t => new ExecutableTweakChoice(t)));
     public ICollectionView ExecutableView { get; }
     public string ExecutableSummary => $"{ExecutableChoices.Count} ajustes ejecutables · valores anteriores guardados";
+    public string TweakBackupIssue { get => tweakBackupIssue; set { tweakBackupIssue = value; Changed(); } }
     public string ExecutableSearch { get => executableSearch; set { executableSearch = value; Changed(); ExecutableView.Refresh(); } }
     public string SelectedProfile { get => selectedProfile; set { selectedProfile = value; Changed(); } }
     public string TweakSelectionSummary => $"{ExecutableChoices.Count(t => t.IsSelected)} ajustes seleccionados · se revisarán antes de aplicar";

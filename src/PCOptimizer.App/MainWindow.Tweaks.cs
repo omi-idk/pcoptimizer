@@ -58,8 +58,14 @@ public partial class MainWindow
         {
             foreach (var operation in tweakEngine.List().Where(o => o.UndoOf is null && o.State is not ("Preparado" or "Cancelado antes de escribir"))) model.TweakOperations.Add(operation);
             model.SelectedTweakOperation = model.TweakOperations.FirstOrDefault(o => o.Id == previous) ?? model.TweakOperations.FirstOrDefault();
+            model.TweakBackupIssue = "";
         }
-        catch (Exception ex) { model.SelectedTweakOperation = null; model.Status = "No se pudo leer el respaldo de ajustes; se conservaron los archivos: " + ex.Message; }
+        catch (Exception ex)
+        {
+            model.SelectedTweakOperation = null;
+            model.TweakBackupIssue = "No se pudo leer el respaldo de ajustes; se conservaron los archivos. No se aplicarán nuevos ajustes hasta resolverlo: " + ex.Message;
+            model.Status = model.TweakBackupIssue;
+        }
     }
 
     private async void ApplySelectedTweaks(object sender, RoutedEventArgs e)
