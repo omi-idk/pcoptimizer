@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PCOptimizer.Core;
 
-public enum RecoveryActionKind { PowerPlan, InstallSoftware, RemoveOptionalApp }
+public enum RecoveryActionKind { PowerPlan, InstallSoftware, RemoveOptionalApp, RegistryTweak }
 public sealed record RecoveryAction(Guid Id, RecoveryActionKind Kind, string Name, string TargetId,
     string PreviousValue, string TargetValue, string State = "Planificada");
 public sealed record WindowsRestorePoint(int SequenceNumber, string Description, DateTimeOffset VerifiedAtUtc);

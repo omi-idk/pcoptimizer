@@ -54,12 +54,20 @@ public partial class MainWindow : Window
     {
         model.Title = section;
         model.Cards.Clear();
+        HomePanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
+        HomeToolsPanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
+        NetworkPanel.Visibility = section == "Red" ? Visibility.Visible : Visibility.Collapsed;
+        AudioPanel.Visibility = section == "Audio" ? Visibility.Visible : Visibility.Collapsed;
+        StoragePanel.Visibility = section == "Almacenamiento" ? Visibility.Visible : Visibility.Collapsed;
+        DriversPanel.Visibility = section == "Drivers" ? Visibility.Visible : Visibility.Collapsed;
+        GamingMetricsPanel.Visibility = section == "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        ApplyTweaksBar.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
         EnergyPanel.Visibility = section == "Energía" ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = section == "Instalación rápida" ? Visibility.Visible : Visibility.Collapsed;
         OptionalAppsPanel.Visibility = section == "Limpieza de apps" ? Visibility.Visible : Visibility.Collapsed;
         PersonalizationPanel.Visibility = section == "Personalización" ? Visibility.Visible : Visibility.Collapsed;
         UpdatesPanel.Visibility = section == "Windows Update" ? Visibility.Visible : Visibility.Collapsed;
-        OptimizationPanel.Visibility = section == "Optimización" ? Visibility.Visible : Visibility.Collapsed;
+        OptimizationPanel.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
         RecoveryPanel.Visibility = section == "Respaldo y recuperación" ? Visibility.Visible : Visibility.Collapsed;
         switch (section)
         {
@@ -69,10 +77,12 @@ public partial class MainWindow : Window
                     Add("DIAGNÓSTICO", "Información aún no disponible", "Actualiza el diagnóstico para consultar el hardware real de este equipo.");
                 else
                 {
-                    Add("PROCESADOR", inventory.Cpu, "Modelo informado por Windows. La carga por núcleo y la temperatura se incorporarán en una versión posterior.");
-                    Add("GRÁFICOS", inventory.Gpu, "Se muestran los adaptadores detectados; no implica cuál está usando un juego.");
-                    Add("MEMORIA", $"{inventory.MemoryBytes / Math.Pow(1024, 3):N1} GiB", "Memoria física instalada informada por Windows.");
-                    Add("SISTEMA", inventory.Os, "Las funciones disponibles dependen de la versión de Windows y del fabricante.");
+                    Add("CPU", inventory.Cpu, "Procesador detectado");
+                    Add("GPU", inventory.Gpu, "Adaptadores detectados");
+                    Add("RAM", $"{inventory.MemoryBytes / Math.Pow(1024, 3):N1} GiB", "Memoria física instalada");
+                    Add("WINDOWS", inventory.Os, "Sistema operativo");
+                    Add("MOTHERBOARD", inventory.Motherboard, "Fabricante y modelo detectados");
+                    Add("BIOS", inventory.Bios, "Versión instalada; no se flashea ni se recomienda una actualización automática");
                 }
                 break;
             case "Energía":
@@ -81,28 +91,28 @@ public partial class MainWindow : Window
                 Add("REVERSIBLE", "Se conserva el plan anterior", "Cada cambio guarda primero el plan original en el historial local. Windows solicitará elevación para aplicar el cambio. En algunos equipos solo está disponible Equilibrado.");
                 break;
             case "Almacenamiento":
-                model.Subtitle = "Inventario de unidades físicas. El diagnóstico de salud está pendiente.";
+                model.Subtitle = "Consulta salud y contadores de fiabilidad expuestos por Windows y el controlador.";
+                if (diagnosticCards.ContainsKey(section)) { AddDiagnosticCards(section); break; }
                 if (inventory is null || inventory.Disks.Length == 0)
                     Add("SIN DATOS", "No hay unidades detectadas", "Actualiza el diagnóstico. Algunos dispositivos pueden no exponer su información.");
                 else foreach (var disk in inventory.Disks)
                     Add("UNIDAD FÍSICA", disk.Model, $"Capacidad: {disk.Size / Math.Pow(1000, 3):N0} GB. Salud, desgaste y temperatura: no evaluados.");
-                Add("EN DESARROLLO", "Salud SMART / NVMe", "No es posible deducir la vida restante a partir del modelo o la capacidad. La lectura de desgaste y errores aún no está implementada.");
+                Add("CONSULTA DISPONIBLE", "Leer estado y fiabilidad", "Pulsa Consultar salud. Puede no haber contadores por permisos, USB, RAID o limitaciones del controlador. No se predicen años restantes.");
                 break;
             case "Instalación rápida":
                 model.Subtitle = "236 aplicaciones por categoría. Busca, selecciona y revisa antes de instalar.";
                 Add("SELECCIÓN MANUAL", "WinGet y Microsoft Store, identificados por aplicación", "Sin programas preseleccionados. Las selecciones se conservan al filtrar; revisa el lote antes de instalar. WinGet conserva comprobaciones de hash y acuerdos. Las fuentes no certifican compatibilidad anticheat. Las descripciones de referencia están en inglés; las condiciones añadidas, en español.");
                 break;
             case "Personalización":
-                model.Subtitle = "Barra de tareas de Windows 11: comprobar compatibilidad antes de cambiar.";
+                model.Subtitle = "Aplica preferencias de Windows y revisa las opciones nativas de la barra de tareas.";
                 Add("REQUIERE EVALUACIÓN", "Barra e iconos más pequeños", "El tamaño de los iconos y la altura de toda la barra no son lo mismo. La disponibilidad de opciones nativas depende de tu compilación. El botón abre Configuración; no aplica un cambio ni confirma que la opción exista.");
                 Add("COMPATIBILIDAD PENDIENTE", "Cambiar la altura completa", "No hay un método implementado aquí para reducir la altura. TaskbarSi no se trata como una solución universal de Windows 11. Herramientas de terceros requieren evaluar versión, estabilidad, licencia y recuperación. No se instala ninguna ni se reinicia Explorer automáticamente.");
                 break;
             case "Windows Update":
-                model.Subtitle = "Accesos nativos disponibles. Los perfiles de políticas requieren evaluación y aún no se aplican.";
-                Add("REQUIERE EVALUACIÓN", "Perfil de aplazamientos de la referencia", "WinUtil propone 365 días para funciones y 4 para actualizaciones de calidad, excluir drivers y notificar antes de instalar. No es nuestra recomendación universal: depende de edición, políticas y soporte de tu versión; aplazar puede retrasar correcciones. Perfil sin implementar.");
-                Add("REQUIERE EVALUACIÓN", "Recuperar configuración anterior", "La futura restauración recuperará lo guardado antes del cambio y detectará conflictos. No debe borrar políticas de una organización ni asumir que un valor predeterminado era el anterior. Perfil sin implementar.");
-                Add("AVANZADO · REQUIERE EVALUACIÓN", "Desactivar actualizaciones", "Puede impedir parches de seguridad y afectar mantenimiento o componentes que los necesitan. Se conserva visible por petición del usuario; no forma parte de perfiles automáticos y no está conectado a un ejecutor. No se detienen servicios ni tareas.");
-                Add("DISPONIBLE", "Programar desde Windows", "Puedes abrir Windows Update, horas activas, opciones e historial. Windows determina qué opciones ofrece tu equipo. Abrir estas páginas no aplica políticas desde PCOptimizer.");
+                model.Subtitle = "Políticas aplicables con respaldo previo, confirmación y reversión por operación.";
+                Add("APLICABLE · PRO / ENTERPRISE / EDUCATION", "Funciones: aplazar 30 días", "Escribe DeferFeatureUpdates y DeferFeatureUpdatesPeriodInDays. No modifica el aplazamiento de parches de calidad o seguridad. Necesita reinicio y comprobación en Windows; no extiende el soporte de tu versión.");
+                Add("APLICABLE · OPCIONAL", "Separar actualizaciones de drivers", "Escribe ExcludeWUDriversInQualityUpdate. Necesitarás revisar las correcciones del fabricante. No impide todos los mecanismos de instalación de drivers. Se guardan los valores anteriores para revertirlos desde Ajustes de Windows.");
+                Add("ALCANCE", "Windows decide qué políticas admite", "Se bloquean ediciones no compatibles y administración de organización detectada. No se desactivan servicios ni se bloquean parches de seguridad. Las propuestas avanzadas de la referencia siguen identificadas por separado en el catálogo.");
                 break;
             case "Respaldo y recuperación":
                 model.Subtitle = "Puntos de Windows y registro de qué intentó cambiar PCOptimizer.";
@@ -118,8 +128,21 @@ public partial class MainWindow : Window
                 Add("RIESGO DE DATOS", "Reinstalar no recupera necesariamente tus datos", "Guarda tus proyectos y preferencias antes. No hay copia de datos ni restauración automática. Una reinstalación desde Microsoft Store depende de su disponibilidad y puede no recuperar datos locales. Quitar una app no garantiza más FPS ni impide que vuelva con futuras actualizaciones.");
                 break;
             case "Optimización":
-                model.Subtitle = "71 ajustes visibles para evaluar. No se aplican desde este catálogo.";
-                Add("CONSERVADORA E INTENSIVA · PREVISTAS", "Cada ajuste necesita evidencia y recuperación", "Se conservan las opciones de referencia, incluidas las avanzadas. Todas indican Requiere evaluación y el estado de tu equipo aún no se ha consultado. No hay ejecutores de registro, servicios o timers conectados. Los accesos siguientes abren opciones nativas de Windows; no aplican perfiles.");
+            case "Gaming":
+                model.Subtitle = "Selecciona un perfil, revisa los cambios y aplícalos. Los valores anteriores quedan guardados para revertir.";
+                if (section == "Gaming") AddDiagnosticCards("Gaming");
+                break;
+            case "Red":
+                model.Subtitle = "Mide antes de cambiar: router y destinos públicos con diez muestras por destino.";
+                AddDiagnosticCards("Red");
+                break;
+            case "Audio":
+                model.Subtitle = "Detecta dispositivos y configura las mejoras que ofrezca su controlador.";
+                AddDiagnosticCards("Audio");
+                break;
+            case "Drivers":
+                model.Subtitle = "Versiones instaladas, proveedor y acceso a fuentes oficiales.";
+                AddDiagnosticCards("Drivers");
                 break;
             case "Historial":
                 model.Subtitle = "Registro local de energía, instalaciones y limpieza. No equivale a una copia de seguridad.";
@@ -136,18 +159,18 @@ public partial class MainWindow : Window
                         Add(action.State, action.Name, $"{action.Date.ToLocalTime():g} · {action.Kind switch { SoftwareActionKind.InstallSoftware => "Instalación", SoftwareActionKind.OpenDownloadPage => "Página de descarga", _ => "Desinstalación para tu usuario" }}\n{action.TargetId}\nLas instalaciones y desinstalaciones no tienen restauración automática.");
                 }
                 catch (Exception ex) { Add("HISTORIAL DE SOFTWARE NO DISPONIBLE", "Se conservó el registro original", ex.Message); }
+                try
+                {
+                    foreach (var operation in tweakEngine.List())
+                        Add(operation.State, operation.CreatedAtUtc.ToLocalTime().ToString("g"),
+                            $"{(operation.UndoOf is null ? "Aplicación" : "Reversión")} · {operation.Changes.Count} valores\n" +
+                            string.Join("\n", operation.Changes.Select(c => $"{ExecutableTweaks.Get(c.TweakId).Name}: {c.Before.Display} → {c.After.Display} · {c.State}")));
+                }
+                catch (Exception ex) { Add("RESPALDO DE AJUSTES NO DISPONIBLE", "Se conservó el registro original", ex.Message); }
                 if (model.Cards.Count == 0) Add("SIN CAMBIOS", "Todavía no hay operaciones registradas", "Los diagnósticos solo consultan información.");
                 break;
             default:
-                model.Subtitle = "Funciones previstas. Esta sección todavía no ejecuta ajustes ni mediciones.";
-                var card = section switch
-                {
-                    "Gaming" => new InfoCard("EN DESARROLLO", "Rendimiento por juego", "FPS, tiempos de cuadro y análisis de CPU/GPU requieren mediciones durante una partida. No se muestran porcentajes de cuello de botella inventados."),
-                    "Red" => new InfoCard("EN DESARROLLO", "Encontrar la causa del lag", "Se medirán latencia, variación y pérdida de paquetes. No se aplican cambios de DNS, TCP ni del adaptador en esta versión."),
-                    "Audio" => new InfoCard("EN DESARROLLO", "Loudness EQ según compatibilidad", "Puede hacer más audibles los sonidos suaves, pero alterar la percepción de distancia. Depende del dispositivo y del controlador; todavía no se detecta ni se activa."),
-                    _ => new InfoCard("NO DISPONIBLE", "Sección desconocida", "Vuelve al inicio.")
-                };
-                model.Cards.Add(card);
+                model.Subtitle = "Vuelve al inicio para elegir una herramienta.";
                 break;
         }
     }
@@ -165,6 +188,7 @@ public partial class MainWindow : Window
         catch (Exception ex) { inventory = null; issues.Add("Inventario: " + ex.Message); }
         try { await RefreshPlansAsync(); }
         catch (Exception ex) { model.PowerPlans.Clear(); model.SelectedPlan = null; issues.Add("Energía: " + ex.Message); }
+        await ReadTweaksAsync();
         model.IsIdle = true;
         Render();
         model.Status = issues.Count == 0 ? $"Diagnóstico actualizado a las {DateTime.Now:t}. No se aplicaron cambios." : string.Join(" · ", issues);

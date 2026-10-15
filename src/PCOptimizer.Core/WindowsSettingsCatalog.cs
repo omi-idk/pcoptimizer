@@ -12,6 +12,11 @@ public static class WindowsSettingsCatalog
         "GameMode" => "ms-settings:gaming-gamemode",
         "Captures" => "ms-settings:gaming-gamedvr",
         "Startup" => "ms-settings:startupapps",
+        "Graphics" => "ms-settings:display-advancedgraphics",
+        "Sound" => "ms-settings:sound",
+        "Mouse" => "ms-settings:mousetouchpad",
+        "Network" => "ms-settings:network-status",
+        "Storage" => "ms-settings:storagesense",
         _ => throw new ArgumentException("La página de configuración no pertenece a la lista permitida.", nameof(key))
     };
 }

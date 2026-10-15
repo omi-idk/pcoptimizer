@@ -8,6 +8,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>0.2.0-preview.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../PCOptimizer.Core/PCOptimizer.Core.csproj" />
