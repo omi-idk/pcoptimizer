@@ -22,8 +22,13 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        var area = SystemParameters.WorkArea;
+        MinWidth = Math.Min(MinWidth, area.Width - 24);
+        MinHeight = Math.Min(MinHeight, area.Height - 24);
+        Width = Math.Min(Width, area.Width - 24);
+        Height = Math.Min(Height, area.Height - 24);
         DataContext = model;
-        Loaded += async (_, _) => { RefreshRecoverySessions(); await RefreshAsync(); };
+        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
         Closing += (_, e) =>
         {
             if (model.IsIdle) return;
@@ -52,7 +57,7 @@ public partial class MainWindow : Window
 
     private void Render()
     {
-        model.Title = section;
+        model.Title = section switch { "Inicio" => "Resumen", "Optimización" => "Ajustes de Windows", "Gaming" => "Uso de recursos", "Respaldo y recuperación" => "Recuperación", _ => section };
         model.Cards.Clear();
         HomePanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
         HomeToolsPanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
@@ -61,13 +66,16 @@ public partial class MainWindow : Window
         StoragePanel.Visibility = section == "Almacenamiento" ? Visibility.Visible : Visibility.Collapsed;
         DriversPanel.Visibility = section == "Drivers" ? Visibility.Visible : Visibility.Collapsed;
         GamingMetricsPanel.Visibility = section == "Gaming" ? Visibility.Visible : Visibility.Collapsed;
-        ApplyTweaksBar.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        ApplyTweaksBar.Visibility = section == "Optimización" ? Visibility.Visible : Visibility.Collapsed;
         EnergyPanel.Visibility = section == "Energía" ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = section == "Instalación rápida" ? Visibility.Visible : Visibility.Collapsed;
         OptionalAppsPanel.Visibility = section == "Limpieza de apps" ? Visibility.Visible : Visibility.Collapsed;
         PersonalizationPanel.Visibility = section == "Personalización" ? Visibility.Visible : Visibility.Collapsed;
         UpdatesPanel.Visibility = section == "Windows Update" ? Visibility.Visible : Visibility.Collapsed;
-        OptimizationPanel.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        OptimizationPanel.Visibility = section == "Optimización" ? Visibility.Visible : Visibility.Collapsed;
+        DiagnosticsPanel.Visibility = section is "Drivers" or "Red" or "Audio" or "Almacenamiento" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        DriverResults.Visibility = section == "Drivers" ? Visibility.Visible : Visibility.Collapsed;
+        HistoryPanel.Visibility = section == "Historial" ? Visibility.Visible : Visibility.Collapsed;
         RecoveryPanel.Visibility = section == "Respaldo y recuperación" ? Visibility.Visible : Visibility.Collapsed;
         switch (section)
         {
@@ -130,7 +138,7 @@ public partial class MainWindow : Window
             case "Optimización":
             case "Gaming":
                 model.Subtitle = "Selecciona un perfil, revisa los cambios y aplícalos. Los valores anteriores quedan guardados para revertir.";
-                if (section == "Gaming") AddDiagnosticCards("Gaming");
+                if (section == "Gaming") { model.Subtitle = "Lectura actual de CPU, memoria e instancias de motor 3D; no estima FPS ni un porcentaje de cuello de botella."; AddDiagnosticCards("Gaming"); }
                 break;
             case "Red":
                 model.Subtitle = "Mide antes de cambiar: router y destinos públicos con diez muestras por destino.";

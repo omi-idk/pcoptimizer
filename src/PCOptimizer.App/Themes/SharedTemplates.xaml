@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+   <DataTemplate x:Key="SoftwareChoiceTemplate">
+    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,8">
+     <CheckBox IsChecked="{Binding IsSelected}" IsEnabled="{Binding CanSelect}" AutomationProperties.Name="{Binding Name}" VerticalContentAlignment="Top"><StackPanel Margin="6,0,0,0"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding Detail}" Foreground="{StaticResource Muted}" Margin="0,7,0,0" /><TextBlock Text="{Binding Availability}" Foreground="{StaticResource Accent}" FontSize="11" Margin="0,7,0,0" /></StackPanel></CheckBox>
+    </Border>
+   </DataTemplate>
+</ResourceDictionary>

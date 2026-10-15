@@ -6,9 +6,17 @@ public sealed record RegistryValueSnapshot(bool Exists, string Kind, string Data
     public string Display => Exists ? $"{Kind}: {Data}" : "Valor ausente (Windows decide)";
 }
 
-public sealed record RegistryTweakTarget(string Id, string Path, string Name, RegistryValueSnapshot Desired, bool Machine = false);
+public sealed record RegistryTweakTarget(string Id, string Path, string Name, RegistryValueSnapshot Desired, bool Machine = false, uint? ClearBits = null, uint? SetBits = null);
+public enum TweakRisk { Preference, Standard, Advanced }
 public sealed record ExecutableTweak(string Id, string Name, string Category, string Benefit,
-    string Risk, string Activation, string Source, IReadOnlyList<RegistryTweakTarget> Targets);
+    string Risk, string Activation, string Source, IReadOnlyList<RegistryTweakTarget> Targets)
+{
+    public string? ExclusiveGroup { get; init; }
+    public int MinimumWindowsBuild { get; init; }
+    public TweakRisk? RiskOverride { get; init; }
+    public TweakRisk RiskLevel => RiskOverride ?? (Targets.Any(t => t.Machine) ? TweakRisk.Advanced :
+        Category is "Gaming" or "Entrada" ? TweakRisk.Standard : TweakRisk.Preference);
+}
 
 // This is the complete execution allowlist. The reference JSON catalog never enters this engine.
 public static class ExecutableTweaks
@@ -81,7 +89,7 @@ public static class ExecutableTweaks
             "Requiere administrador y reinicio. No detectamos todavía soporte de GPU/driver: compruébalo en Configuración de gráficos antes de seleccionar. Puede causar inestabilidad o conflictos con captura. Fuera de los perfiles automáticos.",
             "Reinicia manualmente y comprueba el interruptor en Configuración de gráficos. Guardar el valor no prueba que Windows haya activado HAGS.",
             "https://devblogs.microsoft.com/directx/hardware-accelerated-gpu-scheduling/",
-            new[] { new RegistryTweakTarget("hags", @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "HwSchMode", new(true, "DWord", "2"), true) }),
+            new[] { new RegistryTweakTarget("hags", @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "HwSchMode", new(true, "DWord", "2"), true) }) with { ExclusiveGroup = "hags" },
         new ExecutableTweak("update-feature-delay", "Aplazar actualizaciones de funciones 30 días", "Windows Update · equipo",
             "En ediciones compatibles, solicita 30 días de aplazamiento de nuevas versiones de Windows. No cambia el aplazamiento de parches de calidad y seguridad.",
             "Requiere administrador y Windows Pro, Enterprise o Education compatible. Puede retrasar novedades y no extiende el soporte de una versión. Se rechaza en equipos de dominio, unidos a una organización o con inscripción MDM detectada.",
@@ -107,25 +115,39 @@ public static class ExecutableTweaks
             "https://support.microsoft.com/windows/change-colors-in-windows",
             new[] { D("dark-apps", @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", 0),
                 D("dark-system", @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", 0) })
-    });
+    }.Concat(AdditionalExecutableTweaks.Items).ToArray());
     public static ExecutableTweak Get(string id) => Items.SingleOrDefault(t => t.Id == id)
         ?? throw new InvalidDataException("Ajuste fuera de la lista de ejecución permitida.");
     public static RegistryTweakTarget Target(string tweakId, string targetId) => Get(tweakId).Targets.SingleOrDefault(t => t.Id == targetId)
         ?? throw new InvalidDataException("Valor fuera de la lista de ejecución permitida.");
     public static IReadOnlyList<string> Profile(string id) => id switch
     {
-        "minimal" => new[] { "game-mode" },
-        "recommended" => new[] { "game-mode", "file-extensions" },
-        "gaming" => new[] { "game-mode", "game-capture", "mouse-acceleration" },
-        "intensive" => new[] { "game-mode", "game-capture", "mouse-acceleration", "transparency", "window-animation" },
+        "minimal" => new[] { "game-mode", "file-extensions", "windows-tips", "settings-suggestions" },
+        "recommended" => new[] { "game-mode", "file-extensions", "windows-tips", "settings-suggestions", "ad-id", "tailored-experiences", "silent-apps", "start-suggestions", "lockscreen-suggestions" },
+        "gaming" => new[] { "game-mode", "game-capture", "mouse-acceleration", "sticky-hotkey", "filter-hotkey", "toggle-hotkey", "restart-apps" },
+        "intensive" => new[] { "game-mode", "game-capture", "mouse-acceleration", "sticky-hotkey", "filter-hotkey", "toggle-hotkey", "restart-apps", "transparency", "window-animation", "taskbar-animation", "aero-peek", "windows-tips", "settings-suggestions", "silent-apps", "start-suggestions", "lockscreen-suggestions" },
         _ => throw new ArgumentException("Perfil desconocido.", nameof(id))
     };
+
+    public static RegistryValueSnapshot DesiredFor(RegistryTweakTarget target, RegistryValueSnapshot before)
+    {
+        if (target.ClearBits is null && target.SetBits is null) return target.Desired;
+        if (!before.Exists || before.Kind != "String" || !uint.TryParse(before.Data,
+            System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var original))
+            throw new InvalidDataException("Windows no expone las banderas persistidas de esta opción. Revísala en sus opciones nativas; no se asumirá un valor por defecto.");
+        return new(true, "String", ((original & ~(target.ClearBits ?? 0u)) | (target.SetBits ?? 0u)).ToString(System.Globalization.CultureInfo.InvariantCulture));
+    }
 }
 
 public interface ITweakValueStore
 {
     RegistryValueSnapshot Read(RegistryTweakTarget target);
     void Write(RegistryTweakTarget target, RegistryValueSnapshot expected, RegistryValueSnapshot value);
+}
+
+public interface IBatchTweakValueStore : ITweakValueStore
+{
+    void WriteMachineBatch(IReadOnlyList<TweakValueChange> changes);
 }
 
 public sealed record TweakValueChange(string TweakId, string TargetId, RegistryValueSnapshot Before,
@@ -144,8 +166,14 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
     public TweakOperation Preview(IReadOnlyList<string> ids)
     {
         if (ids.Count == 0 || ids.Distinct().Count() != ids.Count) throw new InvalidOperationException("Selecciona ajustes distintos.");
-        var changes = ids.Select(ExecutableTweaks.Get).SelectMany(t => t.Targets.Select(v =>
-            new TweakValueChange(t.Id, v.Id, values.Read(v), v.Desired))).ToArray();
+        var definitions = ids.Select(ExecutableTweaks.Get).ToArray();
+        if (definitions.Where(t => t.ExclusiveGroup is not null).GroupBy(t => t.ExclusiveGroup).Any(g => g.Count() > 1))
+            throw new InvalidOperationException("Hay ajustes incompatibles seleccionados para la misma función.");
+        var changes = definitions.SelectMany(t => t.Targets.Select(v =>
+        {
+            var before = values.Read(v);
+            return new TweakValueChange(t.Id, v.Id, before, ExecutableTweaks.DesiredFor(v, before));
+        })).ToArray();
         var operation = new TweakOperation(1, Guid.NewGuid(), DateTimeOffset.UtcNow, null, changes, "Preparado");
         Validate(operation);
         return operation;
@@ -218,8 +246,13 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
         Save(operation);
         try
         {
+            var machineIndices = operation.Changes.Select((change, index) => (change, index))
+                .Where(pair => pair.change.Before != pair.change.After && ExecutableTweaks.Target(pair.change.TweakId, pair.change.TargetId).Machine)
+                .Select(pair => pair.index).ToArray();
+            var machineBatchStarted = false;
             for (var index = 0; index < operation.Changes.Count; index++)
             {
+                if (machineBatchStarted && machineIndices.Contains(index)) continue;
                 var change = operation.Changes[index];
                 CheckUnchanged(change);
                 if (change.Before == change.After)
@@ -229,6 +262,27 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
                     continue;
                 }
                 var target = ExecutableTweaks.Target(change.TweakId, change.TargetId);
+                if (target.Machine && values is IBatchTweakValueStore batch)
+                {
+                    if (machineBatchStarted) continue;
+                    machineBatchStarted = true;
+                    foreach (var machineIndex in machineIndices)
+                    {
+                        CheckUnchanged(operation.Changes[machineIndex]);
+                        operation = Update(operation, machineIndex, "Lote elevado preparado; comprobar valor si se interrumpe");
+                    }
+                    Save(operation); // All originals are durable before the single UAC request.
+                    batch.WriteMachineBatch(machineIndices.Select(i => operation.Changes[i]).ToArray());
+                    foreach (var machineIndex in machineIndices)
+                    {
+                        var machineChange = operation.Changes[machineIndex];
+                        if (values.Read(ExecutableTweaks.Target(machineChange.TweakId, machineChange.TargetId)) != machineChange.After)
+                            throw new IOException("El registro no confirmó un valor del lote elevado.");
+                        operation = Update(operation, machineIndex, "Valor de registro verificado");
+                        Save(operation);
+                    }
+                    continue;
+                }
                 operation = Update(operation, index, "Escritura iniciada; comprobar valor si se interrumpe");
                 Save(operation); // Recovery data must be durable before each write.
                 values.Write(target, change.Before, change.After);
@@ -264,7 +318,7 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
     private void Validate(TweakOperation operation)
     {
         if (operation.SchemaVersion != 1 || operation.Id == Guid.Empty || operation.CreatedAtUtc == default
-            || operation.Changes is null || operation.Changes.Count is < 1 or > 32
+            || operation.Changes is null || operation.Changes.Count is < 1 or > 256
             || operation.Changes.Any(c => c is null) || operation.Changes.Select(c => c.TargetId).Distinct().Count() != operation.Changes.Count)
             throw new InvalidDataException("Formato de respaldo de ajustes no admitido.");
         var source = operation.UndoOf is { } sourceId
@@ -274,7 +328,7 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
             var target = ExecutableTweaks.Target(change.TweakId, change.TargetId);
             ValidateValue(change.Before, target);
             ValidateValue(change.After, target);
-            if (source is null && change.After != target.Desired)
+            if (source is null && change.After != ExecutableTweaks.DesiredFor(target, change.Before))
                 throw new InvalidDataException("El valor solicitado no pertenece al catálogo ejecutable.");
             if (source is not null && !source.Changes.Any(c => c.TweakId == change.TweakId && c.TargetId == change.TargetId
                 && c.Before == change.After && c.After == change.Before))
@@ -300,7 +354,9 @@ public sealed class TweakEngine(ITweakValueStore values, string directory)
             throw new InvalidDataException("Tipo o contenido del valor no compatible; no se modificará.");
     }
     private static bool ValidString(RegistryValueSnapshot value, RegistryTweakTarget target) =>
-        target.Id.StartsWith("mouse-", StringComparison.Ordinal)
+        target.ClearBits is not null || target.SetBits is not null || target.Id == "numlock"
+            ? uint.TryParse(value.Data, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out _)
+            : target.Id.StartsWith("mouse-", StringComparison.Ordinal)
             ? uint.TryParse(value.Data, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var number) && number <= 32767
             : value.Data is "0" or "1";
 }

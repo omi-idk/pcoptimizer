@@ -14,17 +14,8 @@ public partial class MainWindow
     private void ChooseTweakProfile(object sender, RoutedEventArgs e)
     {
         if (!model.IsIdle || ((FrameworkElement)sender).Tag is not string id) return;
-        var selected = id == "clear" ? [] : ExecutableTweaks.Profile(id);
-        foreach (var choice in model.ExecutableChoices) choice.IsSelected = selected.Contains(choice.Id);
-        model.SelectedProfile = id switch
-        {
-            "minimal" => "Mínimo · activar Modo Juego",
-            "recommended" => "Recomendado · Modo Juego y extensiones visibles",
-            "gaming" => "Gaming · Modo Juego, sin capturas y sin aceleración del puntero",
-            "intensive" => "Intensivo · Gaming y menos efectos del escritorio",
-            _ => "Personalizado · sin ajustes seleccionados"
-        };
-        model.Status = "Perfil seleccionado. Aún no se modificó Windows: revisa los ajustes y pulsa Revisar y aplicar.";
+        model.SelectProfile(id);
+        model.Status = "Perfil seleccionado. Revisa los ajustes antes de confirmar su aplicación.";
     }
 
     private async void AnalyzeTweaks(object sender, RoutedEventArgs e)
@@ -42,11 +33,11 @@ public partial class MainWindow
             try
             {
                 var snapshot = await Task.Run(() => tweakEngine.Preview([choice.Id]));
-                choice.State = snapshot.Changes.All(c => c.Before == c.After) ? "VALORES SOLICITADOS PRESENTES" : "DISPONIBLE PARA APLICAR";
-                choice.Values = string.Join("\n", snapshot.Changes.Select(c => $"{c.TargetId}: {c.Before.Display}"));
+                choice.SetSnapshot(snapshot);
             }
-            catch (Exception ex) { choice.State = "NO DISPONIBLE"; choice.Values = ex.Message; }
+            catch (Exception ex) { choice.SetUnavailable(ex.Message); }
         }
+        model.RefreshTweaks();
         RefreshTweakOperations();
     }
 
@@ -71,7 +62,7 @@ public partial class MainWindow
     private async void ApplySelectedTweaks(object sender, RoutedEventArgs e)
     {
         if (!model.IsIdle) return;
-        var ids = model.ExecutableChoices.Where(t => t.IsSelected).Select(t => t.Id).ToArray();
+        var ids = model.ExecutableChoices.Where(t => t.IsSelected && t.CanSelect).Select(t => t.Id).ToArray();
         if (ids.Length == 0) { model.Status = "Elige un perfil o selecciona al menos un ajuste."; return; }
         await ReviewAndRunTweaksAsync(() => tweakEngine.Preview(ids), undo: false);
     }
@@ -162,7 +153,9 @@ public partial class MainWindow
 
     private void GoToSection(object sender, RoutedEventArgs e)
     {
-        if (((FrameworkElement)sender).Tag is string target) SelectNavigation(this, target);
+        if (((FrameworkElement)sender).Tag is not string target) return;
+        if (target == "Gaming") { SelectNavigation(this, "Optimización"); if (model.IsIdle) model.SelectProfile("gaming"); }
+        else SelectNavigation(this, target);
     }
 
     private static bool SelectNavigation(DependencyObject parent, string target)

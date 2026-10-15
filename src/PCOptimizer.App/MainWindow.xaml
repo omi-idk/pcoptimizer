@@ -1,358 +1,124 @@
-<Window x:Class="PCOptimizer.App.MainWindow"
- xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
- xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
- Title="PCOptimizer · Preview 0.2" Width="1280" Height="820" MinWidth="1000" MinHeight="680"
- Background="#0D0F15" FontFamily="Segoe UI" WindowStartupLocation="CenterScreen">
+<Window x:Class="PCOptimizer.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+ Title="PCOptimizer · Preview 0.3" Width="1400" Height="880" MinWidth="1100" MinHeight="700" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" FontSize="13" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize">
+ <shell:WindowChrome.WindowChrome><shell:WindowChrome CaptionHeight="36" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" /></shell:WindowChrome.WindowChrome>
+ <Window.InputBindings><KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" /></Window.InputBindings>
+ <Window.CommandBindings><CommandBinding Command="ApplicationCommands.Find" Executed="FocusSearch" /></Window.CommandBindings>
  <Window.Resources>
-  <DataTemplate x:Key="PackageTileTemplate">
-   <Border Background="#181B25" BorderBrush="#303440" BorderThickness="1" CornerRadius="8" Width="246" Margin="0,0,10,10" Padding="12">
-    <Border.ToolTip>
-     <ToolTip MaxWidth="460">
-      <StackPanel>
-       <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Foreground="#181B25" />
-       <TextBlock Text="Descripción del catálogo de referencia (inglés):" Foreground="#314758" Margin="0,8,0,4" />
-       <TextBlock Text="{Binding Detail}" Foreground="#181B25" />
-       <TextBlock Text="{Binding Notes}" Foreground="#664600" Margin="0,10,0,0" />
-      </StackPanel>
-     </ToolTip>
-    </Border.ToolTip>
-    <StackPanel>
-     <CheckBox IsChecked="{Binding IsSelected}" Foreground="#F0EFF7" VerticalContentAlignment="Center" AutomationProperties.Name="{Binding Name}">
-      <TextBlock Text="{Binding Name}" Width="185" FontWeight="SemiBold" FontSize="14" Margin="6,0,0,0" />
-     </CheckBox>
-     <DockPanel Margin="0,10,0,0">
-      <TextBlock Text="{Binding SourceLabel}" Foreground="#69E3BD" FontSize="11" VerticalAlignment="Center" />
-      <Button Content="Sitio oficial" Click="OpenPackageWebsite" Padding="8,4" FontSize="11" HorizontalAlignment="Right" AutomationProperties.Name="{Binding Name, StringFormat='Sitio oficial de {0}'}" />
-     </DockPanel>
-     <TextBlock Text="{Binding ReviewLabel}" Foreground="#F0CB83" FontSize="10" Margin="0,6,0,0" />
-    </StackPanel>
-   </Border>
-  </DataTemplate>
+  <DataTemplate x:Key="InfoCardTemplate"><Border Style="{StaticResource Card}" Margin="0,0,12,12"><StackPanel><TextBlock Text="{Binding Label}" Style="{StaticResource SectionLabel}" /><TextBlock Text="{Binding Value}" FontSize="18" FontWeight="SemiBold" /><TextBlock Text="{Binding Detail}" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,10,0,0" /></StackPanel></Border></DataTemplate>
+  <DataTemplate x:Key="PackageTileTemplate"><Border Style="{StaticResource Card}" Width="218" Margin="0,0,10,10" Padding="14"><StackPanel>
+   <CheckBox IsChecked="{Binding IsSelected}" AutomationProperties.Name="{Binding Name}"><Grid Width="162"><Grid.ColumnDefinitions><ColumnDefinition Width="32" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions><Border Background="#2B3D57" CornerRadius="6" Width="28" Height="28"><TextBlock Text="{Binding Monogram}" Foreground="#ADD0FF" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" Margin="9,0,0,0" VerticalAlignment="Center" /></Grid></CheckBox>
+   <DockPanel Margin="0,12,0,0"><TextBlock Text="{Binding SourceLabel}" Foreground="{StaticResource Muted}" FontSize="10" VerticalAlignment="Center" /><Button Content="Sitio oficial" Style="{StaticResource QuietButton}" Click="OpenPackageWebsite" Padding="8,3" MinHeight="22" FontSize="10" HorizontalAlignment="Right" /></DockPanel>
+   <TextBlock Text="{Binding ReviewLabel}" Foreground="#EDB96F" FontSize="10" />
+   <StackPanel.ToolTip><ToolTip><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" /><TextBlock Text="{Binding Detail}" Margin="0,8,0,0" /><TextBlock Text="{Binding Notes}" Foreground="#EDB96F" Margin="0,8,0,0" /></StackPanel></ToolTip></StackPanel.ToolTip>
+  </StackPanel></Border></DataTemplate>
  </Window.Resources>
- <Grid>
-  <Grid.ColumnDefinitions><ColumnDefinition Width="232" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-  <Border Background="#11131B" Padding="16,24">
-   <DockPanel>
-    <StackPanel DockPanel.Dock="Top" Margin="6,0,0,32">
-     <StackPanel Orientation="Horizontal"><Border Background="#A99BFF" CornerRadius="9" Width="34" Height="34" Margin="0,0,10,0"><TextBlock Text="P" FontSize="22" Foreground="#15121F" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Text="PCOptimizer" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" /></StackPanel>
-     <TextBlock Text="GAMING &amp; WINDOWS" FontSize="10" Foreground="#69E3BD" Margin="0,8,0,0" />
-    </StackPanel>
-    <StackPanel DockPanel.Dock="Bottom" Margin="6,20,0,0">
-     <TextBlock Text="PREVIEW · 0.2" FontSize="10" Foreground="{StaticResource Muted}" />
-     <TextBlock Text="Cambios bajo tu control." FontSize="12" Margin="0,8,0,0" Foreground="{StaticResource Muted}" />
-    </StackPanel>
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-    <StackPanel>
-     <RadioButton Style="{StaticResource NavButton}" Content="◈   Inicio" Tag="Inicio" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="▶   Gaming" Tag="Gaming" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="⚡   Ajustes de Windows" Tag="Optimización" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Personalización" Tag="Personalización" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Windows Update" Tag="Windows Update" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="＋   Instalar aplicaciones" Tag="Instalación rápida" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Limpieza de apps" Tag="Limpieza de apps" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="ϟ   Energía" Tag="Energía" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Red" Tag="Red" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Audio" Tag="Audio" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Drivers" Tag="Drivers" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Almacenamiento" Tag="Almacenamiento" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="Historial" Tag="Historial" GroupName="Navigation" Checked="Navigate" />
-     <RadioButton Style="{StaticResource NavButton}" Content="↶   Respaldo y reversión" Tag="Respaldo y recuperación" GroupName="Navigation" Checked="Navigate" />
-    </StackPanel>
-    </ScrollViewer>
-   </DockPanel>
-  </Border>
-  <Grid Grid.Column="1" Margin="32,28">
-   <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-   <Grid Margin="0,0,0,24">
-    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-    <StackPanel>
-     <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="SemiBold" />
-     <TextBlock Text="{Binding Subtitle}" Foreground="{StaticResource Muted}" Margin="0,10,20,0" />
-    </StackPanel>
-    <Button Grid.Column="1" Content="Actualizar diagnóstico" Click="Refresh" IsEnabled="{Binding IsIdle}" VerticalAlignment="Top" />
-   </Grid>
-   <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-    <StackPanel>
-     <StackPanel x:Name="HomePanel" Visibility="Collapsed">
-      <Border Background="#232037" BorderBrush="#494063" BorderThickness="1" CornerRadius="18" Padding="28" Margin="0,0,0,24">
-       <Grid>
-        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-        <StackPanel>
-         <TextBlock Text="WINDOWS A TU MEDIDA" FontSize="11" FontWeight="Bold" Foreground="#BFB2FF" />
-         <TextBlock Text="Prepara tu próxima partida." FontSize="32" FontWeight="SemiBold" Margin="0,10,0,10" />
-         <TextBlock Text="Ajustes que puedes aplicar, entender y revertir. Tú eliges qué cambia en tu equipo." Foreground="#C0BBD1" MaxWidth="520" HorizontalAlignment="Left" />
-         <WrapPanel Margin="0,22,0,0">
-          <Button Content="Configurar para gaming  →" Tag="Gaming" Click="GoToSection" Background="#A99BFF" Foreground="#15121F" Margin="0,0,10,10" />
-          <Button Content="Ver respaldos" Tag="Respaldo y recuperación" Click="GoToSection" Margin="0,0,0,10" />
-         </WrapPanel>
-        </StackPanel>
-       </Grid>
-      </Border>
-      <TextBlock Text="Tu equipo" FontSize="21" FontWeight="SemiBold" Margin="0,0,0,14" />
-     </StackPanel>
-     <ItemsControl ItemsSource="{Binding Cards}">
-      <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-      <ItemsControl.ItemTemplate>
-       <DataTemplate>
-        <Border Background="{StaticResource Surface}" CornerRadius="12" BorderBrush="#292D39" BorderThickness="1" Padding="20" Margin="0,0,12,12">
-         <StackPanel>
-          <TextBlock Text="{Binding Label}" Foreground="#69E3BD" FontSize="11" FontWeight="SemiBold" />
-          <TextBlock Text="{Binding Value}" FontSize="18" FontWeight="SemiBold" Margin="0,9,0,0" />
-          <TextBlock Text="{Binding Detail}" Foreground="{StaticResource Muted}" Margin="0,9,0,0" />
-         </StackPanel>
-        </Border>
-       </DataTemplate>
-      </ItemsControl.ItemTemplate>
-     </ItemsControl>
-     <StackPanel x:Name="HomeToolsPanel" Visibility="Collapsed" Margin="0,18,0,14">
-      <TextBlock Text="Herramientas" FontSize="21" FontWeight="SemiBold" Margin="0,0,0,14" />
-      <UniformGrid Columns="3">
-       <Button Tag="Instalación rápida" Click="GoToSection" Margin="0,0,12,0" Padding="20"><StackPanel><TextBlock Text="＋  Instalar apps" FontWeight="SemiBold" FontSize="17" /><TextBlock Text="236 apps · selección por categorías" Foreground="#A3A3B7" FontSize="12" Margin="0,10,0,0" /></StackPanel></Button>
-       <Button Tag="Energía" Click="GoToSection" Margin="0,0,12,0" Padding="20"><StackPanel><TextBlock Text="ϟ  Planes de energía" FontWeight="SemiBold" FontSize="17" /><TextBlock Text="Aplicar y recuperar el plan anterior" Foreground="#A3A3B7" FontSize="12" Margin="0,10,0,0" /></StackPanel></Button>
-       <Button Tag="Drivers" Click="GoToSection" Padding="20"><StackPanel><TextBlock Text="◈  Hardware y drivers" FontWeight="SemiBold" FontSize="17" /><TextBlock Text="Versiones y fuentes oficiales" Foreground="#A3A3B7" FontSize="12" Margin="0,10,0,0" /></StackPanel></Button>
-      </UniformGrid>
-     </StackPanel>
-     <StackPanel x:Name="NetworkPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,14,0,20">
-      <Border Background="#181B25" CornerRadius="12" Padding="22" Margin="0,0,0,16"><StackPanel>
-       <TextBlock Text="¿El problema empieza en tu red local?" FontSize="22" FontWeight="SemiBold" />
-       <TextBlock Text="Compara tu puerta de enlace con Cloudflare (1.1.1.1) y Google (8.8.8.8). Diez muestras ICMP por destino: latencia, variación y respuestas perdidas. La prueba tarda unos segundos." Foreground="#A3A3B7" Margin="0,12,0,0" />
-       <TextBlock Text="Las respuestas de servidores públicos no representan todos los servidores de juego. No se modifica DNS, MTU ni TCP. El bloqueo de ICMP puede producir un resultado sin respuesta con Internet funcionando." Foreground="#F0CB83" FontSize="12" Margin="0,12,0,0" />
-      </StackPanel></Border>
-      <WrapPanel><Button Content="Medir latencia y pérdida" Click="MeasureNetwork" Background="#A99BFF" Foreground="#15121F" Margin="0,0,12,12" /><Button Content="Opciones de red" Tag="Network" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel>
-     </StackPanel>
-     <StackPanel x:Name="DriversPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,14,0,20">
-      <Border Background="#181B25" CornerRadius="12" Padding="22" Margin="0,0,0,16"><StackPanel>
-       <TextBlock Text="Instalado, último y recomendado son cosas distintas" FontSize="22" FontWeight="SemiBold" />
-       <TextBlock Text="El análisis consulta nombre, proveedor, versión, fecha e INF instalados. No etiqueta como obsoleto un driver por su fecha. Última versión y versión recomendada requieren comprobar modelo, Windows y notas del fabricante; no se comparan automáticamente en esta versión." Foreground="#A3A3B7" Margin="0,12,0,0" />
-       <TextBlock Text="En laptops, equipos premontados y chipsets, revisa primero el soporte del fabricante del equipo o motherboard. No instalamos drivers genéricos ni BIOS de forma automática." Foreground="#F0CB83" Margin="0,10,0,0" FontSize="12" />
-      </StackPanel></Border>
-      <Button Content="Analizar controladores instalados" Click="ScanDrivers" HorizontalAlignment="Left" Margin="0,0,0,20" Background="#A99BFF" Foreground="#15121F" />
-      <ItemsControl ItemsSource="{Binding Drivers}"><ItemsControl.ItemTemplate><DataTemplate>
-       <Border Background="#181B25" BorderBrush="#303440" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,0,10"><StackPanel>
-        <TextBlock Text="{Binding Name}" FontSize="17" FontWeight="SemiBold" />
-        <WrapPanel Margin="0,10,0,0"><TextBlock Text="{Binding Version, StringFormat='Instalado: {0}'}" Foreground="#77DEBB" Margin="0,0,20,0" /><TextBlock Text="{Binding Date, StringFormat='Fecha: {0}'}" Foreground="#A3A3B7" /></WrapPanel>
-        <TextBlock Text="{Binding Provider}" Foreground="#A3A3B7" Margin="0,6,0,0" />
-        <TextBlock Text="{Binding Inf, StringFormat='INF: {0}'}" Foreground="#A3A3B7" FontSize="11" Margin="0,4,0,0" />
-        <TextBlock Text="{Binding Signed, StringFormat='Firma reportada por Windows: {0}'}" Foreground="#A3A3B7" FontSize="11" Margin="0,4,0,0" />
-        <Button Content="Abrir soporte oficial" Click="OpenDriverSource" HorizontalAlignment="Left" Margin="0,12,0,0" />
-       </StackPanel></Border>
-      </DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
-     </StackPanel>
-     <StackPanel x:Name="AudioPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,14,0,20">
-      <Border Background="#181B25" CornerRadius="12" Padding="22" Margin="0,0,0,16"><StackPanel>
-       <TextBlock Text="Loudness Equalization, según tu dispositivo" FontSize="22" FontWeight="SemiBold" />
-       <TextBlock Text="Puede hacer más audibles sonidos suaves, pero comprime la dinámica y puede alterar la percepción de distancia. Compara el mismo escenario con volumen moderado; no siempre ayuda en juegos competitivos." Foreground="#A3A3B7" Margin="0,12,0,0" />
-       <TextBlock Text="En el panel clásico: Reproducción → dispositivo → Propiedades → Mejoras. Activa Ecualización de sonoridad solo si aparece. No existe un interruptor universal: algunos drivers y dispositivos USB no ofrecen esta mejora. No se fuerza mediante propiedades de audio no documentadas." Foreground="#F0CB83" Margin="0,12,0,0" />
-      </StackPanel></Border>
-      <WrapPanel><Button Content="Detectar dispositivos de sonido" Click="ScanAudio" Margin="0,0,12,12" /><Button Content="Abrir mejoras de sonido" Click="OpenSoundControl" Margin="0,0,12,12" Background="#A99BFF" Foreground="#15121F" /><Button Content="Configuración de sonido" Tag="Sound" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel>
-     </StackPanel>
-     <StackPanel x:Name="StoragePanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,14,0,20">
-      <WrapPanel><Button Content="Consultar salud y fiabilidad" Click="ScanStorage" Background="#A99BFF" Foreground="#15121F" Margin="0,0,12,12" /><Button Content="Consultar con permisos de administrador" Tag="elevated" Click="ScanStorage" Margin="0,0,12,12" /><Button Content="Configuración de almacenamiento" Tag="Storage" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel>
-      <TextBlock Text="Consulta de solo lectura. Si faltan permisos, usa la consulta con UAC con la misma cuenta. No escribe patrones de prueba, no desfragmenta SSD ni estima años de vida a partir del modelo." Foreground="#A3A3B7" FontSize="12" />
-     </StackPanel>
-     <StackPanel x:Name="GamingMetricsPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,8,0,24">
-      <WrapPanel><Button Content="Consultar carga actual" Click="MeasureLoad" Margin="0,0,12,10" /><Button Content="Configuración de gráficos" Tag="Graphics" Click="OpenWindowsSettings" Margin="0,0,0,10" /></WrapPanel>
-     </StackPanel>
-     <StackPanel x:Name="EnergyPanel" Visibility="Collapsed" Margin="0,8,0,20">
-      <CheckBox Content="Intentar crear un punto de restauración antes del cambio" IsChecked="{Binding CreateRestorePointBeforeChanges}" IsEnabled="{Binding IsIdle}" Foreground="#F0EFF7" Margin="0,0,0,16" />
-      <TextBlock Text="Planes disponibles en este equipo" FontSize="18" Margin="0,0,0,12" />
-      <ComboBox ItemsSource="{Binding PowerPlans}" SelectedItem="{Binding SelectedPlan}" FontSize="15" Padding="12" AutomationProperties.Name="Plan de energía" IsEnabled="{Binding IsIdle}">
-       <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding DisplayName}" Foreground="#F0EFF7" /></DataTemplate></ComboBox.ItemTemplate>
-      </ComboBox>
-      <WrapPanel Margin="0,16,0,0">
-       <Button Content="Aplicar plan seleccionado" Click="ApplyPowerPlan" IsEnabled="{Binding IsIdle}" Background="#28775E" Margin="0,0,12,12" />
-       <Button Content="Restaurar último cambio" Click="RestorePowerPlan" IsEnabled="{Binding IsIdle}" Margin="0,0,0,12" />
-      </WrapPanel>
-     </StackPanel>
-     <StackPanel x:Name="InstallPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,8,0,20">
-      <TextBlock Text="Buscar por nombre, categoría o identificador" Foreground="#A3A3B7" Margin="0,0,0,8" />
-      <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Background="#181B25" Foreground="#F0EFF7" BorderBrush="#414653" Padding="12" FontSize="15" AutomationProperties.Name="Buscar aplicaciones" />
-      <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" FontSize="14" Padding="10" Margin="0,12,0,0" AutomationProperties.Name="Filtrar aplicaciones por categoría">
-       <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" Foreground="#F0EFF7" /></DataTemplate></ComboBox.ItemTemplate>
-      </ComboBox>
-      <TextBlock Text="{Binding CatalogSummary}" Foreground="#A3A3B7" Margin="0,12,0,0" />
-      <TextBlock Text="{Binding SelectionSummary}" Foreground="#69E3BD" Margin="0,6,0,0" />
-      <CheckBox Content="Intentar crear un punto de restauración antes del lote" IsChecked="{Binding CreateRestorePointBeforeChanges}" Foreground="#F0EFF7" Margin="0,14,0,0" />
-      <WrapPanel Margin="0,14,0,16">
-       <Button Content="Revisar e instalar selección" Click="InstallSelected" Background="#28775E" Margin="0,0,10,10" />
-       <Button Content="Quitar toda la selección" Click="ClearInstallSelection" Margin="0,0,0,10" />
-      </WrapPanel>
-      <ItemsControl ItemsSource="{Binding InstallView}" ItemTemplate="{StaticResource PackageTileTemplate}">
-       <ItemsControl.GroupStyle>
-        <GroupStyle>
-         <GroupStyle.HeaderTemplate>
-          <DataTemplate><TextBlock Text="{Binding Name}" FontSize="20" FontWeight="SemiBold" Margin="0,18,0,14" Foreground="#69E3BD" /></DataTemplate>
-         </GroupStyle.HeaderTemplate>
-         <GroupStyle.Panel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></GroupStyle.Panel>
-        </GroupStyle>
-       </ItemsControl.GroupStyle>
-      </ItemsControl>
-     </StackPanel>
-     <StackPanel x:Name="PersonalizationPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}">
-      <WrapPanel Margin="0,12,0,12">
-       <Button Content="Alinear barra a la izquierda" Tag="taskbar-left" Click="ApplyPersonalization" Margin="0,0,12,12" />
-       <Button Content="Aplicar tema oscuro" Tag="dark-theme" Click="ApplyPersonalization" Margin="0,0,12,12" />
-       <Button Content="Ocultar botón Vista de tareas" Tag="task-view" Click="ApplyPersonalization" Margin="0,0,0,12" />
-      </WrapPanel>
-      <Button Content="Abrir opciones de la barra de tareas" Tag="Taskbar" Click="OpenWindowsSettings" HorizontalAlignment="Left" Margin="0,12,0,20" />
-     </StackPanel>
-     <StackPanel x:Name="OptimizationPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,0,0,20">
-      <TextBlock Text="{Binding TweakBackupIssue}" Foreground="#F0CB83" FontWeight="SemiBold" Margin="0,0,0,12" AutomationProperties.LiveSetting="Polite" />
-      <TextBlock Text="01  ELIGE TU PUNTO DE PARTIDA" Foreground="#A99BFF" FontSize="11" FontWeight="Bold" Margin="0,0,0,14" />
-      <UniformGrid Columns="4" Margin="0,0,0,14">
-       <Button Tag="minimal" Click="ChooseTweakProfile" Padding="16,20" Margin="0,0,10,0"><StackPanel><TextBlock Text="Mínimo" FontSize="17" FontWeight="SemiBold" /><TextBlock Text="Solo Modo Juego" Foreground="#A8A8BA" FontSize="12" Margin="0,8,0,0" /></StackPanel></Button>
-       <Button Tag="recommended" Click="ChooseTweakProfile" Padding="16,20" Margin="0,0,10,0"><StackPanel><TextBlock Text="Recomendado" FontSize="17" FontWeight="SemiBold" /><TextBlock Text="Modo Juego + extensiones" Foreground="#A8A8BA" FontSize="12" Margin="0,8,0,0" /></StackPanel></Button>
-       <Button Tag="gaming" Click="ChooseTweakProfile" Padding="16,20" Margin="0,0,10,0" Background="#343047"><StackPanel><TextBlock Text="Gaming" FontSize="17" FontWeight="SemiBold" Foreground="#C6BCFF" /><TextBlock Text="Modo Juego · capturas · ratón" Foreground="#A8A8BA" FontSize="12" Margin="0,8,0,0" /></StackPanel></Button>
-       <Button Tag="intensive" Click="ChooseTweakProfile" Padding="16,20"><StackPanel><TextBlock Text="Intensivo" FontSize="17" FontWeight="SemiBold" /><TextBlock Text="Gaming + menos efectos" Foreground="#A8A8BA" FontSize="12" Margin="0,8,0,0" /></StackPanel></Button>
-      </UniformGrid>
-      <TextBlock Text="{Binding SelectedProfile}" Foreground="#D5D0E5" FontSize="13" Margin="0,0,0,8" />
-      <TextBlock Text="Los perfiles seleccionan ajustes; no los aplican sin tu confirmación. Gaming desactiva capturas y aceleración del puntero; Intensivo añade dos efectos del escritorio. No modifican voltajes, servicios ni protecciones." Foreground="#9999AD" FontSize="12" Margin="0,0,0,22" />
-      <Grid Margin="0,0,0,18">
-       <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-       <StackPanel><TextBlock Text="02  PERSONALIZA LOS AJUSTES" Foreground="#A99BFF" FontSize="11" FontWeight="Bold" /><TextBlock Text="{Binding ExecutableSummary}" Foreground="#9999AD" FontSize="12" Margin="0,6,0,0" /></StackPanel>
-       <Button Grid.Column="1" Content="Analizar estado actual" Click="AnalyzeTweaks" />
+ <Border BorderBrush="#323B49" BorderThickness="1"><Grid>
+  <Grid.RowDefinitions><RowDefinition Height="36" /><RowDefinition Height="*" /><RowDefinition Height="30" /></Grid.RowDefinitions>
+  <Border Background="#11161D" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"><Grid>
+   <StackPanel Orientation="Horizontal" Margin="16,0,0,0" VerticalAlignment="Center"><TextBlock Text="&#xE7F4;" Style="{StaticResource Glyph}" Foreground="{StaticResource Accent}" FontSize="14" /><TextBlock Text="PCOptimizer" FontWeight="SemiBold" FontSize="12" /><TextBlock Text="  /  PREVIEW 0.3" Foreground="{StaticResource Muted}" FontSize="10" Margin="8,2,0,0" /><TextBlock x:Name="PreviewLabel" Visibility="Collapsed" Text="  ·  VISTA PREVIA DE DISEÑO" Foreground="#EDB96F" FontSize="10" Margin="14,2,0,0" /></StackPanel>
+   <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True"><Button Content="&#xE921;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource QuietButton}" Width="44" Height="34" Padding="0" Click="MinimizeWindow" AutomationProperties.Name="Minimizar" /><Button Content="&#xE922;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource QuietButton}" Width="44" Height="34" Padding="0" Click="MaximizeWindow" AutomationProperties.Name="Maximizar o restaurar" /><Button Content="&#xE8BB;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource QuietButton}" Width="44" Height="34" Padding="0" Click="CloseWindow" AutomationProperties.Name="Cerrar" /></StackPanel>
+  </Grid></Border>
+  <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition Width="208" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+   <Border Background="{StaticResource Sidebar}" BorderBrush="{StaticResource Line}" BorderThickness="0,0,1,0"><DockPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="20,24,16,20"><TextBlock Text="Tu PC. Tu configuración." FontSize="14" FontWeight="SemiBold" /><TextBlock Text="Windows 11 · Gaming" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0" /></StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel>
+<TextBlock Text="CONFIGURAR" Style="{StaticResource SectionLabel}" Margin="20,10,0,5" />
+<RadioButton Style="{StaticResource NavButton}" Tag="Inicio" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" Style="{StaticResource Glyph}" /><TextBlock Text="Resumen" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Optimización" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" Style="{StaticResource Glyph}" /><TextBlock Text="Ajustes de Windows" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Instalación rápida" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE896;" Style="{StaticResource Glyph}" /><TextBlock Text="Instalar aplicaciones" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Limpieza de apps" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74D;" Style="{StaticResource Glyph}" /><TextBlock Text="Limpieza de apps" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Energía" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE945;" Style="{StaticResource Glyph}" /><TextBlock Text="Energía" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<TextBlock Text="DIAGNÓSTICO" Style="{StaticResource SectionLabel}" Margin="20,10,0,5" />
+<RadioButton Style="{StaticResource NavButton}" Tag="Gaming" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" Style="{StaticResource Glyph}" /><TextBlock Text="Uso de recursos" FontSize="12" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Drivers" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE950;" Style="{StaticResource Glyph}" /><TextBlock Text="Drivers" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Red" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE839;" Style="{StaticResource Glyph}" /><TextBlock Text="Red y latencia" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Almacenamiento" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xEDA2;" Style="{StaticResource Glyph}" /><TextBlock Text="Almacenamiento" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Audio" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE767;" Style="{StaticResource Glyph}" /><TextBlock Text="Audio" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<TextBlock Text="CONTROL" Style="{StaticResource SectionLabel}" Margin="20,10,0,5" />
+<RadioButton Style="{StaticResource NavButton}" Tag="Personalización" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE790;" Style="{StaticResource Glyph}" /><TextBlock Text="Personalización" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Windows Update" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE895;" Style="{StaticResource Glyph}" /><TextBlock Text="Windows Update" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Historial" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE81C;" Style="{StaticResource Glyph}" /><TextBlock Text="Historial" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>
+<RadioButton Style="{StaticResource NavButton}" Tag="Respaldo y recuperación" GroupName="Navigation" Checked="Navigate"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE777;" Style="{StaticResource Glyph}" /><TextBlock Text="Recuperación" FontSize="12" VerticalAlignment="Center" /></StackPanel></RadioButton>    </StackPanel></ScrollViewer>
+   </DockPanel></Border>
+   <Grid Grid.Column="1" Margin="26,0,26,0"><Grid.RowDefinitions><RowDefinition Height="90" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+    <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{Binding Title}" FontSize="27" FontWeight="SemiBold" /><TextBlock Text="{Binding Subtitle}" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,7,22,0" /></StackPanel><Button Grid.Column="1" Content="Actualizar equipo" Click="Refresh" IsEnabled="{Binding IsIdle}" VerticalAlignment="Center" /></Grid>
+    <Grid Grid.Row="1">
+     <ScrollViewer x:Name="HomePanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,0,24">
+      <Border Background="#1A293F" BorderBrush="#304B70" BorderThickness="1" CornerRadius="8" Padding="24" Margin="0,0,0,22"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="CONFIGURACIÓN BAJO TU CONTROL" Style="{StaticResource SectionLabel}" Foreground="#A7CCFF" /><TextBlock Text="Prepara Windows para tu forma de jugar." FontSize="23" FontWeight="SemiBold" /><TextBlock Text="Ajustes por categoría, perfiles revisables y respaldo de valores antes de escribir." Foreground="#B0C0D7" Margin="0,10,24,0" /></StackPanel><Button Grid.Column="1" Content="Abrir ajustes" Tag="Optimización" Click="GoToSection" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center" /></Grid></Border>
+      <TextBlock Text="Hardware detectado" Style="{StaticResource Heading}" /><ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}"><ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3" /></ItemsPanelTemplate></ItemsControl.ItemsPanel></ItemsControl>
+      <StackPanel x:Name="HomeToolsPanel" Margin="0,16,0,0"><TextBlock Text="Acciones rápidas" Style="{StaticResource Heading}" /><UniformGrid Columns="3">
+       <Button Tag="Gaming" Click="GoToSection" Padding="18" Margin="0,0,12,0" HorizontalContentAlignment="Left"><StackPanel><TextBlock Text="Perfil Gaming" FontWeight="SemiBold" /><TextBlock Text="Captura, ratón y atajos" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0" /></StackPanel></Button>
+       <Button Tag="Instalación rápida" Click="GoToSection" Padding="18" Margin="0,0,12,0" HorizontalContentAlignment="Left"><StackPanel><TextBlock Text="Instalar aplicaciones" FontWeight="SemiBold" /><TextBlock Text="236 apps por categoría" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0" /></StackPanel></Button>
+       <Button Tag="Respaldo y recuperación" Click="GoToSection" Padding="18" HorizontalContentAlignment="Left"><StackPanel><TextBlock Text="Revisar respaldos" FontWeight="SemiBold" /><TextBlock Text="Valores y puntos de Windows" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0" /></StackPanel></Button>
+      </UniformGrid></StackPanel>
+     </StackPanel></ScrollViewer>
+     <Grid x:Name="OptimizationPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}"><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+      <StackPanel><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="PERFILES" Style="{StaticResource SectionLabel}" /><StackPanel Grid.Column="1" Orientation="Horizontal"><TextBlock Text="{Binding ExecutableSummary}" FontSize="11" Foreground="{StaticResource Muted}" /><TextBlock Text="{Binding ConfiguredSummary}" Margin="16,0,14,0" FontSize="11" Foreground="#6BD3AB" /><Button Content="Cargar perfil" Click="LoadTweakProfile" Style="{StaticResource QuietButton}" MinHeight="22" Padding="6,0" FontSize="10" /><Button Content="Guardar perfil" Click="SaveTweakProfile" Style="{StaticResource QuietButton}" MinHeight="22" Padding="6,0" FontSize="10" /></StackPanel></Grid>
+       <UniformGrid Columns="4" Margin="0,0,0,10"><Button Tag="minimal" Click="ChooseTweakProfile" Margin="0,0,10,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource ProfileButton}"><Style.Triggers><DataTrigger Binding="{Binding ActiveProfileId}" Value="minimal"><Setter Property="BorderBrush" Value="#80B2FF" /><Setter Property="Background" Value="#23354E" /></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel><DockPanel><TextBlock Text="Mínimo" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding MinimalCount}" Foreground="#80B2FF" FontSize="10" Margin="10,3,0,0" /></DockPanel><TextBlock Text="Base esencial" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0" /></StackPanel></Button>
+<Button Tag="recommended" Click="ChooseTweakProfile" Margin="0,0,10,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource ProfileButton}"><Style.Triggers><DataTrigger Binding="{Binding ActiveProfileId}" Value="recommended"><Setter Property="BorderBrush" Value="#80B2FF" /><Setter Property="Background" Value="#23354E" /></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel><DockPanel><TextBlock Text="Recomendado" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding RecommendedCount}" Foreground="#80B2FF" FontSize="10" Margin="10,3,0,0" /></DockPanel><TextBlock Text="Uso diario y privacidad" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0" /></StackPanel></Button>
+<Button Tag="gaming" Click="ChooseTweakProfile" Margin="0,0,10,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource ProfileButton}"><Style.Triggers><DataTrigger Binding="{Binding ActiveProfileId}" Value="gaming"><Setter Property="BorderBrush" Value="#80B2FF" /><Setter Property="Background" Value="#23354E" /></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel><DockPanel><TextBlock Text="Gaming" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding GamingCount}" Foreground="#80B2FF" FontSize="10" Margin="10,3,0,0" /></DockPanel><TextBlock Text="Captura, ratón y atajos" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0" /></StackPanel></Button>
+<Button Tag="intensive" Click="ChooseTweakProfile" Margin="0,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource ProfileButton}"><Style.Triggers><DataTrigger Binding="{Binding ActiveProfileId}" Value="intensive"><Setter Property="BorderBrush" Value="#80B2FF" /><Setter Property="Background" Value="#23354E" /></DataTrigger></Style.Triggers></Style></Button.Style><StackPanel><DockPanel><TextBlock Text="Intensivo" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding IntensiveCount}" Foreground="#80B2FF" FontSize="10" Margin="10,3,0,0" /></DockPanel><TextBlock Text="Gaming y menos efectos" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0" /></StackPanel></Button></UniformGrid>
+       <TextBlock Text="{Binding ProfileNote}" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,0,0,12" />
+       <TextBlock Text="{Binding TweakBackupIssue}" Foreground="#EDB96F" FontSize="11" AutomationProperties.LiveSetting="Polite" />
+      </StackPanel>
+      <Grid Grid.Row="1" Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="170" /><ColumnDefinition Width="156" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBox x:Name="TweakSearchBox" Text="{Binding ExecutableSearch, UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar ajustes · Ctrl+F" AutomationProperties.Name="Buscar ajustes" Margin="0,0,10,0" /><ComboBox Grid.Column="1" ItemsSource="{Binding ExecutableCategories}" SelectedItem="{Binding ExecutableCategory}" AutomationProperties.Name="Filtrar por área" Margin="0,0,10,0" /><ComboBox Grid.Column="2" ItemsSource="{Binding ExecutableStates}" SelectedItem="{Binding ExecutableStatus}" AutomationProperties.Name="Filtrar por estado" Margin="0,0,10,0" /><Button Grid.Column="3" Content="Analizar" Click="AnalyzeTweaks" /></Grid>
+      <Grid Grid.Row="2"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="16" /><ColumnDefinition Width="324" /></Grid.ColumnDefinitions>
+       <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="8" Background="#151A22"><Grid><Grid.RowDefinitions><RowDefinition Height="40" /><RowDefinition Height="*" /><RowDefinition Height="36" /></Grid.RowDefinitions>
+        <Grid Background="#1D2530" Margin="1"><Grid.ColumnDefinitions><ColumnDefinition Width="42" /><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /><ColumnDefinition Width="92" /></Grid.ColumnDefinitions><TextBlock Grid.Column="1" Text="AJUSTE" Style="{StaticResource SectionLabel}" VerticalAlignment="Center" Margin="0" /><TextBlock Grid.Column="2" Text="ÁREA" Style="{StaticResource SectionLabel}" VerticalAlignment="Center" Margin="0" /><TextBlock Grid.Column="3" Text="ESTADO" Style="{StaticResource SectionLabel}" VerticalAlignment="Center" Margin="0" /></Grid>
+        <ListBox Grid.Row="1" ItemsSource="{Binding ExecutableView}" SelectedItem="{Binding SelectedExecutableTweak}" AutomationProperties.Name="Ajustes disponibles">
+         <ListBox.ItemTemplate><DataTemplate><Grid Margin="12,12,8,12"><Grid.ColumnDefinitions><ColumnDefinition Width="30" /><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /><ColumnDefinition Width="84" /></Grid.ColumnDefinitions><CheckBox IsChecked="{Binding IsSelected}" IsEnabled="{Binding CanSelect}" AutomationProperties.Name="{Binding Name}" ToolTip="{Binding State}" /><StackPanel Grid.Column="1" Margin="0,0,12,0"><TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" /><TextBlock Text="{Binding RiskLabel}" Foreground="{Binding RiskColor}" FontSize="10" Margin="0,5,0,0" /></StackPanel><TextBlock Grid.Column="2" Text="{Binding Category}" FontSize="11" Foreground="{StaticResource Muted}" VerticalAlignment="Center" /><TextBlock Grid.Column="3" Text="{Binding State}" FontSize="10" Foreground="{Binding StateColor}" VerticalAlignment="Center" /></Grid></DataTemplate></ListBox.ItemTemplate>
+        </ListBox>
+        <DockPanel Grid.Row="2" Margin="12,0,12,0"><TextBlock Text="{Binding VisibleTweakSummary}" Foreground="{StaticResource Muted}" FontSize="11" VerticalAlignment="Center" /><Button Content="Seleccionar estándar visibles" Click="SelectVisibleTweaks" Style="{StaticResource QuietButton}" MinHeight="26" Padding="4" FontSize="10" HorizontalAlignment="Right" /></DockPanel>
+       </Grid></Border>
+       <Border Grid.Column="2" Style="{StaticResource Card}" Padding="18"><Grid>
+        <TextBlock Text="Selecciona un ajuste para revisar su efecto, riesgos y cambios exactos." Foreground="{StaticResource Muted}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding SelectedExecutableTweak}" Value="{x:Null}"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" DataContext="{Binding SelectedExecutableTweak}"><StackPanel>
+         <TextBlock Text="DETALLE DEL AJUSTE" Style="{StaticResource SectionLabel}" /><TextBlock Text="{Binding Name}" FontSize="19" FontWeight="SemiBold" /><TextBlock Text="{Binding Scope}" Foreground="{StaticResource Accent}" FontSize="11" Margin="0,9,0,18" />
+         <TextBlock Text="Para qué sirve" FontWeight="SemiBold" FontSize="12" /><TextBlock Text="{Binding Benefit}" Foreground="{StaticResource Muted}" Margin="0,7,0,18" FontSize="12" />
+         <TextBlock Text="Qué debes saber" FontWeight="SemiBold" FontSize="12" /><TextBlock Text="{Binding Risk}" Foreground="#DDC298" Margin="0,7,0,18" FontSize="12" />
+         <TextBlock Text="Activación" FontWeight="SemiBold" FontSize="12" /><TextBlock Text="{Binding Activation}" Foreground="{StaticResource Muted}" Margin="0,7,0,18" FontSize="12" />
+         <TextBlock Text="{Binding State}" Foreground="{Binding StateColor}" FontWeight="SemiBold" FontSize="12" />
+         <Expander Header="Valores y rutas" Margin="0,14,0,10"><StackPanel Margin="0,10,0,0"><TextBlock Text="ACTUAL" Style="{StaticResource SectionLabel}" /><TextBlock Text="{Binding Values}" FontFamily="Consolas" FontSize="10" /><TextBlock Text="SOLICITADO" Style="{StaticResource SectionLabel}" Margin="0,14,0,8" /><TextBlock Text="{Binding ProposedValues}" FontFamily="Consolas" FontSize="10" /><TextBlock Text="{Binding Targets}" FontFamily="Consolas" FontSize="10" Foreground="{StaticResource Muted}" Margin="0,14,0,0" /></StackPanel></Expander>
+         <Button Content="Consultar fuente" Click="OpenTweakSource" Style="{StaticResource QuietButton}" HorizontalAlignment="Left" Padding="0,8" />
+        </StackPanel></ScrollViewer>
+       </Grid></Border>
       </Grid>
-      <TextBox Text="{Binding ExecutableSearch, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Buscar ajustes aplicables" Padding="12" FontSize="14" Margin="0,0,0,18" ToolTip="Buscar ajustes aplicables" />
-      <ItemsControl ItemsSource="{Binding ExecutableView}">
-       <ItemsControl.ItemTemplate>
-        <DataTemplate>
-         <Border Background="#161920" BorderBrush="#2A2D38" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,12">
-          <Grid>
-           <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-           <StackPanel>
-            <TextBlock Text="{Binding Category}" FontSize="11" Foreground="#A99BFF" Margin="0,0,0,8" />
-            <CheckBox IsChecked="{Binding IsSelected}" AutomationProperties.Name="{Binding Name}" VerticalContentAlignment="Center"><TextBlock Text="{Binding Name}" FontSize="18" FontWeight="SemiBold" Margin="10,0,0,0" /></CheckBox>
-            <TextBlock Text="{Binding Benefit}" Foreground="#AEADBD" Margin="0,12,20,0" />
-            <WrapPanel Margin="0,12,0,0"><TextBlock Text="{Binding State}" Foreground="#77DEBB" FontSize="10" FontWeight="SemiBold" Margin="0,0,16,0" /><TextBlock Text="{Binding Scope}" Foreground="#A8A8BA" FontSize="10" /></WrapPanel>
-            <Expander Header="Cambios exactos, riesgos y activación" Margin="0,14,0,0">
-             <StackPanel Margin="0,12,0,0">
-              <TextBlock Text="{Binding Risk}" Foreground="#F0CB83" Margin="0,0,0,10" />
-              <TextBlock Text="{Binding Activation}" Foreground="#C6BCFF" Margin="0,0,0,14" />
-              <TextBlock Text="VALORES ACTUALES" FontSize="10" Foreground="#9999AD" />
-              <TextBlock Text="{Binding Values}" FontFamily="Consolas" FontSize="11" Margin="0,6,0,14" Foreground="#B6B6C8" />
-              <TextBlock Text="VALORES QUE SE ESCRIBIRÁN" FontSize="10" Foreground="#9999AD" />
-              <TextBlock Text="{Binding Targets}" FontFamily="Consolas" FontSize="11" Margin="0,6,0,12" Foreground="#B6B6C8" />
-              <TextBlock Text="{Binding Source}" FontSize="11" Foreground="#9999AD" />
-             </StackPanel>
-            </Expander>
-           </StackPanel>
-          </Grid>
-         </Border>
-        </DataTemplate>
-       </ItemsControl.ItemTemplate>
-      </ItemsControl>
-      <Expander Header="Revertir ajustes aplicados" Margin="0,18,0,20" Padding="16" Background="#161920">
-       <StackPanel Margin="0,14,0,0">
-        <TextBlock Text="Elige una operación de aplicación. Se recuperan sus valores anteriores; si otro programa los cambió, se detiene para evitar sobrescribirlo." Foreground="#AEADBD" Margin="0,0,0,12" />
-        <ComboBox ItemsSource="{Binding TweakOperations}" SelectedItem="{Binding SelectedTweakOperation}" DisplayMemberPath="DisplayName" Padding="10" AutomationProperties.Name="Respaldo de ajustes para revertir" />
-        <TextBlock Text="{Binding SelectedTweakChanges}" FontFamily="Consolas" FontSize="11" Foreground="#AEADBD" Margin="0,14,0,14" />
-        <Button Content="Revisar y revertir esta operación" Click="UndoSelectedTweaks" HorizontalAlignment="Left" />
-       </StackPanel>
-      </Expander>
-      <Expander Header="Otros ajustes de la referencia · requieren evaluación" Foreground="#9999AD" Margin="0,20,0,0">
-      <StackPanel Margin="0,14,0,0">
-      <WrapPanel Margin="0,0,0,12">
-       <Button Content="Modo Juego en Windows" Tag="GameMode" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-       <Button Content="Capturas en Windows" Tag="Captures" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-       <Button Content="Aplicaciones de inicio" Tag="Startup" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-      </WrapPanel>
-      <TextBlock Text="Buscar ajustes por nombre, área o riesgo" Foreground="#A3A3B7" Margin="0,0,0,8" />
-      <TextBox Text="{Binding TweakSearchText, UpdateSourceTrigger=PropertyChanged}" Background="#181B25" Foreground="#F0EFF7" BorderBrush="#414653" Padding="12" FontSize="15" AutomationProperties.Name="Buscar ajustes por evaluar" Margin="0,0,0,18" />
-      <ItemsControl ItemsSource="{Binding TweakView}">
-       <ItemsControl.GroupStyle>
-        <GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><TextBlock Text="{Binding Name}" Foreground="#69E3BD" FontSize="20" Margin="0,18,0,12" /></DataTemplate></GroupStyle.HeaderTemplate></GroupStyle>
-       </ItemsControl.GroupStyle>
-       <ItemsControl.ItemTemplate>
-        <DataTemplate>
-         <Border Background="#181B25" CornerRadius="8" Padding="18" Margin="0,0,0,12">
-          <StackPanel>
-           <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="SemiBold" />
-           <TextBlock Text="{Binding Status}" Foreground="#F0CB83" Margin="0,8,0,0" />
-           <TextBlock Text="{Binding CurrentState}" Foreground="#A3A3B7" Margin="0,5,0,0" FontSize="12" />
-           <TextBlock Text="{Binding Risks}" Foreground="#CCD9E3" Margin="0,10,0,0" />
-           <Expander Header="Qué toca la referencia y fuente" Foreground="#A3A3B7" Margin="0,12,0,0" Padding="4">
-            <StackPanel>
-             <TextBlock Text="Valores propuestos en la referencia; no son los valores leídos de tu equipo." Foreground="#F0CB83" Margin="0,8,0,0" />
-             <TextBlock Text="{Binding ReferenceTargets}" FontFamily="Consolas" FontSize="11" Margin="0,10,0,0" Foreground="#A3A3B7" />
-             <TextBlock Text="{Binding Source}" FontSize="11" Margin="0,10,0,0" Foreground="#A3A3B7" />
-            </StackPanel>
-           </Expander>
-          </StackPanel>
-         </Border>
-        </DataTemplate>
-       </ItemsControl.ItemTemplate>
-      </ItemsControl>
-      </StackPanel>
-      </Expander>
-     </StackPanel>
-     <StackPanel x:Name="UpdatesPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}">
-      <WrapPanel Margin="0,12,0,12">
-       <Button Content="Aplicar aplazamiento de funciones: 30 días" Tag="update-feature-delay" Click="ApplyUpdatePolicy" Background="#A99BFF" Foreground="#15121F" Margin="0,0,12,12" />
-       <Button Content="Excluir drivers de actualizaciones de calidad" Tag="update-driver-exclusion" Click="ApplyUpdatePolicy" Margin="0,0,0,12" />
-      </WrapPanel>
-      <Button Content="Ver respaldos y revertir políticas aplicadas" Tag="Optimización" Click="GoToSection" HorizontalAlignment="Left" Margin="0,0,0,12" />
-      <WrapPanel Margin="0,12,0,20">
-       <Button Content="Abrir Windows Update" Tag="Updates" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-       <Button Content="Configurar horas activas" Tag="UpdateHours" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-       <Button Content="Opciones avanzadas" Tag="UpdateOptions" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-       <Button Content="Historial de actualizaciones" Tag="UpdateHistory" Click="OpenWindowsSettings" Margin="0,0,10,10" />
-      </WrapPanel>
-     </StackPanel>
-     <StackPanel x:Name="OptionalAppsPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,8,0,20">
-      <CheckBox Content="Intentar crear un punto de restauración antes del lote" IsChecked="{Binding CreateRestorePointBeforeChanges}" Foreground="#F0EFF7" Margin="0,0,0,16" />
-      <Button Content="Analizar aplicaciones de mi usuario" Click="ScanOptionalApps" HorizontalAlignment="Left" Margin="0,0,0,16" />
-      <ItemsControl ItemsSource="{Binding OptionalAppChoices}" ItemTemplate="{StaticResource SoftwareChoiceTemplate}" />
-      <Button Content="Revisar y desinstalar selección" Click="RemoveSelectedApps" HorizontalAlignment="Left" Margin="0,12,0,0" />
-     </StackPanel>
-     <StackPanel x:Name="RecoveryPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}" Margin="0,12,0,20">
-      <CheckBox Content="Intentar crear un punto antes de cada operación o lote (esta sesión)" IsChecked="{Binding CreateRestorePointBeforeChanges}" Foreground="#F0EFF7" Margin="0,0,0,16" />
-      <WrapPanel>
-       <Button Content="Crear punto ahora" Click="CreateRestorePoint" Background="#28775E" Margin="0,0,10,10" />
-       <Button Content="Protección del sistema" Click="OpenSystemProtection" Margin="0,0,10,10" />
-       <Button Content="Abrir asistente de restauración" Click="OpenRestoreWizard" Margin="0,0,10,10" />
-       <Button Content="Actualizar registros locales" Click="RefreshRecovery" Margin="0,0,10,10" />
-      </WrapPanel>
-      <TextBlock Text="Operaciones registradas por PCOptimizer" FontSize="18" Margin="0,16,0,10" />
-      <ComboBox ItemsSource="{Binding RecoverySessions}" SelectedItem="{Binding SelectedRecoverySession}" Padding="10" AutomationProperties.Name="Seleccionar respaldo y punto asociado">
-       <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding DisplayName}" Foreground="#F0EFF7" /></DataTemplate></ComboBox.ItemTemplate>
-      </ComboBox>
-      <TextBlock Text="{Binding SelectedRecoverySession.PointDescription}" Foreground="#69E3BD" Margin="0,12,0,12" />
-      <ItemsControl ItemsSource="{Binding RecoveryActions}">
-       <ItemsControl.ItemTemplate>
-        <DataTemplate>
-         <Border Background="#181B25" CornerRadius="8" Padding="16" Margin="0,0,0,10">
-          <StackPanel>
-           <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="16" />
-           <TextBlock Text="{Binding State}" Foreground="#F0CB83" Margin="0,8,0,0" />
-           <TextBlock Text="{Binding TargetId, StringFormat='Destino: {0}'}" Foreground="#A3A3B7" Margin="0,8,0,0" />
-           <TextBlock Text="{Binding PreviousValue, StringFormat='Anterior: {0}'}" Foreground="#A3A3B7" Margin="0,4,0,0" />
-           <TextBlock Text="{Binding TargetValue, StringFormat='Solicitado: {0}'}" Foreground="#A3A3B7" Margin="0,4,0,0" />
-          </StackPanel>
-         </Border>
-        </DataTemplate>
-       </ItemsControl.ItemTemplate>
-      </ItemsControl>
-      <Button Content="Recuperar selección de plan guardada" Click="RestoreSavedPowerPlan" HorizontalAlignment="Left" Margin="0,12,0,0" />
-     </StackPanel>
-    </StackPanel>
-   </ScrollViewer>
-   <StackPanel Grid.Row="2">
-    <ProgressBar IsIndeterminate="True" Height="3" Foreground="#A99BFF" Background="#202331" Margin="0,10,0,0"><ProgressBar.Style><Style TargetType="ProgressBar"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers><DataTrigger Binding="{Binding IsIdle}" Value="False"><Setter Property="Visibility" Value="Visible" /></DataTrigger></Style.Triggers></Style></ProgressBar.Style></ProgressBar>
-    <Border x:Name="ApplyTweaksBar" Visibility="Collapsed" Background="#202331" CornerRadius="12" Padding="16" Margin="0,16,0,0" IsEnabled="{Binding IsIdle}">
-     <Grid>
-      <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-      <StackPanel>
-       <TextBlock Text="{Binding TweakSelectionSummary}" FontWeight="SemiBold" FontSize="13" />
-       <CheckBox IsChecked="{Binding CreateRestorePointBeforeChanges}" Content="Crear punto de restauración antes del lote" FontSize="12" Margin="0,10,12,0" />
-      </StackPanel>
-      <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-       <Button Content="Limpiar" Tag="clear" Click="ChooseTweakProfile" Margin="0,0,10,0" />
-       <Button Content="Revisar y aplicar  →" Click="ApplySelectedTweaks" Background="#A99BFF" Foreground="#15121F" FontWeight="SemiBold" />
-      </StackPanel>
      </Grid>
-    </Border>
-    <TextBlock Text="{Binding Status}" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,14,0,0" AutomationProperties.LiveSetting="Polite" />
-   </StackPanel>
+     <Grid x:Name="InstallPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}"><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+      <Grid Margin="0,0,0,18"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="230" /></Grid.ColumnDefinitions><TextBox x:Name="SoftwareSearchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Buscar aplicaciones · Ctrl+F" AutomationProperties.Name="Buscar aplicaciones" Margin="0,0,12,0" /><ComboBox Grid.Column="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" AutomationProperties.Name="Categoría de aplicaciones" /></Grid>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><ItemsControl ItemsSource="{Binding InstallView}" ItemTemplate="{StaticResource PackageTileTemplate}"><ItemsControl.GroupStyle><GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><TextBlock Text="{Binding Name}" Style="{StaticResource Heading}" FontSize="15" Margin="0,16,0,12" /></DataTemplate></GroupStyle.HeaderTemplate><GroupStyle.Panel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></GroupStyle.Panel></GroupStyle></ItemsControl.GroupStyle></ItemsControl></ScrollViewer>
+      <Border Grid.Row="2" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="0,16" Margin="0,10,0,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{Binding SelectionSummary}" FontWeight="SemiBold" /><TextBlock Text="{Binding CatalogSummary}" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,5,0,8" /><CheckBox Content="Intentar crear punto antes del lote" IsChecked="{Binding CreateRestorePointBeforeChanges}" FontSize="11" /></StackPanel><StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"><Button Content="Limpiar selección" Click="ClearInstallSelection" Style="{StaticResource QuietButton}" Margin="0,0,12,0" /><Button Content="Revisar instalación" Click="InstallSelected" Style="{StaticResource PrimaryButton}" /></StackPanel></Grid></Border>
+     </Grid>
+     <ScrollViewer x:Name="EnergyPanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,0,24">
+      <ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}" /><Border Style="{StaticResource Card}" Margin="0,8,0,0"><StackPanel><TextBlock Text="Seleccionar plan de energía" Style="{StaticResource Heading}" /><ComboBox ItemsSource="{Binding PowerPlans}" SelectedItem="{Binding SelectedPlan}" DisplayMemberPath="DisplayName" AutomationProperties.Name="Plan de energía" IsEnabled="{Binding IsIdle}" /><CheckBox Content="Intentar crear punto antes del cambio" IsChecked="{Binding CreateRestorePointBeforeChanges}" Margin="0,18,0,18" /><WrapPanel><Button Content="Revisar y aplicar plan" Click="ApplyPowerPlan" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsIdle}" Margin="0,0,12,8" /><Button Content="Restaurar plan anterior" Click="RestorePowerPlan" IsEnabled="{Binding IsIdle}" Margin="0,0,0,8" /></WrapPanel></StackPanel></Border>
+     </StackPanel></ScrollViewer>
+     <Grid x:Name="OptionalAppsPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}"><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions><Grid Margin="0,0,0,18"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="Analiza y elige únicamente las aplicaciones que no utilizas. La desinstalación puede eliminar sus datos locales." Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,20,0" /><Button Grid.Column="1" Content="Analizar aplicaciones" Click="ScanOptionalApps" /></Grid><ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><ItemsControl ItemsSource="{Binding OptionalAppChoices}" ItemTemplate="{StaticResource SoftwareChoiceTemplate}" /></ScrollViewer><Grid Grid.Row="2" Margin="0,16,0,20"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><CheckBox Content="Intentar crear punto antes del lote" IsChecked="{Binding CreateRestorePointBeforeChanges}" /><Button Grid.Column="1" Content="Revisar desinstalación" Click="RemoveSelectedApps" Style="{StaticResource PrimaryButton}" /></Grid></Grid>
+     <ScrollViewer x:Name="PersonalizationPanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,0,24"><ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}" /><Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="Preferencias del escritorio" Style="{StaticResource Heading}" /><TextBlock Text="Explora los ajustes de barra, animaciones, tema y ventanas desde una misma lista, con sus valores anteriores guardados." Foreground="{StaticResource Muted}" Margin="0,0,0,16" /><WrapPanel><Button Content="Ver ajustes de personalización" Tag="Personalización" Click="OpenTweakCategory" Style="{StaticResource PrimaryButton}" Margin="0,0,12,10" /><Button Content="Opciones nativas de la barra" Tag="Taskbar" Click="OpenWindowsSettings" Margin="0,0,0,10" /></WrapPanel></StackPanel></Border></StackPanel></ScrollViewer>
+     <ScrollViewer x:Name="UpdatesPanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,0,24"><ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}" /><WrapPanel Margin="0,8,0,12"><Button Content="Ver políticas aplicables" Tag="Windows Update" Click="OpenTweakCategory" Style="{StaticResource PrimaryButton}" Margin="0,0,12,10" /><Button Content="Ver respaldos y revertir" Tag="Respaldo y recuperación" Click="GoToSection" Margin="0,0,0,10" /></WrapPanel><WrapPanel><Button Content="Windows Update" Tag="Updates" Click="OpenWindowsSettings" Margin="0,0,10,10" /><Button Content="Horas activas" Tag="UpdateHours" Click="OpenWindowsSettings" Margin="0,0,10,10" /><Button Content="Opciones avanzadas" Tag="UpdateOptions" Click="OpenWindowsSettings" Margin="0,0,10,10" /><Button Content="Historial de actualizaciones" Tag="UpdateHistory" Click="OpenWindowsSettings" Margin="0,0,0,10" /></WrapPanel></StackPanel></ScrollViewer>
+     <Grid x:Name="DiagnosticsPanel" Visibility="Collapsed"><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+      <StackPanel Margin="0,0,0,16" IsEnabled="{Binding IsIdle}">
+       <StackPanel x:Name="NetworkPanel" Visibility="Collapsed"><WrapPanel><Button Content="Medir latencia y pérdida" Click="MeasureNetwork" Style="{StaticResource PrimaryButton}" Margin="0,0,12,12" /><Button Content="Configuración de red" Tag="Network" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel><TextBlock Text="10 muestras ICMP al router, 1.1.1.1 y 8.8.8.8. No es una prueba de velocidad ni de latencia del servidor de tu juego." Foreground="{StaticResource Muted}" FontSize="12" /></StackPanel>
+       <StackPanel x:Name="StoragePanel" Visibility="Collapsed"><WrapPanel><Button Content="Consultar salud" Click="ScanStorage" Style="{StaticResource PrimaryButton}" Margin="0,0,12,12" /><Button Content="Consultar con UAC" Tag="elevated" Click="ScanStorage" Margin="0,0,12,12" /><Button Content="Opciones de almacenamiento" Tag="Storage" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel><TextBlock Text="Solo lectura. Temperatura, desgaste y errores dependen del dispositivo y del controlador; no se estiman años de vida." Foreground="{StaticResource Muted}" FontSize="12" /></StackPanel>
+       <StackPanel x:Name="AudioPanel" Visibility="Collapsed"><WrapPanel><Button Content="Detectar dispositivos" Click="ScanAudio" Style="{StaticResource PrimaryButton}" Margin="0,0,12,12" /><Button Content="Mejoras de sonido" Click="OpenSoundControl" Margin="0,0,12,12" /><Button Content="Configuración de sonido" Tag="Sound" Click="OpenWindowsSettings" Margin="0,0,0,12" /></WrapPanel><TextBlock Text="Loudness EQ depende del driver. En el panel clásico: Reproducción → Propiedades → Mejoras. Comprime la dinámica y puede alterar la percepción de distancia; no se fuerza cuando el dispositivo no lo ofrece." Foreground="{StaticResource Muted}" FontSize="12" /></StackPanel>
+       <StackPanel x:Name="DriversPanel" Visibility="Collapsed"><Button Content="Analizar controladores" Click="ScanDrivers" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Margin="0,0,0,12" /><TextBlock Text="Versiones instaladas y fuentes oficiales. La fecha no basta para declarar un driver obsoleto; último y recomendado requieren contrastar modelo, Windows y notas del fabricante." Foreground="{StaticResource Muted}" FontSize="12" /></StackPanel>
+       <StackPanel x:Name="GamingMetricsPanel" Visibility="Collapsed"><Button Content="Consultar carga actual" Click="MeasureLoad" HorizontalAlignment="Left" /></StackPanel>
+      </StackPanel>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,0,20"><ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}"><ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate></ItemsControl.ItemsPanel></ItemsControl>
+       <ItemsControl x:Name="DriverResults" ItemsSource="{Binding Drivers}" Visibility="Collapsed"><ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Card}" Margin="0,0,0,10" Padding="18"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" /><TextBlock Text="{Binding Provider}" Foreground="{StaticResource Muted}" Margin="0,6,0,0" /><WrapPanel Margin="0,8,0,0"><TextBlock Text="{Binding Version, StringFormat='Versión: {0}'}" Foreground="{StaticResource Accent}" Margin="0,0,20,0" FontSize="12" /><TextBlock Text="{Binding Date, StringFormat='Fecha: {0}'}" Foreground="{StaticResource Muted}" FontSize="12" /></WrapPanel><TextBlock Text="{Binding Inf, StringFormat='INF: {0}'}" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,5,0,0" /></StackPanel><Button Grid.Column="1" Content="Soporte oficial" Click="OpenDriverSource" VerticalAlignment="Center" /></Grid></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+      </StackPanel></ScrollViewer>
+     </Grid>
+     <Grid x:Name="HistoryPanel" Visibility="Collapsed"><ListBox ItemsSource="{Binding Cards}" AutomationProperties.Name="Historial de operaciones"><ListBox.ItemTemplate><DataTemplate><Expander Padding="18,12"><Expander.Header><StackPanel><TextBlock Text="{Binding Label}" Foreground="{StaticResource Accent}" FontSize="12" /><TextBlock Text="{Binding Value}" Foreground="{StaticResource Text}" FontWeight="SemiBold" Margin="0,5,0,0" /></StackPanel></Expander.Header><TextBlock Text="{Binding Detail}" FontFamily="Consolas" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,16,0,12" /></Expander></DataTemplate></ListBox.ItemTemplate></ListBox></Grid>
+     <Grid x:Name="RecoveryPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}"><TabControl>
+      <TabItem Header="Revertir ajustes"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="300" /><ColumnDefinition Width="18" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions><Border Style="{StaticResource Card}" Padding="0"><ListBox ItemsSource="{Binding TweakOperations}" SelectedItem="{Binding SelectedTweakOperation}" AutomationProperties.Name="Operaciones de ajustes"><ListBox.ItemTemplate><DataTemplate><StackPanel Margin="16"><TextBlock Text="{Binding CreatedAtUtc, StringFormat={}{0:g}}" FontWeight="SemiBold" /><TextBlock Text="{Binding State}" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,7,0,0" /><TextBlock Text="{Binding Changes.Count, StringFormat='Valores guardados: {0}'}" Foreground="{StaticResource Accent}" FontSize="10" Margin="0,7,0,0" /></StackPanel></DataTemplate></ListBox.ItemTemplate></ListBox></Border>
+       <Grid Grid.Column="2"><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions><TextBlock Text="El respaldo conserva tipo, datos y ausencia previa. La reversión se detiene si encuentra cambios externos incompatibles." Foreground="{StaticResource Muted}" Margin="0,0,0,18" /><Border Grid.Row="1" Style="{StaticResource Card}"><ScrollViewer VerticalScrollBarVisibility="Auto"><TextBlock Text="{Binding SelectedTweakChanges}" FontFamily="Consolas" FontSize="11" /></ScrollViewer></Border><Grid Grid.Row="2" Margin="0,16,0,20"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><CheckBox Content="Intentar crear punto antes de revertir" IsChecked="{Binding CreateRestorePointBeforeChanges}" FontSize="11" /><Button Grid.Column="1" Content="Revisar reversión" Click="UndoSelectedTweaks" Style="{StaticResource PrimaryButton}" /></Grid></Grid>
+      </Grid></TabItem>
+      <TabItem Header="Puntos de Windows"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions><StackPanel><WrapPanel><Button Content="Crear punto" Click="CreateRestorePoint" Style="{StaticResource PrimaryButton}" Margin="0,0,10,10" /><Button Content="Protección del sistema" Click="OpenSystemProtection" Margin="0,0,10,10" /><Button Content="Asistente de restauración" Click="OpenRestoreWizard" Margin="0,0,10,10" /><Button Content="Actualizar registros" Click="RefreshRecovery" Margin="0,0,0,10" /></WrapPanel><TextBlock Text="Los puntos no son una copia de archivos personales. Windows puede limitar su creación a uno cada 24 horas o eliminarlos después." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,18" /></StackPanel><StackPanel Grid.Row="1"><ComboBox ItemsSource="{Binding RecoverySessions}" SelectedItem="{Binding SelectedRecoverySession}" DisplayMemberPath="DisplayName" AutomationProperties.Name="Sesión y punto asociado" /><TextBlock Text="{Binding SelectedRecoverySession.PointDescription}" Foreground="{StaticResource Accent}" FontSize="11" Margin="0,12,0,16" /></StackPanel><ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"><StackPanel><ItemsControl ItemsSource="{Binding RecoveryActions}"><ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Card}" Margin="0,0,0,10" Padding="16"><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" /><TextBlock Text="{Binding State}" Foreground="#EDB96F" Margin="0,7,0,0" FontSize="11" /><TextBlock Text="{Binding PreviousValue, StringFormat='Anterior: {0}'}" Foreground="{StaticResource Muted}" Margin="0,7,0,0" FontSize="11" /><TextBlock Text="{Binding TargetValue, StringFormat='Solicitado: {0}'}" Foreground="{StaticResource Muted}" Margin="0,5,0,0" FontSize="11" /></StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl><Button Content="Recuperar plan de energía guardado" Click="RestoreSavedPowerPlan" HorizontalAlignment="Left" Margin="0,12,0,20" /></StackPanel></ScrollViewer></Grid></TabItem>
+      <TabItem Header="Catálogo por evaluar"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions><StackPanel><TextBlock Text="Candidatos de referencia, sin ejecutor. Se mantienen visibles con sus riesgos; no forman parte de los perfiles aplicables." Foreground="#EDB96F" Margin="0,0,0,12" /><TextBox Text="{Binding TweakSearchText, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Buscar candidatos por evaluar" Margin="0,0,0,14" /></StackPanel><ListBox Grid.Row="1" ItemsSource="{Binding TweakView}"><ListBox.ItemTemplate><DataTemplate><StackPanel Margin="16"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" /><TextBlock Text="{Binding Status}" Foreground="#EDB96F" FontSize="11" Margin="0,7,0,0" /><TextBlock Text="{Binding Risks}" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,7,0,0" /></StackPanel></DataTemplate></ListBox.ItemTemplate></ListBox></Grid></TabItem>
+     </TabControl></Grid>
+    </Grid>
+    <Border x:Name="ApplyTweaksBar" Grid.Row="2" Visibility="Collapsed" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="0,16" Margin="0,14,0,0" IsEnabled="{Binding IsIdle}"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{Binding TweakSelectionSummary}" FontWeight="SemiBold" /><CheckBox Content="Intentar crear punto antes del lote" IsChecked="{Binding CreateRestorePointBeforeChanges}" Margin="0,9,0,0" FontSize="11" /></StackPanel><StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"><Button Content="Limpiar" Tag="clear" Click="ChooseTweakProfile" Style="{StaticResource QuietButton}" Margin="0,0,10,0" /><Button Content="Revisar y aplicar" Click="ApplySelectedTweaks" Style="{StaticResource PrimaryButton}" /><Button Content="Revertir" Tag="Respaldo y recuperación" Click="GoToSection" Margin="10,0,0,0" /></StackPanel></Grid></Border>
+   </Grid>
   </Grid>
- </Grid>
+  <Border Grid.Row="2" Background="#11161D" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0"><Grid Margin="16,0"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><ProgressBar IsIndeterminate="True" Height="3" Width="70" Foreground="{StaticResource Accent}" Margin="0,0,12,0"><ProgressBar.Style><Style TargetType="ProgressBar"><Setter Property="Visibility" Value="Visible" /><Style.Triggers><DataTrigger Binding="{Binding IsIdle}" Value="True"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></ProgressBar.Style></ProgressBar><TextBlock Grid.Column="1" Text="{Binding Status}" ToolTip="{Binding Status}" Foreground="{StaticResource Muted}" FontSize="10" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.LiveSetting="Polite" /><TextBlock Grid.Column="2" Text="Privilegios por acción" Foreground="#68788F" FontSize="10" Margin="16,0,0,0" VerticalAlignment="Center" /></Grid></Border>
+ </Grid></Border>
 </Window>

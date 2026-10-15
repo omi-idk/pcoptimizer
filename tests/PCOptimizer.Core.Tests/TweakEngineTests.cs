@@ -7,7 +7,7 @@ namespace PCOptimizer.Core.Tests;
 public sealed class TweakEngineTests : IDisposable
 {
     private readonly string directory = Path.Combine(Path.GetTempPath(), "pcoptimizer-tweaks-" + Guid.NewGuid());
-    private sealed class Values : ITweakValueStore
+    private class Values : ITweakValueStore
     {
         public Dictionary<string, RegistryValueSnapshot> Data { get; } = [];
         public int Writes { get; private set; }
@@ -234,7 +234,6 @@ public sealed class TweakEngineTests : IDisposable
     [Fact]
     public void CatalogKeepsExecutableTargetsClosedAndOriginalSnapshotsTyped()
     {
-        Assert.Equal(14, ExecutableTweaks.Items.Count);
         Assert.All(ExecutableTweaks.Items, tweak =>
         {
             Assert.StartsWith("https://", tweak.Source);
@@ -253,4 +252,119 @@ public sealed class TweakEngineTests : IDisposable
     }
 
     public void Dispose() { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+
+    [Theory]
+    [InlineData("sticky-hotkey", 511u)]
+    [InlineData("filter-hotkey", 127u)]
+    [InlineData("toggle-hotkey", 63u)]
+    public void AccessibilityHotkeyOnlyClearsItsBitAndRestoresAllOriginalFlags(string id, uint original)
+    {
+        var values = new Values();
+        values.Data[id] = new(true, "String", original.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        var engine = new TweakEngine(values, directory);
+        var operation = engine.Preview([id]);
+        engine.SavePrepared(operation);
+        engine.Apply(operation.Id);
+        Assert.Equal((original & ~4u).ToString(System.Globalization.CultureInfo.InvariantCulture), values.Data[id].Data);
+        Assert.Equal(1u, uint.Parse(values.Data[id].Data) & 1u); // Keep an enabled accessibility feature enabled.
+        var undo = engine.PreviewUndo(operation.Id);
+        engine.SavePrepared(undo);
+        engine.Apply(undo.Id);
+        Assert.Equal(original.ToString(System.Globalization.CultureInfo.InvariantCulture), values.Data[id].Data);
+    }
+
+    [Fact]
+    public void MissingAccessibilityFlagsNeverBecomeAnInventedDefault()
+    {
+        var values = new Values();
+        var engine = new TweakEngine(values, directory);
+        Assert.Throws<InvalidDataException>(() => engine.Preview(["sticky-hotkey"]));
+        Assert.Equal(0, values.Writes);
+    }
+
+    [Fact]
+    public void MutuallyExclusiveGraphicsOptionsAreRejectedBeforeAnyWrite()
+    {
+        var values = new Values();
+        Assert.Throws<InvalidOperationException>(() => new TweakEngine(values, directory).Preview(["hags", "hags-off"]));
+        Assert.Equal(0, values.Writes);
+    }
+
+    [Fact]
+    public void IntensiveProfileCanBeAppliedAndUndoneWithoutLeakingNeighboringFlags()
+    {
+        var values = new Values();
+        foreach (var id in new[] { "sticky-hotkey", "filter-hotkey", "toggle-hotkey" }) values.Data[id] = new(true, "String", "511");
+        var original = new Dictionary<string, RegistryValueSnapshot>(values.Data);
+        var engine = new TweakEngine(values, directory);
+        var operation = engine.Preview(ExecutableTweaks.Profile("intensive"));
+        engine.SavePrepared(operation);
+        engine.Apply(operation.Id);
+        var undo = engine.PreviewUndo(operation.Id);
+        engine.SavePrepared(undo);
+        engine.Apply(undo.Id);
+        foreach (var change in operation.Changes)
+            Assert.Equal(original.GetValueOrDefault(change.TargetId, RegistryValueSnapshot.Missing), values.Data[change.TargetId]);
+    }
+
+    [Fact]
+    public void NumLockSetsItsBitWithoutLosingKeyboardIndicatorFlags()
+    {
+        var values = new Values();
+        values.Data["numlock"] = new(true, "String", "2147483648");
+        var engine = new TweakEngine(values, directory);
+        var operation = engine.Preview(["numlock"]);
+        Assert.Equal("2147483650", operation.Changes[0].After.Data);
+        engine.SavePrepared(operation);
+        engine.Apply(operation.Id);
+        var undo = engine.PreviewUndo(operation.Id);
+        engine.SavePrepared(undo);
+        engine.Apply(undo.Id);
+        Assert.Equal("2147483648", values.Data["numlock"].Data);
+    }
+
+    private sealed class BatchValues : Values, IBatchTweakValueStore
+    {
+        public int Batches { get; private set; }
+        public bool FailPartway { get; set; }
+        public void WriteMachineBatch(IReadOnlyList<TweakValueChange> changes)
+        {
+            Batches++;
+            foreach (var change in changes)
+            {
+                Write(ExecutableTweaks.Target(change.TweakId, change.TargetId), change.Before, change.After);
+                if (FailPartway) throw new IOException("Interrupted elevated batch");
+            }
+        }
+    }
+
+    [Fact]
+    public void MachineValuesShareOneElevationAndAreNotReappliedByTheOuterLoop()
+    {
+        var values = new BatchValues();
+        var engine = new TweakEngine(values, directory);
+        var operation = engine.Preview(["ad-id", "long-paths", "update-feature-delay"]);
+        engine.SavePrepared(operation);
+        engine.Apply(operation.Id);
+        Assert.Equal(1, values.Batches);
+        Assert.Equal(operation.Changes.Count, values.Writes);
+        Assert.All(engine.Read(operation.Id).Changes, change => Assert.Equal("Valor de registro verificado", change.State));
+    }
+
+    [Fact]
+    public void InterruptedElevatedBatchKeepsEveryOriginalAndCanUndoOnlyCompletedWrites()
+    {
+        var values = new BatchValues { FailPartway = true };
+        var engine = new TweakEngine(values, directory);
+        var operation = engine.Preview(["ad-id", "long-paths", "update-feature-delay"]);
+        engine.SavePrepared(operation);
+        Assert.Throws<IOException>(() => engine.Apply(operation.Id));
+        Assert.Equal(operation.Changes.Count, engine.Read(operation.Id).Changes.Count);
+        var undo = engine.PreviewUndo(operation.Id);
+        Assert.Equal(2, undo.Changes.Count);
+        values.FailPartway = false;
+        engine.SavePrepared(undo);
+        engine.Apply(undo.Id);
+        Assert.All(operation.Changes, change => Assert.Equal(change.Before, values.Read(ExecutableTweaks.Target(change.TweakId, change.TargetId))));
+    }
 }
