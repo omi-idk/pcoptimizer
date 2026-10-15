@@ -43,7 +43,7 @@ La lista no registra cambios que hagan otros programas. Una captura al inicio y 
 
 **Recuperar selección de plan guardada** lee el registro seleccionado, comprueba que el plan original siga existiendo y pasa por el mismo flujo de confirmación, respaldo y verificación que cualquier cambio de energía. Solo recupera el GUID activo; no exporta/recrea las opciones internas de un plan borrado.
 
-La reversión general de registro, políticas o servicios no está implementada porque sus ejecutores tampoco lo están. Su diseño requiere conservar tipos, valores/ausencia, alcance y conflictos posteriores por cada cambio; la presencia de un punto no sustituirá ese trabajo.
+La Preview 0.2 implementa reversión de los ajustes de registro de su lista cerrada: conserva tipo, datos y ausencia previa en `%LOCALAPPDATA%\PCOptimizer\Tweaks`. Abre Ajustes de Windows → Revertir ajustes aplicados, elige la operación y revisa la inversa. Se detiene ante conflictos y admite revisar lotes parciales. Esto incluye las políticas implementadas, no servicios ni candidatos sin ejecutor. Consulta [el alcance exacto](ajustes-aplicables.md).
 
 ## Almacenamiento y validación
 
