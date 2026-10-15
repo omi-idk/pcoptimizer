@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PCOptimizer.App/PCOptimizer.App.csproj" />
+    <Project Path="src/PCOptimizer.Core/PCOptimizer.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PCOptimizer.Core.Tests/PCOptimizer.Core.Tests.csproj" />
+  </Folder>
+</Solution>

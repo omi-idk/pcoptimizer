@@ -1,0 +1,69 @@
+<Application x:Class="PCOptimizer.App.App"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ StartupUri="MainWindow.xaml">
+ <Application.Resources>
+  <SolidColorBrush x:Key="Surface" Color="#172330" />
+  <SolidColorBrush x:Key="Muted" Color="#A8BBCB" />
+  <DataTemplate x:Key="SoftwareChoiceTemplate">
+   <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="18" Margin="0,0,0,10">
+    <CheckBox IsChecked="{Binding IsSelected}" IsEnabled="{Binding CanSelect}" VerticalContentAlignment="Top" Foreground="#EDF5FA" AutomationProperties.Name="{Binding Name}">
+     <StackPanel Margin="10,0,0,0">
+      <TextBlock Text="{Binding Name}" FontSize="17" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding Detail}" Margin="0,7,0,0" Foreground="{StaticResource Muted}" />
+      <TextBlock Text="{Binding Id}" Margin="0,7,0,0" FontSize="11" Foreground="#69E3BD" />
+      <TextBlock Text="{Binding Website}" Margin="0,4,0,0" FontSize="11" Foreground="{StaticResource Muted}" />
+      <TextBlock Text="{Binding Availability}" Margin="0,4,0,0" FontSize="12" Foreground="{StaticResource Muted}" />
+     </StackPanel>
+    </CheckBox>
+   </Border>
+  </DataTemplate>
+  <Style TargetType="TextBlock">
+   <Setter Property="Foreground" Value="#EDF5FA" />
+   <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style TargetType="Button">
+   <Setter Property="Background" Value="#203545" />
+   <Setter Property="Foreground" Value="#EDF5FA" />
+   <Setter Property="BorderThickness" Value="0" />
+   <Setter Property="Padding" Value="16,12" />
+   <Setter Property="Cursor" Value="Hand" />
+   <Setter Property="FontSize" Value="14" />
+   <Setter Property="Template">
+    <Setter.Value>
+     <ControlTemplate TargetType="Button">
+      <Border x:Name="Frame" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+       <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" />
+      </Border>
+      <ControlTemplate.Triggers>
+       <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Frame" Property="Opacity" Value="0.8" /></Trigger>
+       <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Frame" Property="BorderBrush" Value="#69E3BD" /><Setter TargetName="Frame" Property="BorderThickness" Value="2" /></Trigger>
+       <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Frame" Property="Opacity" Value="0.4" /></Trigger>
+      </ControlTemplate.Triggers>
+     </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+  </Style>
+  <Style x:Key="NavButton" TargetType="RadioButton">
+   <Setter Property="Foreground" Value="#A8BBCB" />
+   <Setter Property="Margin" Value="0,3" />
+   <Setter Property="Padding" Value="16,13" />
+   <Setter Property="FontSize" Value="14" />
+   <Setter Property="Cursor" Value="Hand" />
+   <Setter Property="Template">
+    <Setter.Value>
+     <ControlTemplate TargetType="RadioButton">
+      <Border x:Name="Frame" CornerRadius="8" Background="Transparent" Padding="{TemplateBinding Padding}">
+       <ContentPresenter />
+      </Border>
+      <ControlTemplate.Triggers>
+       <Trigger Property="IsChecked" Value="True"><Setter TargetName="Frame" Property="Background" Value="#203D40" /><Setter Property="Foreground" Value="#69E3BD" /></Trigger>
+       <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Frame" Property="BorderBrush" Value="#4B6678" /><Setter TargetName="Frame" Property="BorderThickness" Value="1" /></Trigger>
+       <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Frame" Property="BorderBrush" Value="#69E3BD" /><Setter TargetName="Frame" Property="BorderThickness" Value="2" /></Trigger>
+      </ControlTemplate.Triggers>
+     </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+  </Style>
+ </Application.Resources>
+</Application>

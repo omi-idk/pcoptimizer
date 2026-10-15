@@ -1,0 +1,2126 @@
+[
+  {
+    "Id": "Brave.Brave",
+    "Name": "Brave",
+    "Description": "Brave is a privacy-focused web browser that blocks ads and trackers, offering a faster and safer browsing experience.",
+    "Website": "https://www.brave.com",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Google.Chrome",
+    "Name": "Chrome",
+    "Description": "Google Chrome is a widely used web browser known for its speed, simplicity, and seamless integration with Google services.",
+    "Website": "https://www.google.com/chrome/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Hibbiki.Chromium",
+    "Name": "Chromium",
+    "Description": "Chromium is the open-source project that serves as the foundation for various web browsers, including Chrome.",
+    "Website": "https://www.chromium.org/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": "Esta compilación de Chromium la distribuye Hibbiki; no es Google Chrome. Revisa el mantenedor del paquete."
+  },
+  {
+    "Id": "Microsoft.Edge",
+    "Name": "Edge",
+    "Description": "Microsoft Edge is a modern web browser built on Chromium, offering performance, security, and integration with Microsoft services.",
+    "Website": "https://www.microsoft.com/edge",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Mozilla.Firefox",
+    "Name": "Firefox",
+    "Description": "Mozilla Firefox is an open-source web browser known for its customization options, privacy features, and extensions.",
+    "Website": "https://www.mozilla.org/en-US/firefox/new/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Mozilla.Firefox.ESR",
+    "Name": "Firefox ESR",
+    "Description": "Mozilla Firefox is an open-source web browser known for its customization options, privacy features, and extensions. Firefox ESR (Extended Support Release) receives major updates every 42 weeks with minor updates such as crash fixes, security fixes and policy updates as needed, but at least every four weeks.",
+    "Website": "https://www.mozilla.org/en-US/firefox/enterprise/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Ablaze.Floorp",
+    "Name": "Floorp",
+    "Description": "Floorp is an open-source web browser project that aims to provide a simple and fast browsing experience.",
+    "Website": "https://floorp.app/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ImputNet.Helium",
+    "Name": "Helium",
+    "Description": "Private, fast, and honest web browser.",
+    "Website": "https://helium.computer",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "LibreWolf.LibreWolf",
+    "Name": "LibreWolf",
+    "Description": "LibreWolf is a privacy-focused web browser based on Firefox, with additional privacy and security enhancements.",
+    "Website": "https://librewolf.net/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "MullvadVPN.MullvadBrowser",
+    "Name": "Mullvad Browser",
+    "Description": "Mullvad Browser is a privacy-focused web browser, developed in partnership with the Tor Project.",
+    "Website": "https://mullvad.net/browser",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "TorProject.TorBrowser",
+    "Name": "Tor Browser",
+    "Description": "Tor Browser is designed for anonymous web browsing, utilizing the Tor network to protect user privacy and security.",
+    "Website": "https://www.torproject.org/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "eloston.ungoogled-chromium",
+    "Name": "Ungoogled Chromium",
+    "Description": "Ungoogled Chromium is a version of Chromium without Google's integration for enhanced privacy and control.",
+    "Website": "https://github.com/Eloston/ungoogled-chromium",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": "La compilación y sus actualizaciones dependen del mantenedor; revisa la ficha de WinGet."
+  },
+  {
+    "Id": "Vivaldi.Vivaldi",
+    "Name": "Vivaldi",
+    "Description": "Vivaldi is a highly customizable web browser with a focus on user personalization and productivity features.",
+    "Website": "https://vivaldi.com/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Waterfox.Waterfox",
+    "Name": "Waterfox",
+    "Description": "Waterfox is a fast, privacy-focused web browser based on Firefox, designed to preserve user choice and privacy.",
+    "Website": "https://www.waterfox.net/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Zen-Team.Zen-Browser",
+    "Name": "Zen Browser",
+    "Description": "The modern, privacy-focused, performance-driven browser built on Firefox.",
+    "Website": "https://zen-browser.app/",
+    "Category": "Navegadores",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Betterbird.Betterbird",
+    "Name": "Betterbird",
+    "Description": "Betterbird is a fork of Mozilla Thunderbird with additional features and bugfixes.",
+    "Website": "https://www.betterbird.eu/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ChatterinoTeam.Chatterino",
+    "Name": "Chatterino",
+    "Description": "Chatterino is a chat client for Twitch chat that offers a clean and customizable interface for a better streaming experience.",
+    "Website": "https://www.chatterino.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Discord.Discord",
+    "Name": "Discord",
+    "Description": "Discord is a popular communication platform with voice, video, and text chat, designed for gamers but used by a wide range of communities.",
+    "Website": "https://discord.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "SpikeHD.Dorion",
+    "Name": "Dorion",
+    "Description": "Tiny alternative Discord client with a smaller footprint, snappier startup, themes, plugins and more!",
+    "Website": "https://spikehd.dev/projects/dorion/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Element.Element",
+    "Name": "Element",
+    "Description": "Element is a client for Matrix; an open network for secure, decentralized communication.",
+    "Website": "https://element.io/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Proton.ProtonMail",
+    "Name": "Proton Mail",
+    "Description": "Proton Mail is an end-to-end encrypted email service by Proton, protecting your privacy with zero-access encryption.",
+    "Website": "https://proton.me/mail",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Tox.qTox",
+    "Name": "QTox",
+    "Description": "QTox is a free and open-source messaging app that prioritizes user privacy and security in its design.",
+    "Website": "https://qtox.github.io/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "OpenWhisperSystems.Signal",
+    "Name": "Signal",
+    "Description": "Signal is a privacy-focused messaging app that offers end-to-end encryption for secure and private communication.",
+    "Website": "https://signal.org/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "SlackTechnologies.Slack",
+    "Name": "Slack",
+    "Description": "Slack is a collaboration hub that connects teams and facilitates communication through channels, messaging, and file sharing.",
+    "Website": "https://slack.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.Teams",
+    "Name": "Teams",
+    "Description": "Microsoft Teams is a collaboration platform that integrates with Office 365 and offers chat, video conferencing, file sharing, and more.",
+    "Website": "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "TeamSpeakSystems.TeamSpeakClient",
+    "Name": "TeamSpeak 3",
+    "Description": "TEAMSPEAK. YOUR TEAM. YOUR RULES. Use crystal clear sound to communicate with your teammates cross-platform with military-grade security, lag-free performance & unparalleled reliability and uptime.",
+    "Website": "https://www.teamspeak.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "TeamSpeakSystems.TeamSpeakClient.Beta.6",
+    "Name": "TeamSpeak 6",
+    "Description": "TEAMSPEAK. YOUR TEAM. YOUR RULES. Use crystal clear sound to communicate with your teammates cross-platform with military-grade security, lag-free performance & unparalleled reliability and uptime.",
+    "Website": "https://www.teamspeak.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": "El identificador del catálogo corresponde a la rama beta de TeamSpeak 6."
+  },
+  {
+    "Id": "Telegram.TelegramDesktop",
+    "Name": "Telegram",
+    "Description": "Telegram is a cloud-based instant messaging app known for its security features, speed, and simplicity.",
+    "Website": "https://telegram.org/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Mozilla.Thunderbird",
+    "Name": "Thunderbird",
+    "Description": "Mozilla Thunderbird is a free and open-source email client, news client, and chat client with advanced features.",
+    "Website": "https://www.thunderbird.net/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Vencord.Vesktop",
+    "Name": "Vesktop",
+    "Description": "A cross-platform electron-based desktop app aiming to give you a snappier Discord experience with Vencord pre-installed.",
+    "Website": "https://vesktop.dev",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Rakuten.Viber",
+    "Name": "Viber",
+    "Description": "Viber is a free messaging and calling app with features like group chats, video calls, and more.",
+    "Website": "https://www.viber.com/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "msstore:9NKSQGP7F2NH",
+    "Name": "WhatsApp Desktop",
+    "Description": "WhatsApp Desktop is the official Windows desktop messaging app from Meta, distributed through the Microsoft Store.",
+    "Website": "https://www.whatsapp.com/download",
+    "Category": "Comunicación",
+    "Source": "msstore",
+    "Notes": ""
+  },
+  {
+    "Id": "Zoom.Zoom",
+    "Name": "Zoom",
+    "Description": "Zoom is a popular video conferencing and web conferencing service for online meetings, webinars, and collaborative projects.",
+    "Website": "https://zoom.us/",
+    "Category": "Comunicación",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Amazon.Corretto.21.JDK",
+    "Name": "Amazon Corretto 21 (LTS)",
+    "Description": "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
+    "Website": "https://aws.amazon.com/corretto",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Versiones de Java distintas pueden coexistir; revisa la versión activa y los requisitos de tus aplicaciones."
+  },
+  {
+    "Id": "Amazon.Corretto.25.JDK",
+    "Name": "Amazon Corretto 25 (LTS)",
+    "Description": "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
+    "Website": "https://aws.amazon.com/corretto",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Versiones de Java distintas pueden coexistir; revisa la versión activa y los requisitos de tus aplicaciones."
+  },
+  {
+    "Id": "Amazon.Corretto.8.JDK",
+    "Name": "Amazon Corretto 8 (LTS)",
+    "Description": "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
+    "Website": "https://aws.amazon.com/corretto",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Versiones de Java distintas pueden coexistir; revisa la versión activa y los requisitos de tus aplicaciones."
+  },
+  {
+    "Id": "Bruno.Bruno",
+    "Name": "Bruno",
+    "Description": "Bruno is a local-first API client that stores collections as plain text files for version control and collaboration.",
+    "Website": "https://www.usebruno.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "msstore:9NT1R1C2HH7J",
+    "Name": "ChatGPT Desktop",
+    "Description": "The official ChatGPT desktop app for Windows, distributed through the Microsoft Store.",
+    "Website": "https://openai.com/chatgpt/download/",
+    "Category": "Desarrollo",
+    "Source": "msstore",
+    "Notes": "La ficha consultada de Microsoft Store se llama ChatGPT Classic y su editor es OpenAI. Revisa la edición ofrecida antes de instalar."
+  },
+  {
+    "Id": "Anthropic.ClaudeCode",
+    "Name": "Claude Code",
+    "Description": "Anthropic's agentic coding tool for terminal and IDE development workflows.",
+    "Website": "https://code.claude.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Anthropic.Claude",
+    "Name": "Claude Desktop",
+    "Description": "Anthropic's Claude desktop application for focused AI-assisted work and chat.",
+    "Website": "https://claude.ai/download",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Kitware.CMake",
+    "Name": "CMake",
+    "Description": "CMake is an open-source, cross-platform family of tools designed to build, test and package software.",
+    "Website": "https://cmake.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "OpenAI.Codex",
+    "Name": "Codex",
+    "Description": "Codex CLI is an OpenAI coding agent that runs locally in your terminal.",
+    "Website": "https://developers.openai.com/codex/cli",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Anysphere.Cursor",
+    "Name": "Cursor",
+    "Description": "AI-powered code editor (VS Code-based) with agentic coding features and integrated AI assistance for development workflows.",
+    "Website": "https://cursor.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Docker.DockerDesktop",
+    "Name": "Docker Desktop",
+    "Description": "Docker Desktop provides a local environment for building, running, and testing containerized applications on Windows.",
+    "Website": "https://www.docker.com/products/docker-desktop/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Schniz.fnm",
+    "Name": "Fast Node Manager",
+    "Description": "Fast Node Manager (fnm) is a fast, cross-platform tool for installing and switching between Node.js versions.",
+    "Website": "https://github.com/Schniz/fnm",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Git.Git",
+    "Name": "Git",
+    "Description": "Git is a distributed version control system widely used for tracking changes in source code during software development.",
+    "Website": "https://git-scm.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GitExtensionsTeam.GitExtensions",
+    "Name": "Git Extensions",
+    "Description": "Git Extensions is a graphical Git client for Windows with repository, history, and commit management tools.",
+    "Website": "https://gitextensions.github.io/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GitHub.cli",
+    "Name": "GitHub CLI",
+    "Description": "GitHub CLI brings pull requests, issues, releases, and other GitHub workflows to the terminal.",
+    "Website": "https://cli.github.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GitHub.GitHubDesktop",
+    "Name": "GitHub Desktop",
+    "Description": "GitHub Desktop is a visual Git client that simplifies collaboration on GitHub repositories with an easy-to-use interface.",
+    "Website": "https://desktop.github.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GoLang.Go",
+    "Name": "Go",
+    "Description": "Go (or Golang) is a statically typed, compiled programming language designed for simplicity, reliability, and efficiency.",
+    "Website": "https://go.dev/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "JetBrains.Toolbox",
+    "Name": "Jetbrains Toolbox",
+    "Description": "Jetbrains Toolbox is a platform for easy installation and management of JetBrains developer tools.",
+    "Website": "https://www.jetbrains.com/toolbox/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "JesseDuffield.lazygit",
+    "Name": "Lazygit",
+    "Description": "Simple terminal UI for git commands.",
+    "Website": "https://github.com/jesseduffield/lazygit/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "rjpcomputing.luaforwindows",
+    "Name": "Lua",
+    "Description": "A 'batteries included environment' for the Lua scripting language on Windows.",
+    "Website": "https://github.com/rjpcomputing/luaforwindows",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Neovim.Neovim",
+    "Name": "Neovim",
+    "Description": "Neovim is a highly extensible text editor and an improvement over the original Vim editor.",
+    "Website": "https://neovim.io/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "OpenJS.NodeJS",
+    "Name": "NodeJS",
+    "Description": "NodeJS is a JavaScript runtime built on Chrome's V8 JavaScript engine for building server-side and networking applications.",
+    "Website": "https://nodejs.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "La rama actual de Node.js es distinta de LTS. Revisa qué versión requiere tu proyecto."
+  },
+  {
+    "Id": "OpenJS.NodeJS.LTS",
+    "Name": "NodeJS LTS",
+    "Description": "NodeJS LTS provides Long-Term Support releases for stable and reliable server-side JavaScript development.",
+    "Website": "https://nodejs.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Node.js LTS y la rama actual son alternativas; selecciona la que necesites para evitar reemplazos."
+  },
+  {
+    "Id": "JanDeDobbeleer.OhMyPosh",
+    "Name": "Oh My Posh (Prompt)",
+    "Description": "Oh My Posh is a cross-platform prompt theme engine for any shell.",
+    "Website": "https://ohmyposh.dev/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "pnpm.pnpm",
+    "Name": "pnpm",
+    "Description": "pnpm is a fast and disk space efficient package manager for JavaScript and Node.js applications.",
+    "Website": "https://pnpm.io/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Postman.Postman",
+    "Name": "Postman",
+    "Description": "Postman is an API platform and desktop client for designing, testing, documenting, and collaborating on APIs.",
+    "Website": "https://www.postman.com/downloads/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Python.Python.3.14",
+    "Name": "Python3",
+    "Description": "Python is a versatile programming language used for web development, data analysis, artificial intelligence, and more.",
+    "Website": "https://www.python.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "RubyInstallerTeam.Ruby.4.0",
+    "Name": "Ruby",
+    "Description": "A Ruby language execution environment with a MSYS2 installation.",
+    "Website": "https://rubyinstaller.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Rustlang.Rust.MSVC",
+    "Name": "Rust",
+    "Description": "Rust is a programming language designed for safety and performance, particularly focused on systems programming.",
+    "Website": "https://www.rust-lang.org/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Starship.Starship",
+    "Name": "Starship (Shell Prompt)",
+    "Description": "Starship is a fast, customizable, cross-platform prompt for PowerShell and other shells.",
+    "Website": "https://starship.rs/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "SublimeHQ.SublimeText.4",
+    "Name": "Sublime Text",
+    "Description": "Sublime Text is a sophisticated text editor for code, markup, and prose.",
+    "Website": "https://www.sublimetext.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "WinsiderSS.SystemInformer",
+    "Name": "System Informer",
+    "Description": "A free, powerful, multi-purpose tool that helps you monitor system resources, debug software and detect malware.",
+    "Website": "https://systeminformer.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Herramienta avanzada de procesos y sistema. Sus componentes requieren evaluar compatibilidad con seguridad y anticheats."
+  },
+  {
+    "Id": "Unity.UnityHub",
+    "Name": "Unity Game Engine",
+    "Description": "Unity is a powerful game development platform for creating 2D, 3D, augmented reality, and virtual reality games.",
+    "Website": "https://unity.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "Instala Unity Hub; el editor y sus módulos se descargan después desde el Hub."
+  },
+  {
+    "Id": "astral-sh.uv",
+    "Name": "uv",
+    "Description": "uv is a fast Python package and project manager written in Rust.",
+    "Website": "https://docs.astral.sh/uv/getting-started/installation/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Hashicorp.Vagrant",
+    "Name": "Vagrant",
+    "Description": "Vagrant builds and manages reproducible virtual machine development environments from declarative configuration.",
+    "Website": "https://developer.hashicorp.com/vagrant",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.VisualStudio.2022.Community",
+    "Name": "Visual Studio 2022",
+    "Description": "Visual Studio 2022 is an integrated development environment (IDE) for building, debugging, and deploying applications.",
+    "Website": "https://visualstudio.microsoft.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "El paquete corresponde a Community. Revisa licencia, cargas de trabajo y espacio necesario."
+  },
+  {
+    "Id": "Microsoft.VisualStudio.Community",
+    "Name": "Visual Studio 2026",
+    "Description": "Visual Studio 2026 is an integrated development environment (IDE) for building, debugging, and deploying applications.",
+    "Website": "https://visualstudio.microsoft.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": "El paquete corresponde a Community. Revisa licencia, cargas de trabajo y espacio necesario."
+  },
+  {
+    "Id": "Microsoft.VisualStudioCode",
+    "Name": "VS Code",
+    "Description": "Visual Studio Code is a free, open-source code editor with support for multiple programming languages.",
+    "Website": "https://code.visualstudio.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "VSCodium.VSCodium",
+    "Name": "VS Codium",
+    "Description": "VSCodium is a community-driven, freely-licensed binary distribution of Microsoft's VS Code.",
+    "Website": "https://vscodium.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Yarn.Yarn",
+    "Name": "Yarn",
+    "Description": "Yarn is a fast, reliable, and secure dependency management tool for JavaScript projects.",
+    "Website": "https://yarnpkg.com/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ZedIndustries.Zed",
+    "Name": "Zed",
+    "Description": "Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.",
+    "Website": "https://zed.dev/",
+    "Category": "Desarrollo",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Adobe.Acrobat.Reader.64-bit",
+    "Name": "Adobe Acrobat Reader",
+    "Description": "Adobe Acrobat Reader is a free PDF viewer with essential features for viewing, printing, and annotating PDF documents.",
+    "Website": "https://www.adobe.com/acrobat/pdf-reader.html",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Foxit.FoxitReader",
+    "Name": "Foxit PDF Reader",
+    "Description": "Foxit PDF Reader is a free PDF viewer with a familiar ribbon-style interface.",
+    "Website": "https://www.foxit.com/pdf-reader/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Joplin.Joplin",
+    "Name": "Joplin",
+    "Description": "Joplin is an open-source note-taking and to-do application with synchronization capabilities.",
+    "Website": "https://joplinapp.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "TheDocumentFoundation.LibreOffice",
+    "Name": "LibreOffice",
+    "Description": "LibreOffice is a powerful and free office suite, compatible with other major office suites.",
+    "Website": "https://www.libreoffice.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Cyanfish.NAPS2",
+    "Name": "NAPS2 (Scanner)",
+    "Description": "NAPS2 is a document scanning application that simplifies the process of creating electronic documents.",
+    "Website": "https://www.naps2.com/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Obsidian.Obsidian",
+    "Name": "Obsidian",
+    "Description": "Obsidian is a powerful note-taking and knowledge management application.",
+    "Website": "https://obsidian.md/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "KDE.Okular",
+    "Name": "Okular",
+    "Description": "Okular is a versatile document viewer with advanced features.",
+    "Website": "https://okular.kde.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ONLYOFFICE.DesktopEditors",
+    "Name": "ONLYOFFICE Desktop",
+    "Description": "ONLYOFFICE Desktop is a comprehensive office suite for document editing and collaboration.",
+    "Website": "https://www.onlyoffice.com/desktop.aspx",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "TrackerSoftware.PDF-XChangeEditor",
+    "Name": "PDF-XChange Editor",
+    "Description": "A comprehensive Windows-based software suite and editor for creating, viewing, editing, annotating, and signing PDF files.",
+    "Website": "https://www.pdf-xchange.com/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "geeksoftwareGmbH.PDF24Creator",
+    "Name": "PDF24 Creator",
+    "Description": "Free and easy-to-use online/desktop PDF tools that make you more productive",
+    "Website": "https://tools.pdf24.org/en/creator",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "PDFgear.PDFgear",
+    "Name": "PDFgear",
+    "Description": "PDFgear is a piece of full-featured PDF management software for Windows, macOS, and mobile, and it's completely free to use.",
+    "Website": "https://www.pdfgear.com/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "PDFsam.PDFsam",
+    "Name": "PDFsam Basic",
+    "Description": "PDFsam Basic is a free and open-source tool for splitting, merging, and rotating PDF files.",
+    "Website": "https://pdfsam.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "pbek.QOwnNotes",
+    "Name": "QOwnNotes",
+    "Description": "QOwnNotes is a free open-source note-taking app with Nextcloud/ownCloud integration.",
+    "Website": "https://www.qownnotes.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Automattic.Simplenote",
+    "Name": "Simplenote",
+    "Description": "Simplenote is an easy way to keep notes, lists, ideas and more.",
+    "Website": "https://simplenote.com/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "SumatraPDF.SumatraPDF",
+    "Name": "Sumatra PDF",
+    "Description": "Sumatra PDF is a lightweight and fast PDF viewer with minimalistic design.",
+    "Website": "https://www.sumatrapdfreader.org/free-pdf-reader.html",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Xournal++.Xournal++",
+    "Name": "Xournal++",
+    "Description": "Xournal++ is an open-source handwriting notetaking software with PDF annotation capabilities.",
+    "Website": "https://xournalpp.github.io/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "DigitalScholar.Zotero",
+    "Name": "Zotero",
+    "Description": "Zotero is a free, easy-to-use tool to help you collect, organize, cite, and share your research materials.",
+    "Website": "https://www.zotero.org/",
+    "Category": "Documentos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Blizzard.BattleNet",
+    "Name": "Battle.net",
+    "Description": "Battle.net is a launcher for games created and developed by Activision Blizzard",
+    "Website": "https://battle.net",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Cemu.Cemu",
+    "Name": "Cemu",
+    "Description": "Cemu is a highly experimental software to emulate Wii U applications on PC.",
+    "Website": "https://cemu.info/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Overwolf.CurseForge",
+    "Name": "CurseForge",
+    "Description": "CurseForge is a desktop application for managing mods and modpacks across multiple games, powered by Overwolf.",
+    "Website": "https://www.overwolf.com/app/overwolf-curseforge",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ElectronicArts.EADesktop",
+    "Name": "EA App",
+    "Description": "EA App is a platform for accessing and playing Electronic Arts games.",
+    "Website": "https://www.ea.com/ea-app",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ES-DE.EmulationStation-DE",
+    "Name": "EmulationStation Desktop Edition",
+    "Description": "EmulationStation Desktop Edition is a frontend for browsing and launching games from your multi-platform game collection.",
+    "Website": "https://es-de.org/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "EpicGames.EpicGamesLauncher",
+    "Name": "Epic Games Launcher",
+    "Description": "Epic Games Launcher is the client for accessing and playing games from the Epic Games Store.",
+    "Website": "https://www.epicgames.com/store/en-US/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Nvidia.GeForceNow",
+    "Name": "GeForce NOW",
+    "Description": "GeForce NOW is a cloud gaming service that allows you to play high-quality PC games on your device.",
+    "Website": "https://www.nvidia.com/en-us/geforce-now/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GOG.Galaxy",
+    "Name": "GOG Galaxy",
+    "Description": "GOG Galaxy is a gaming client that offers DRM-free games, additional content, and more.",
+    "Website": "https://www.gog.com/galaxy",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "HeroicGamesLauncher.HeroicGamesLauncher",
+    "Name": "Heroic Games Launcher",
+    "Description": "Heroic Games Launcher is an open-source alternative game launcher for Epic Games Store.",
+    "Website": "https://heroicgameslauncher.com/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ItchIo.Itch",
+    "Name": "Itch.io",
+    "Description": "Itch.io is a digital distribution platform for indie games and creative projects.",
+    "Website": "https://itch.io/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Modrinth.ModrinthApp",
+    "Name": "Modrinth App",
+    "Description": "Modrinth App is a desktop application for managing Minecraft mods and modpacks.",
+    "Website": "https://modrinth.com/app",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Playnite.Playnite",
+    "Name": "Playnite",
+    "Description": "Playnite is an open-source video game library manager with one simple goal: To provide a unified interface for all of your games.",
+    "Website": "https://playnite.link/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "PrismLauncher.PrismLauncher",
+    "Name": "Prism Launcher",
+    "Description": "Prism Launcher is an open-source Minecraft launcher with the ability to manage multiple instances, accounts, and mods.",
+    "Website": "https://prismlauncher.org/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Roblox.Roblox",
+    "Name": "Roblox",
+    "Description": "Roblox is a platform and game creation system that allows users to create and play games developed by the community.",
+    "Website": "https://www.roblox.com/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Valve.Steam",
+    "Name": "Steam",
+    "Description": "Steam is a digital distribution platform for purchasing and playing video games, offering multiplayer gaming, video streaming, and more.",
+    "Website": "https://store.steampowered.com/about/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Ubisoft.Connect",
+    "Name": "Ubisoft Connect",
+    "Description": "Ubisoft Connect is Ubisoft's digital distribution and online gaming service, providing access to Ubisoft's games and services.",
+    "Website": "https://ubisoftconnect.com/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "VirtualDesktop.Streamer",
+    "Name": "Virtual Desktop Streamer",
+    "Description": "Virtual Desktop Streamer is a tool that allows you to stream your desktop screen to VR devices.",
+    "Website": "https://www.vrdesktop.net/",
+    "Category": "Juegos",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.DotNet.DesktopRuntime.10",
+    "Name": ".NET Desktop Runtime 10",
+    "Description": ".NET Desktop Runtime 10 is a runtime environment required for running applications developed with .NET 10.",
+    "Website": "https://dotnet.microsoft.com/download/dotnet/10.0",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Selecciona la versión requerida por tus aplicaciones y revisa su ciclo de soporte. Versiones distintas pueden coexistir."
+  },
+  {
+    "Id": "Microsoft.DotNet.DesktopRuntime.6",
+    "Name": ".NET Desktop Runtime 6",
+    "Description": ".NET Desktop Runtime 6 is a runtime environment required for running applications developed with .NET 6.",
+    "Website": "https://dotnet.microsoft.com/download/dotnet/6.0",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Selecciona la versión requerida por tus aplicaciones y revisa su ciclo de soporte. Versiones distintas pueden coexistir."
+  },
+  {
+    "Id": "Microsoft.DotNet.DesktopRuntime.8",
+    "Name": ".NET Desktop Runtime 8",
+    "Description": ".NET Desktop Runtime 8 is a runtime environment required for running applications developed with .NET 8.",
+    "Website": "https://dotnet.microsoft.com/download/dotnet/8.0",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Selecciona la versión requerida por tus aplicaciones y revisa su ciclo de soporte. Versiones distintas pueden coexistir."
+  },
+  {
+    "Id": "Microsoft.DotNet.DesktopRuntime.9",
+    "Name": ".NET Desktop Runtime 9",
+    "Description": ".NET Desktop Runtime 9 is a runtime environment required for running applications developed with .NET 9.",
+    "Website": "https://dotnet.microsoft.com/download/dotnet/9.0",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Selecciona la versión requerida por tus aplicaciones y revisa su ciclo de soporte. Versiones distintas pueden coexistir."
+  },
+  {
+    "Id": "Microsoft.Sysinternals.Autoruns",
+    "Name": "Autoruns",
+    "Description": "This utility shows you what programs are configured to run during system bootup or login.",
+    "Website": "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "CodingWondersSoftware.DISMTools.Stable",
+    "Name": "DISMTools",
+    "Description": "DISMTools is a fast, customizable GUI for the DISM utility, supporting Windows images from Windows 7 onward. It handles installations on any drive, offers project support, and lets users tweak settings like color modes, language, and DISM versions; powered by both native DISM and a managed DISM API.",
+    "Website": "https://github.com/CodingWonders/DISMTools",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Herramienta de terceros para DISM; pertenecer a esta categoría no implica que sea un producto de Microsoft."
+  },
+  {
+    "Id": "Nlitesoft.NTLite",
+    "Name": "NTLite",
+    "Description": "Integrate updates, drivers, automate Windows and application setup, speedup Windows deployment process and have it all set for the next time.",
+    "Website": "https://ntlite.com",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Modificar imágenes de Windows puede quitar componentes necesarios. Revisa licencia, dependencias y recuperación."
+  },
+  {
+    "Id": "Microsoft.NuGet",
+    "Name": "NuGet",
+    "Description": "NuGet is a package manager for the .NET framework, enabling developers to manage and share libraries in their .NET applications.",
+    "Website": "https://www.nuget.org/",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.OneDrive",
+    "Name": "OneDrive",
+    "Description": "OneDrive is a cloud storage service provided by Microsoft, allowing users to store and share files securely across devices.",
+    "Website": "https://onedrive.live.com/",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.PowerShell",
+    "Name": "PowerShell",
+    "Description": "PowerShell is a task automation framework and scripting language designed for system administrators, offering powerful command-line capabilities.",
+    "Website": "https://github.com/PowerShell/PowerShell",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.PowerToys",
+    "Name": "PowerToys",
+    "Description": "PowerToys is a set of utilities for power users to enhance productivity, featuring tools like FancyZones, PowerRename, and more.",
+    "Website": "https://github.com/microsoft/PowerToys",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.Sysinternals.ProcessExplorer",
+    "Name": "Process Explorer",
+    "Description": "Process Explorer is a task manager and system monitor.",
+    "Website": "https://learn.microsoft.com/sysinternals/downloads/process-explorer",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "Microsoft.Sysinternals.ProcessMonitor",
+    "Name": "Process Monitor",
+    "Description": "SysInternals Process Monitor is an advanced monitoring tool that shows real-time file system, registry, and process/thread activity.",
+    "Website": "https://docs.microsoft.com/en-us/sysinternals/downloads/procmon",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "Microsoft.Sysinternals.RDCMan",
+    "Name": "RDCMan",
+    "Description": "RDCMan manages multiple remote desktop connections. It is useful for managing server labs where you need regular access to each machine such as automated checkin systems and data centers.",
+    "Website": "https://learn.microsoft.com/en-us/sysinternals/downloads/rdcman",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": "Permite acceso remoto. Revisa permisos, credenciales e inicio automático antes de habilitar conexiones."
+  },
+  {
+    "Id": "Microsoft.Sysinternals.TCPView",
+    "Name": "TCPView",
+    "Description": "SysInternals TCPView is a network monitoring tool that displays a detailed list of all TCP and UDP endpoints on your system.",
+    "Website": "https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.VCRedist.2015+.x86",
+    "Name": "Visual C++ 2015-2022 32-bit",
+    "Description": "Visual C++ 2015-2022 32-bit redistributable package installs runtime components of Visual C++ libraries required to run 32-bit applications.",
+    "Website": "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.VCRedist.2015+.x64",
+    "Name": "Visual C++ 2015-2022 64-bit",
+    "Description": "Visual C++ 2015-2022 64-bit redistributable package installs runtime components of Visual C++ libraries required to run 64-bit applications.",
+    "Website": "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Microsoft.WindowsTerminal",
+    "Name": "Windows Terminal",
+    "Description": "Windows Terminal is a modern, fast, and efficient terminal application for command-line users, supporting multiple tabs, panes, and more.",
+    "Website": "https://aka.ms/terminal",
+    "Category": "Windows y sistema",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "AIMP.AIMP",
+    "Name": "AIMP (Music Player)",
+    "Description": "AIMP is a feature-rich music player with support for various audio formats, playlists, and customizable user interface.",
+    "Website": "https://www.aimp.ru/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Audacity.Audacity",
+    "Name": "Audacity",
+    "Description": "Audacity is a free and open-source audio editing software known for its powerful recording and editing capabilities.",
+    "Website": "https://www.audacityteam.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "BlenderFoundation.Blender",
+    "Name": "Blender (3D Graphics)",
+    "Description": "Blender is a powerful open-source 3D creation suite, offering modeling, sculpting, animation, and rendering tools.",
+    "Website": "https://www.blender.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "calibre.calibre",
+    "Name": "Calibre",
+    "Description": "Calibre is a powerful and easy-to-use e-book manager, viewer, and converter.",
+    "Website": "https://calibre-ebook.com/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "File-New-Project.EarTrumpet",
+    "Name": "EarTrumpet (Audio)",
+    "Description": "EarTrumpet is an audio control app for Windows, providing a simple and intuitive interface for managing sound settings.",
+    "Website": "https://eartrumpet.app/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "AdrienAllard.FileConverter",
+    "Name": "File Converter",
+    "Description": "File Converter converts and compresses files from the Windows Explorer context menu.",
+    "Website": "https://file-converter.io/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "PeterPawlowski.foobar2000",
+    "Name": "foobar2000 (Music Player)",
+    "Description": "foobar2000 is a highly customizable and extensible music player for Windows, known for its modular design and advanced features.",
+    "Website": "https://www.foobar2000.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GIMP.GIMP.3",
+    "Name": "GIMP (Image Editor)",
+    "Description": "GIMP is a versatile open-source raster graphics editor used for tasks such as photo retouching, image editing, and image composition.",
+    "Website": "https://www.gimp.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "HandBrake.HandBrake",
+    "Name": "HandBrake",
+    "Description": "HandBrake is an open-source video transcoder, allowing you to convert video from nearly any format to a selection of widely supported codecs.",
+    "Website": "https://handbrake.fr/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "DuongDieuPhap.ImageGlass",
+    "Name": "ImageGlass (Image Viewer)",
+    "Description": "ImageGlass is a versatile image viewer with support for various image formats and a focus on simplicity and speed.",
+    "Website": "https://imageglass.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "IrfanSkiljan.IrfanView",
+    "Name": "IrfanView",
+    "Description": "IrfanView is a lightweight, fast, and free image viewer and editor. Supports multiple formats, batch processing, and powerful plugins.",
+    "Website": "https://irfanview.com/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Apple.iTunes",
+    "Name": "iTunes",
+    "Description": "iTunes is a media player, media library, and online radio broadcaster application developed by Apple Inc.",
+    "Website": "https://www.apple.com/itunes/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "CodecGuide.K-LiteCodecPack.Standard",
+    "Name": "K-Lite Codec Standard",
+    "Description": "K-Lite Codec Pack Standard is a collection of audio and video codecs and related tools, providing essential components for media playback.",
+    "Website": "https://www.codecguide.com/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "clsid2.mpc-hc",
+    "Name": "Media Player Classic - Home Cinema",
+    "Description": "Media Player Classic - Home Cinema (MPC-HC) is a free and open-source video and audio player for Windows. MPC-HC is based on the original Guliverkli project and contains many additional features and bug fixes.",
+    "Website": "https://mpc-hc.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "mpc-qt.mpc-qt",
+    "Name": "mpc-qt",
+    "Description": "Media Player Classic Qute Theater",
+    "Website": "https://mpc-qt.github.io",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "shinchiro.mpv",
+    "Name": "mpv",
+    "Description": "mpv is a free, open source, and cross-platform media player supporting a wide variety of media formats, codecs, and subtitle types.",
+    "Website": "https://mpv.io/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "nomacs.nomacs",
+    "Name": "nomacs",
+    "Description": "nomacs is a free, open-source image viewer, which supports multiple platforms. You can use it for viewing all common image formats, including RAW and .psd images.",
+    "Website": "https://nomacs.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Notepad++.Notepad++",
+    "Name": "Notepad++",
+    "Description": "Notepad++ is a free, open-source code editor and Notepad replacement with support for multiple languages.",
+    "Website": "https://notepad-plus-plus.org/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "OBSProject.OBSStudio",
+    "Name": "OBS Studio",
+    "Description": "OBS Studio is a free and open-source software for video recording and live streaming. It supports real-time video/audio capturing and mixing, making it popular among content creators.",
+    "Website": "https://obsproject.com/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "dotPDN.PaintDotNet",
+    "Name": "Paint.NET",
+    "Description": "Paint.NET is a free image and photo editing software for Windows. It features an intuitive user interface and supports a wide range of powerful editing tools.",
+    "Website": "https://www.getpaint.net/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ShareX.ShareX",
+    "Name": "ShareX (Screenshots)",
+    "Description": "ShareX is a free and open-source screen capture and file sharing tool. It supports various capture methods and offers advanced features for editing and sharing screenshots.",
+    "Website": "https://getsharex.com/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "VideoLAN.VLC",
+    "Name": "VLC (Video Player)",
+    "Description": "VLC Media Player is a free and open-source multimedia player that supports a wide range of audio and video formats. It is known for its versatility and cross-platform compatibility.",
+    "Website": "https://www.videolan.org/vlc/",
+    "Category": "Multimedia",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Famatech.AdvancedIPScanner",
+    "Name": "Advanced IP Scanner",
+    "Description": "Advanced IP Scanner is a fast and easy-to-use network scanner. It is designed to analyze LAN networks and provides information about connected devices.",
+    "Website": "https://www.advanced-ip-scanner.com/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "angryziber.AngryIPScanner",
+    "Name": "Angry IP Scanner",
+    "Description": "Angry IP Scanner is an open-source and cross-platform network scanner. It is used to scan IP addresses and ports, providing information about network connectivity.",
+    "Website": "https://angryip.org/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Maxon.CinebenchR23",
+    "Name": "Cinebench R23",
+    "Description": "Cinebench R23 is a benchmark tool for comparing CPU rendering performance across systems.",
+    "Website": "https://www.maxon.net/en/cinebench",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "CPUID.CPU-Z",
+    "Name": "CPU-Z",
+    "Description": "CPU-Z is a system monitoring and diagnostic tool for Windows. It provides detailed information about the computer's hardware components, including the CPU, memory, and motherboard.",
+    "Website": "https://www.cpuid.com/softwares/cpu-z.html",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "Wagnardsoft.DisplayDriverUninstaller",
+    "Name": "Display Driver Uninstaller",
+    "Description": "Display Driver Uninstaller (DDU) is a tool for completely uninstalling graphics drivers from NVIDIA, AMD, and Intel. It is useful for troubleshooting graphics driver-related issues.",
+    "Website": "https://www.wagnardsoft.com/display-driver-uninstaller-DDU-",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Herramienta avanzada para quitar drivers gráficos. Instalarla no significa que debas ejecutarla ni que mejore los FPS."
+  },
+  {
+    "Id": "TechPowerUp.GPU-Z",
+    "Name": "GPU-Z",
+    "Description": "GPU-Z provides detailed information about your graphics card and GPU.",
+    "Website": "https://www.techpowerup.com/gpuz/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "gerardog.gsudo",
+    "Name": "gsudo",
+    "Description": "gsudo is a sudo equivalent for Windows. It allows you to run commands with elevated administrative privileges directly within the current console window.",
+    "Website": "https://github.com/gerardog/gsudo",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "REALiX.HWiNFO",
+    "Name": "HWiNFO",
+    "Description": "HWiNFO provides comprehensive hardware information and diagnostics for Windows.",
+    "Website": "https://www.hwinfo.com/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "CPUID.HWMonitor",
+    "Name": "HWMonitor",
+    "Description": "HWMonitor is a hardware monitoring program that reads PC systems main health sensors.",
+    "Website": "https://www.cpuid.com/softwares/hwmonitor.html",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Los sensores y componentes auxiliares pueden requerir permisos o drivers. Evalúa compatibilidad con cada anticheat."
+  },
+  {
+    "Id": "MullvadVPN.MullvadVPN",
+    "Name": "Mullvad VPN",
+    "Description": "This is the VPN client software for the Mullvad VPN service.",
+    "Website": "https://mullvad.net/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "Insecure.Nmap",
+    "Name": "Nmap",
+    "Description": "Nmap (Network Mapper) is an open-source tool for network exploration and security auditing. It discovers devices on a network and provides information about their ports and services.",
+    "Website": "https://nmap.org/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "OpenVPNTechnologies.OpenVPNConnect",
+    "Name": "OpenVPN Connect",
+    "Description": "OpenVPN Connect is a VPN client that allows you to connect securely to a VPN server. It provides a secure and encrypted connection for protecting your online privacy.",
+    "Website": "https://openvpn.net/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "Proton.ProtonVPN",
+    "Name": "Proton VPN",
+    "Description": "Proton VPN is a no-logs VPN service that protects your privacy online with features like Secure Core and Tor over VPN.",
+    "Website": "https://protonvpn.com/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "PuTTY.PuTTY",
+    "Name": "PuTTY",
+    "Description": "PuTTY is a free and open-source terminal emulator, serial console, and network file transfer application. It supports various network protocols such as SSH, Telnet, and SCP.",
+    "Website": "https://www.chiark.greenend.org.uk/~sgtatham/putty/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Henry++.simplewall",
+    "Name": "Simplewall",
+    "Description": "Simplewall is a free and open-source firewall application for Windows. It allows users to control and manage the inbound and outbound network traffic of applications.",
+    "Website": "https://github.com/henrypp/simplewall",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Puede cambiar reglas de filtrado de red. Una configuración incorrecta puede bloquear juegos o servicios."
+  },
+  {
+    "Id": "Ventoy.Ventoy",
+    "Name": "Ventoy",
+    "Description": "Ventoy is an open-source tool for creating bootable USB drives. It supports multiple ISO files on a single USB drive, making it a versatile solution for installing operating systems.",
+    "Website": "https://www.ventoy.net/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Preparar un USB puede borrar su contenido. Revisa el dispositivo elegido antes de utilizarla."
+  },
+  {
+    "Id": "WinSCP.WinSCP",
+    "Name": "WinSCP",
+    "Description": "WinSCP is a popular open-source SFTP, FTP, and SCP client for Windows. It allows secure file transfers between a local and a remote computer.",
+    "Website": "https://winscp.net/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "WireGuard.WireGuard",
+    "Name": "WireGuard",
+    "Description": "WireGuard is a fast and modern VPN (Virtual Private Network) protocol. It aims to be simpler and more efficient than other VPN protocols, providing secure and reliable connections.",
+    "Website": "https://www.wireguard.com/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "WiresharkFoundation.Wireshark",
+    "Name": "Wireshark",
+    "Description": "Wireshark is a widely-used open-source network protocol analyzer. It allows users to capture and analyze network traffic in real-time, providing detailed insights into network activities.",
+    "Website": "https://www.wireshark.org/",
+    "Category": "Diagnóstico y redes",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Jellyfin.JellyfinMediaPlayer",
+    "Name": "Jellyfin Media Player",
+    "Description": "Jellyfin Media Player is a client application for the Jellyfin media server, providing access to your media library.",
+    "Website": "https://jellyfin.org/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Jellyfin.Server",
+    "Name": "Jellyfin Server",
+    "Description": "Jellyfin Server is an open-source media server software, allowing you to organize and stream your media library.",
+    "Website": "https://jellyfin.org/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "XBMCFoundation.Kodi",
+    "Name": "Kodi Media Center",
+    "Description": "Kodi is an open-source media center application that allows you to play and view most videos, music, podcasts, and other digital media files.",
+    "Website": "https://kodi.tv/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "LocalSend.LocalSend",
+    "Name": "LocalSend",
+    "Description": "An open-source cross-platform alternative to AirDrop.",
+    "Website": "https://localsend.org/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "MoonlightGameStreamingProject.Moonlight",
+    "Name": "Moonlight/GameStream Client",
+    "Description": "Moonlight/GameStream Client allows you to stream PC games to other devices over your local network.",
+    "Website": "https://moonlight-stream.org/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Netbird.Netbird",
+    "Name": "NetBird",
+    "Description": "NetBird is an open-source alternative comparable to TailScale that can be connected to a self-hosted server.",
+    "Website": "https://netbird.io/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "Nextcloud.NextcloudDesktop",
+    "Name": "Nextcloud Desktop",
+    "Description": "Nextcloud Desktop is the official desktop client for the Nextcloud file synchronization and sharing platform.",
+    "Website": "https://nextcloud.com/install/#install-clients",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Plex.Plex",
+    "Name": "Plex Desktop",
+    "Description": "Plex Desktop for Windows is the front end for Plex Media Server.",
+    "Website": "https://www.plex.tv",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Plex.PlexMediaServer",
+    "Name": "Plex Media Server",
+    "Description": "Plex Media Server is a media server software that allows you to organize and stream your media library. It supports various media formats and offers a wide range of features.",
+    "Website": "https://www.plex.tv/your-media/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "LizardByte.Sunshine",
+    "Name": "Sunshine/GameStream Server",
+    "Description": "Sunshine is a GameStream server that allows you to remotely play PC games on Android devices, offering low-latency streaming.",
+    "Website": "https://app.lizardbyte.dev/Sunshine/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Syncthing.Syncthing",
+    "Name": "Syncthing (CLI / Web UI)",
+    "Description": "Syncthing is a decentralized, peer-to-peer file synchronization tool that securely syncs files directly across devices without cloud servers, managed via a local web interface.",
+    "Website": "https://syncthing.net/",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GermanCoding.SyncTrayzor",
+    "Name": "SyncTrayzor",
+    "Description": "SyncTrayzor is a Windows tray utility that bundles and wraps Syncthing, making it behave like a native application to easily manage and monitor file synchronization.",
+    "Website": "https://github.com/GermanCoding/SyncTrayzor",
+    "Category": "Servidores y streaming",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "AgileBits.1Password",
+    "Name": "1Password",
+    "Description": "1Password is a password manager that allows you to store and manage your passwords securely.",
+    "Website": "https://1password.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "7zip.7zip",
+    "Name": "7-Zip",
+    "Description": "7-Zip is a free and open-source file archiver utility. It supports several compression formats and provides a high compression ratio, making it a popular choice for file compression.",
+    "Website": "https://www.7-zip.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "amir1376.ABDownloadManager",
+    "Name": "AB Download Manager",
+    "Description": "AB Download Manager is an open-source download accelerator and manager with multi-threaded downloads, queue scheduling, speed limiting, and browser integration.",
+    "Website": "https://abdownloadmanager.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "AnyDesk.AnyDesk",
+    "Name": "AnyDesk",
+    "Description": "AnyDesk is a remote desktop software that enables users to access and control computers remotely. It is known for its fast connection and low latency.",
+    "Website": "https://anydesk.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Permite acceso remoto. Revisa permisos, credenciales e inicio automático antes de habilitar conexiones."
+  },
+  {
+    "Id": "AutoHotkey.AutoHotkey",
+    "Name": "AutoHotkey",
+    "Description": "AutoHotkey is a scripting language for Windows that allows users to create custom automation scripts and macros. It is often used for automating repetitive tasks and customizing keyboard shortcuts.",
+    "Website": "https://www.autohotkey.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Automatización y macros: revisa las reglas de cada juego. PCOptimizer no crea ni ejecuta macros."
+  },
+  {
+    "Id": "Bitwarden.Bitwarden",
+    "Name": "Bitwarden",
+    "Description": "Bitwarden is an open-source password management solution. It allows users to store and manage their passwords in a secure and encrypted vault, accessible across multiple devices.",
+    "Website": "https://bitwarden.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Blur009.BlurAutoClicker",
+    "Name": "BlurAutoClicker",
+    "Description": "An Auto-clicker with a few advanced features and generally better performance than popular alternatives.",
+    "Website": "https://blur009.vercel.app/projects/blur-autoclicker/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Automatización de clics: su uso puede incumplir reglas de juegos. PCOptimizer solo ofrece la instalación."
+  },
+  {
+    "Id": "Klocman.BulkCrapUninstaller",
+    "Name": "Bulk Crap Uninstaller",
+    "Description": "Bulk Crap Uninstaller is a free and open-source uninstaller utility for Windows. It helps users remove unwanted programs and clean up their system by uninstalling multiple applications at once.",
+    "Website": "https://www.bcuninstaller.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Cloudflare.Warp",
+    "Name": "Cloudflare WARP",
+    "Description": "WARP is a freemium VPN service provided by Cloudflare. Includes usage of Cloudflare's DNS",
+    "Website": "https://one.one.one.one",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "CrystalDewWorld.CrystalDiskInfo",
+    "Name": "Crystal Disk Info",
+    "Description": "Crystal Disk Info is a disk health monitoring tool that provides information about the status and performance of hard drives. It helps users anticipate potential issues and monitor drive health.",
+    "Website": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "CrystalDewWorld.CrystalDiskMark",
+    "Name": "Crystal Disk Mark",
+    "Description": "Crystal Disk Mark is a disk benchmarking tool that measures the read and write speeds of storage devices. It helps users assess the performance of their hard drives and SSDs.",
+    "Website": "https://crystalmark.info/en/software/crystaldiskmark/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Las pruebas de escritura consumen ciclos y generan carga. No se lanzan benchmarks automáticamente."
+  },
+  {
+    "Id": "Deskflow.Deskflow",
+    "Name": "Deskflow",
+    "Description": "Deskflow is a free and open-source software KVM that lets you share a single keyboard and mouse across multiple computers.",
+    "Website": "https://github.com/deskflow/deskflow",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Dropbox.Dropbox",
+    "Name": "Dropbox",
+    "Description": "Dropbox is a cloud storage client for syncing files, sharing content, and keeping documents available across devices.",
+    "Website": "https://www.dropbox.com/desktop",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "ente-io.auth-desktop",
+    "Name": "Ente Auth",
+    "Description": "Ente Auth is a free, cross-platform, end-to-end encrypted authenticator app.",
+    "Website": "https://ente.io/auth/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "voidtools.Everything",
+    "Name": "Everything",
+    "Description": "Everything is a search engine that locates files and folders by filename instantly for Windows. Unlike Windows search Everything initially displays every file and folder on your computer (hence the name Everything). You type in a search filter to limit what files and folders are displayed.",
+    "Website": "https://www.voidtools.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "flux.flux",
+    "Name": "F.lux",
+    "Description": "f.lux adjusts the color temperature of your screen to reduce eye strain during nighttime use.",
+    "Website": "https://justgetflux.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "FilesCommunity.Files",
+    "Name": "Files",
+    "Description": "Alternative file explorer.",
+    "Website": "https://files.community",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "glzr-io.glazewm",
+    "Name": "GlazeWM",
+    "Description": "GlazeWM is a tiling window manager for Windows inspired by i3 and Polybar.",
+    "Website": "https://github.com/glzr-io/glazewm",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Google.GoogleDrive",
+    "Name": "Google Drive",
+    "Description": "File syncing across devices all tied to your Google account.",
+    "Website": "https://www.google.com/drive/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Hugo.Hugo.Extended",
+    "Name": "Hugo",
+    "Description": "The world's fastest framework for building websites.",
+    "Website": "https://gohugo.io",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "MHNexus.HxD",
+    "Name": "HxD Hex Editor",
+    "Description": "HxD is a free hex editor that allows you to edit, view, search, and analyze binary files.",
+    "Website": "https://mh-nexus.de/en/hxd/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Tonec.InternetDownloadManager",
+    "Name": "Internet Download Manager",
+    "Description": "Internet Download Manager is a download manager for accelerating, resuming, and scheduling file downloads.",
+    "Website": "https://www.internetdownloadmanager.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "sylikc.JPEGView",
+    "Name": "JPEG View",
+    "Description": "JPEGView is a lean, fast and highly configurable viewer/editor for JPEG, BMP, PNG, WEBP, TGA, GIF, JXL, HEIC, HEIF, AVIF, and TIFF images with a minimal GUI.",
+    "Website": "https://github.com/sylikc/jpegview",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "KeePassXCTeam.KeePassXC",
+    "Name": "KeePassXC",
+    "Description": "KeePassXC is a modern, secure, and open-source password manager that stores and manages your most sensitive information. You can run KeePassXC on Windows, macOS, and Linux systems. KeePassXC is for people with extremely high demands of secure personal data management. It saves many different types of information, such as usernames, passwords, URLs, attachments, and notes in an offline, encrypted file that can be stored in any location, including private and public cloud solutions. For easy identification and management, user-defined titles and icons can be specified for entries. In addition, entries are sorted into customizable groups. An integrated search function allows you to use advanced patterns to easily find any entry in your database. A customizable, fast, and easy-to-use password generator utility allows you to create passwords with any combination of characters or easy to remember passphrases.",
+    "Website": "https://keepassxc.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "MiniTool.PartitionWizard.Free",
+    "Name": "MiniTool Partition Wizard",
+    "Description": "Comprehensive free partition manager that performs advanced operations Windows natively cannot, such as merging partitions, converting file systems, and organizing disk capacity.",
+    "Website": "https://www.partitionwizard.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Modificar particiones puede provocar pérdida de datos. Instalar la herramienta no realiza una copia de seguridad."
+  },
+  {
+    "Id": "rcmaehl.MSEdgeRedirect",
+    "Name": "MSEdgeRedirect",
+    "Description": "A Tool to Redirect News, Search, Widgets, Weather, and More to your default browser.",
+    "Website": "https://github.com/rcmaehl/MSEdgeRedirect",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Cambia la redirección de enlaces. Puede cambiar su compatibilidad tras actualizaciones de Windows."
+  },
+  {
+    "Id": "Guru3D.Afterburner",
+    "Name": "MSI Afterburner",
+    "Description": "MSI Afterburner is a graphics card overclocking utility with advanced features.",
+    "Website": "https://www.msi.com/Landing/afterburner",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Puede cambiar frecuencias, voltajes o curvas y añadir monitorización. PCOptimizer no aplica perfiles; evalúa compatibilidad con cada juego."
+  },
+  {
+    "Id": "M2Team.NanaZip",
+    "Name": "NanaZip",
+    "Description": "NanaZip is a fast and efficient file compression and decompression tool.",
+    "Website": "https://nanazip.org",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Nilesoft.Shell",
+    "Name": "Nilesoft Shell",
+    "Description": "Shell is an expanded context menu tool that adds extra functionality and customization options to the Windows context menu.",
+    "Website": "https://nilesoft.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Personaliza el shell de Windows; puede requerir reinicio de Explorer y evaluación tras actualizaciones."
+  },
+  {
+    "Id": "TechPowerUp.NVCleanstall",
+    "Name": "NVCleanstall",
+    "Description": "NVCleanstall is a tool designed to customize NVIDIA driver installations, allowing advanced users to control more aspects of the installation process.",
+    "Website": "https://www.techpowerup.com/nvcleanstall/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Puede personalizar componentes del driver gráfico. Revisa compatibilidad y recuperación antes de utilizarlo."
+  },
+  {
+    "Id": "xM4ddy.OFGB",
+    "Name": "OFGB (Oh Frick Go Back)",
+    "Description": "GUI Tool to remove ads from various places around Windows 11",
+    "Website": "https://github.com/xM4ddy/OFGB",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Modifica opciones de Windows. Evalúa cada cambio y su reversión; no demuestra mejoras en juegos."
+  },
+  {
+    "Id": "OPAutoClicker.OPAutoClicker",
+    "Name": "OPAutoClicker",
+    "Description": "A full-fledged autoclicker with two modes of autoclicking, at your dynamic cursor location or at a prespecified location.",
+    "Website": "https://www.opautoclicker.com",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Automatización de clics: su uso puede incumplir reglas de juegos. PCOptimizer solo ofrece la instalación."
+  },
+  {
+    "Id": "OpenRGB.OpenRGB",
+    "Name": "OpenRGB",
+    "Description": "OpenRGB is an open-source RGB lighting control software designed to manage and control RGB lighting for various components and peripherals.",
+    "Website": "https://openrgb.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Oracle.VirtualBox",
+    "Name": "Oracle VirtualBox",
+    "Description": "Oracle VirtualBox is a powerful and free open-source virtualization tool for x86 and AMD64/Intel64 architectures.",
+    "Website": "https://www.virtualbox.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Parsec.Parsec",
+    "Name": "Parsec",
+    "Description": "Parsec is a low-latency, high-quality remote desktop sharing application for collaborating and gaming across devices.",
+    "Website": "https://parsec.app/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Permite acceso remoto. Revisa permisos, credenciales e inicio automático antes de habilitar conexiones."
+  },
+  {
+    "Id": "Giorgiotani.Peazip",
+    "Name": "PeaZip",
+    "Description": "PeaZip is a free, open-source file archiver utility that supports multiple archive formats and provides encryption features.",
+    "Website": "https://peazip.github.io/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Fleex255.PolicyPlus",
+    "Name": "Policy Plus",
+    "Description": "Local Group Policy Editor plus more, for all Windows editions.",
+    "Website": "https://github.com/Fleex255/PolicyPlus",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Editor de políticas: los cambios que hagas después pueden alterar funciones del sistema."
+  },
+  {
+    "Id": "BitSum.ProcessLasso",
+    "Name": "Process Lasso",
+    "Description": "Process Lasso is a system optimization and automation tool that improves system responsiveness and stability by adjusting process priorities and CPU affinities.",
+    "Website": "https://bitsum.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Proton.ProtonAuthenticator",
+    "Name": "Proton Authenticator",
+    "Description": "2FA app from Proton to securely sync and backup 2FA codes.",
+    "Website": "https://proton.me/authenticator",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Proton.ProtonDrive",
+    "Name": "Proton Drive",
+    "Description": "Proton Drive is an end-to-end encrypted Swiss vault for your files that protects your data.",
+    "Website": "https://proton.me/drive",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Proton.ProtonPass",
+    "Name": "Proton Pass",
+    "Description": "Proton Pass is a cloud-based password manager with end-to-end encryption and unique email aliases.",
+    "Website": "https://proton.me/pass",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "qBittorrent.qBittorrent",
+    "Name": "qBittorrent",
+    "Description": "qBittorrent is a free and open-source BitTorrent client that aims to provide a feature-rich and lightweight alternative to other torrent clients.",
+    "Website": "https://www.qbittorrent.org/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "RevoUninstaller.RevoUninstaller",
+    "Name": "Revo Uninstaller",
+    "Description": "Revo Uninstaller is an advanced uninstaller tool that helps you remove unwanted software and clean up your system.",
+    "Website": "https://www.revouninstaller.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Rufus.Rufus",
+    "Name": "Rufus Imager",
+    "Description": "Rufus is a utility that helps format and create bootable USB drives, such as USB keys or pen drives.",
+    "Website": "https://rufus.ie/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Crear un USB de arranque puede borrar su contenido. Revisa el dispositivo elegido antes de utilizarla."
+  },
+  {
+    "Id": "WhirlwindFX.SignalRgb",
+    "Name": "SignalRGB",
+    "Description": "SignalRGB lets you control and sync your favorite RGB devices with one free application.",
+    "Website": "https://www.signalrgb.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "GlennDelahoy.SnappyDriverInstallerOrigin",
+    "Name": "Snappy Driver Installer Origin",
+    "Description": "Snappy Driver Installer Origin is a free and open-source driver updater with a vast driver database for Windows.",
+    "Website": "https://www.glenn.delahoy.com/snappy-driver-installer-origin/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Instalador de drivers de terceros. Evalúa cada controlador y prioriza las fuentes del fabricante; PCOptimizer no instala drivers por este medio."
+  },
+  {
+    "Id": "StartIsBack.StartAllBack",
+    "Name": "StartAllBack",
+    "Description": "StartAllBack restores and improves Windows taskbar, Start menu, File Explorer, and shell UI behavior.",
+    "Website": "https://www.startallback.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Personaliza Explorer y la barra de tareas mediante software de terceros. Revisa licencia y compatibilidad con tu compilación de Windows."
+  },
+  {
+    "Id": "Tailscale.Tailscale",
+    "Name": "Tailscale",
+    "Description": "The Tailscale client allows you to connect all your devices using WireGuard®, without the hassle. Tailscale makes it as easy as installing an app and signing in.",
+    "Website": "https://tailscale.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Puede instalar adaptadores o cambiar rutas/DNS. No garantiza menor ping y requiere comprobar compatibilidad con tu red y juegos."
+  },
+  {
+    "Id": "TeamViewer.TeamViewer",
+    "Name": "TeamViewer",
+    "Description": "TeamViewer is a popular remote access and support software that allows you to connect to and control remote devices.",
+    "Website": "https://www.teamviewer.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Permite acceso remoto. Revisa permisos, credenciales e inicio automático antes de habilitar conexiones."
+  },
+  {
+    "Id": "GlavSoft.TightVNC",
+    "Name": "TightVNC",
+    "Description": "TightVNC is a free and open-source remote desktop software that lets you access and control a computer over the network. With its intuitive interface, you can interact with the remote screen as if you were sitting in front of it. You can open files, launch applications, and perform other actions on the remote desktop almost as if you were physically there.",
+    "Website": "https://www.tightvnc.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": "Permite acceso remoto. Revisa permisos, credenciales e inicio automático antes de habilitar conexiones."
+  },
+  {
+    "Id": "Ghisler.TotalCommander",
+    "Name": "Total Commander",
+    "Description": "Total Commander is a file manager for Windows that provides a powerful and intuitive interface for file management.",
+    "Website": "https://www.ghisler.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "CharlesMilette.TranslucentTB",
+    "Name": "TranslucentTB",
+    "Description": "TranslucentTB is a tool that allows you to customize the transparency of the Windows Taskbar.",
+    "Website": "https://translucenttb.github.io",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "JAMSoftware.TreeSize.Free",
+    "Name": "TreeSize Free",
+    "Description": "TreeSize Free is a disk space manager that helps you analyze and visualize the space usage on your drives.",
+    "Website": "https://www.jam-software.com/treesize_free/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "Devolutions.UniGetUI",
+    "Name": "UniGetUI",
+    "Description": "UniGetUI is a GUI for WinGet, Chocolatey, and other Windows CLI package managers.",
+    "Website": "https://devolutions.net/unigetui/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "RARLab.WinRAR",
+    "Name": "WinRAR",
+    "Description": "WinRAR is a powerful archive manager that allows you to create, manage, and extract compressed files.",
+    "Website": "https://www.win-rar.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "WiseCleaner.WiseProgramUninstaller",
+    "Name": "Wise Program Uninstaller (WiseCleaner)",
+    "Description": "Wise Program Uninstaller is the perfect solution for uninstalling Windows programs, allowing you to uninstall applications quickly and completely using its simple and user-friendly interface.",
+    "Website": "https://www.wisecleaner.com/wise-program-uninstaller.html",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  },
+  {
+    "Id": "AntibodySoftware.WizTree",
+    "Name": "WizTree",
+    "Description": "WizTree is a fast disk space analyzer that helps you quickly find the files and folders consuming the most space on your hard drive.",
+    "Website": "https://wiztreefree.com/",
+    "Category": "Utilidades",
+    "Source": "winget",
+    "Notes": ""
+  }
+]

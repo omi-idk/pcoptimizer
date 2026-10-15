@@ -1,0 +1,641 @@
+[
+  {
+    "Id": "WPFTweaksDeleteTempFiles",
+    "Name": "Borrar archivos temporales",
+    "Category": "Almacenamiento",
+    "Description": "Erases TEMP Folders.",
+    "Risks": "Puede afectar instaladores o cachés en uso. No borrar automáticamente cachés de shaders ni descargas personales.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksStorage",
+    "Name": "Desactivar Sensor de almacenamiento",
+    "Category": "Almacenamiento",
+    "Description": "Storage Sense deletes temp files automatically.",
+    "Risks": "Se pierde limpieza automática. Revisar configuración de archivos locales y espacio antes de cambiar.",
+    "ReferenceTargets": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy :: 01 [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksReservedStorage",
+    "Name": "Desactivar almacenamiento reservado",
+    "Category": "Almacenamiento",
+    "Description": "Disables Windows Reserved Storage (7-10 GB held for updates/temp files). Recommended only on small drives. Re-enable before major Windows feature updates to avoid installation failures.",
+    "Risks": "Puede dejar menos margen para actualizar o mantener Windows. No aumenta por sí solo la velocidad del disco.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDiskCleanup",
+    "Name": "Limpieza de disco",
+    "Category": "Almacenamiento",
+    "Description": "Runs Disk Cleanup on Drive C: and removes old Windows Updates.",
+    "Risks": "Revisar cada categoría antes de borrar. Los datos eliminados no se recuperan con un cambio de registro.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableBGapps",
+    "Name": "Aplicaciones en segundo plano",
+    "Category": "Aplicaciones",
+    "Description": "Disables all Microsoft Store apps from running in the background, which has to be done individually since Windows 11.",
+    "Risks": "Puede perder notificaciones y sincronización. No afecta necesariamente a todas las apps Win32; evaluar por aplicación.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications :: GlobalUserDisabled [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRemoveEdge",
+    "Name": "Desinstalar Microsoft Edge",
+    "Category": "Aplicaciones",
+    "Description": "Uninstalls Microsoft Edge by creating dummy MicrosoftEdge.exe file in the legacy Edge folder. This tricks Windows into unlocking the official Edge uninstaller allowing for a system-level removal.",
+    "Risks": "Puede afectar enlaces y aplicaciones dependientes. Reinstalar no garantiza recuperar datos; no quitar WebView2 en bloque.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRemoveOneDrive",
+    "Name": "Desinstalar OneDrive",
+    "Category": "Aplicaciones",
+    "Description": "Denies permission to remove OneDrive user files, then uses its own uninstaller to remove it and restores the original permission afterward.",
+    "Risks": "Revisar copias y archivos solo en nube antes; puede interrumpir sincronización y acceso a carpetas.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleNewOutlook",
+    "Name": "Nuevo Outlook",
+    "Category": "Aplicaciones",
+    "Description": "This will ensure the new Outlook application is used.",
+    "Risks": "Puede cambiar la experiencia de correo e integración. Revisar cuenta y datos antes de modificar.",
+    "ReferenceTargets": "HKCU:\\SOFTWARE\\Microsoft\\Office\\16.0\\Outlook\\Preferences :: UseNewOutlook [DWord] → \"1\"\nHKCU:\\Software\\Microsoft\\Office\\16.0\\Outlook\\Options\\General :: HideNewOutlookToggle [DWord] → \"0\"\nHKCU:\\Software\\Policies\\Microsoft\\Office\\16.0\\Outlook\\Options\\General :: DoNewOutlookAutoMigration [DWord] → \"0\"\nHKCU:\\Software\\Policies\\Microsoft\\Office\\16.0\\Outlook\\Preferences :: NewOutlookMigrationUserSetting [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksBraveDebloat",
+    "Name": "Personalizar componentes de Brave",
+    "Category": "Aplicaciones",
+    "Description": "Disables various annoyances like Brave Rewards, Leo AI, Crypto Wallet and VPN.",
+    "Risks": "Puede perder funciones del navegador. No equivale a optimización del juego.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveRewardsDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveWalletDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveVPNDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveAIChatEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveStatsPingEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveNewsDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveTalkDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: TorDisabled [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: BraveP3AEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: UrlKeyedAnonymizedDataCollectionEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: SafeBrowsingExtendedReportingEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\BraveSoftware\\Brave :: MetricsReportingEnabled [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksEdgeDebloat",
+    "Name": "Personalizar componentes de Edge",
+    "Category": "Aplicaciones",
+    "Description": "Disables various telemetry options, popups, and other annoyances in Edge.",
+    "Risks": "Puede perder funciones o cambiar políticas del navegador; revisar impacto en aplicaciones relacionadas.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate :: CreateDesktopShortcutDefault [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: PersonalizationReportingEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge\\ExtensionInstallBlocklist :: 1 [String] → \"ofefcgjbeghpigppfmkologfjadafddi\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: ShowRecommendationsEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: HideFirstRunExperience [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: UserFeedbackAllowed [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: ConfigureDoNotTrack [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: AlternateErrorPagesEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: EdgeCollectionsEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: EdgeShoppingAssistantEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: MicrosoftEdgeInsiderPromotionEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: ShowMicrosoftRewards [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: WebWidgetAllowed [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: DiagnosticData [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: EdgeAssetDeliveryServiceEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: WalletDonationEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge :: DefaultBrowserSettingsCampaignEnabled [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleDetailedBSoD",
+    "Name": "Detalles de pantalla azul",
+    "Category": "Diagnóstico",
+    "Description": "Gives more information when you blue screen.",
+    "Risks": "Ayuda al diagnóstico, no evita fallos ni aumenta FPS.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\CrashControl :: DisplayParameters [DWord] → \"1\"\nHKLM:\\SYSTEM\\CurrentControlSet\\Control\\CrashControl :: DisableEmoticon [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleVerboseLogon",
+    "Name": "Mensajes detallados al iniciar sesión",
+    "Category": "Diagnóstico",
+    "Description": "Show detailed messages during startup/shutdown.",
+    "Risks": "Útil para investigar arranque; no acelera el juego por sí solo.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System :: VerboseStatus [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksLogiBlock",
+    "Name": "Instalación automática de Logitech Download Assistant",
+    "Category": "Dispositivos",
+    "Description": "Blocks the Logi Download Assistant that Windows Update keeps reinstalling with Logitech device drivers. Logitech hardware keeps working without it.",
+    "Risks": "Puede afectar detección y configuración de periféricos; revisar el software realmente instalado.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRazerBlock",
+    "Name": "Instalación automática de software Razer",
+    "Category": "Dispositivos",
+    "Description": "Blocks ALL Razer Software installations. The hardware works fine without any software.",
+    "Risks": "Puede perder configuración de periféricos, iluminación o funciones auxiliares.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DriverSearching :: SearchOrderConfig [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Device Installer :: DisableCoInstallers [DWord] → \"1\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksPreventDeviceMetadataFromNetwork",
+    "Name": "Instalación de apps complementarias de dispositivos",
+    "Category": "Dispositivos",
+    "Description": "Prevents additional software from being installed when plugging in devices (e.g. Ads when plugging in a monitor). Poses potential security risk.",
+    "Risks": "Puede impedir software necesario para botones, audio, iluminación o funciones del fabricante.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Device Metadata :: PreventDeviceMetadataFromNetwork [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFAddUltPerf",
+    "Name": "Crear plan Máximo rendimiento",
+    "Category": "Energía",
+    "Description": "Sin descripción en el catálogo de referencia.",
+    "Risks": "Puede aumentar consumo, ruido y temperatura sin mejorar FPS. Revisar disponibilidad y hardware, especialmente portátiles.",
+    "ReferenceTargets": "Acción definida por funciones o controles de la referencia. Sus efectos completos requieren revisión.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksHiber",
+    "Name": "Desactivar hibernación",
+    "Category": "Energía",
+    "Description": "Hibernation is really meant for laptops as it saves what's in memory before turning the PC off. It really should never be used.",
+    "Risks": "Afecta hibernación e inicio rápido; especialmente relevante en portátiles.",
+    "ReferenceTargets": "HKLM:\\System\\CurrentControlSet\\Control\\Session Manager\\Power :: HibernateEnabled [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FlyoutMenuSettings :: ShowHibernateOption [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFRemoveUltPerf",
+    "Name": "Quitar plan Máximo rendimiento",
+    "Category": "Energía",
+    "Description": "Sin descripción en el catálogo de referencia.",
+    "Risks": "Comprobar plan activo, personalizaciones y recuperación antes de eliminarlo.",
+    "ReferenceTargets": "Acción definida por funciones o controles de la referencia. Sus efectos completos requieren revisión.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleStandbyFix",
+    "Name": "Red durante suspensión S0",
+    "Category": "Energía",
+    "Description": "Toggles network connectivity during S0 Sleep which is low power idle in modern laptops.",
+    "Risks": "Puede cambiar consumo en reposo y notificaciones. Evaluar soporte de Modern Standby.",
+    "ReferenceTargets": "HKCU:\\SOFTWARE\\Policies\\Microsoft\\Power\\PowerSettings\\f15576e8-98b7-4186-b944-eafa664402d9 :: ACSettingIndex [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleS3Sleep",
+    "Name": "Suspensión S3",
+    "Category": "Energía",
+    "Description": "Toggles between Modern Standby and S3 Sleep, which cuts off power to the CPU while continuing to refresh the memory.",
+    "Risks": "Requiere soporte real de firmware. No se debe forzar mediante registro como solución universal.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Power :: PlatformAoAcOverride [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleMouseAcceleration",
+    "Name": "Aceleración del puntero",
+    "Category": "Entrada",
+    "Description": "Makes it so Cursor movement is affected by the speed of your physical mouse movements.",
+    "Risks": "Depende del juego y de si usa entrada raw. Cambia la sensación del ratón y no demuestra menor latencia.",
+    "ReferenceTargets": "HKCU:\\Control Panel\\Mouse :: MouseSpeed [DWord] → \"1\"\nHKCU:\\Control Panel\\Mouse :: MouseThreshold1 [DWord] → \"6\"\nHKCU:\\Control Panel\\Mouse :: MouseThreshold2 [DWord] → \"10\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleNumLock",
+    "Name": "Bloq Num al iniciar",
+    "Category": "Entrada",
+    "Description": "Toggle the Num Lock key state when your computer starts.",
+    "Risks": "Preferencia del teclado; no es una mejora de rendimiento.",
+    "ReferenceTargets": "HKU:\\.Default\\Control Panel\\Keyboard :: InitialKeyboardIndicators [String] → \"2\"\nHKCU:\\Control Panel\\Keyboard :: InitialKeyboardIndicators [String] → \"2\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleStickyKeys",
+    "Name": "Teclas especiales",
+    "Category": "Entrada",
+    "Description": "Toggles the Sticky Keys, which activate when clicking shift rapidly.",
+    "Risks": "Puede afectar accesibilidad. Ofrecer controlar el atajo por separado y conservar la elección del usuario.",
+    "ReferenceTargets": "HKCU:\\Control Panel\\Accessibility\\StickyKeys :: Flags [DWord] → \"506\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "GameCapture",
+    "Name": "Grabación y captura en segundo plano",
+    "Category": "Gaming",
+    "Description": "Opción añadida para evaluar en PCOptimizer.",
+    "Risks": "Desactivarla puede evitar carga cuando está activa, pero se pierde captura de momentos. Medir y respetar la elección del usuario.",
+    "ReferenceTargets": "Sin modificación automática. Puede abrirse Capturas desde los accesos nativos.",
+    "Source": "https://learn.microsoft.com/en-us/windows/apps/develop/launch/launch-settings-app"
+  },
+  {
+    "Id": "WPFToggleGameMode",
+    "Name": "Modo Juego",
+    "Category": "Gaming",
+    "Description": "Toggles Windows prioritizes gaming performance by allocating system resources to games.",
+    "Risks": "Revisar estado real y comportamiento por juego. Un candidato a evaluar no garantiza mejoras en todos los equipos.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\GameBar :: AllowAutoGameMode [DWord] → \"1\"\nHKCU:\\Software\\Microsoft\\GameBar :: AutoGameModeEnabled [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFMultiplaneOverlay",
+    "Name": "Multiplane Overlay (MPO)",
+    "Category": "Gráficos",
+    "Description": "Multiplane Overlay composes multiple image layers, which can sometimes cause issues with graphics cards. Changes to this preference are applied immediately.",
+    "Risks": "Valorar para un fallo reproducible de composición o parpadeo. Puede cambiar consumo y comportamiento de ventanas; no desactivar por defecto.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\Dwm :: OverlayTestMode [DWord] → {\"Enabled\": \"<RemoveEntry>\", \"Disabled (Compatibility)\": \"5\", \"Fully Disabled\": \"5\"}\nHKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers :: DisableOverlays [DWord] → {\"Enabled\": \"<RemoveEntry>\", \"Disabled (Compatibility)\": \"<RemoveEntry>\", \"Fully Disabled\": \"1\"}",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "HAGS",
+    "Name": "Programación de GPU acelerada por hardware (HAGS)",
+    "Category": "Gráficos",
+    "Description": "Opción añadida para evaluar en PCOptimizer.",
+    "Risks": "Depende de GPU, controlador, juego y funciones de generación de cuadros. Evaluar estabilidad y mediciones antes/después.",
+    "ReferenceTargets": "Sin ejecutor conectado. Verificar requisitos y necesidad de reinicio.",
+    "Source": "https://devblogs.microsoft.com/directx/hardware-accelerated-gpu-scheduling/"
+  },
+  {
+    "Id": "TimerPolicies",
+    "Name": "Timers, HPET y opciones BCD",
+    "Category": "Latencia",
+    "Description": "Opción añadida para evaluar en PCOptimizer.",
+    "Risks": "Microsoft documenta useplatformclock, useplatformtick y disabledynamictick para depuración. Forzar timers puede aumentar consumo y empeorar rendimiento.",
+    "ReferenceTargets": "No se modifica BCD, firmware ni temporización. Fuera de perfiles automáticos.",
+    "Source": "https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/bcdedit--set"
+  },
+  {
+    "Id": "WPFToggleWindowSnapping",
+    "Name": "Acoplar ventanas",
+    "Category": "Personalización",
+    "Description": "Toggles the window snapping feature when dragging windows.",
+    "Risks": "Cambia organización del escritorio; no demuestra mejora de FPS.",
+    "ReferenceTargets": "HKCU:\\Control Panel\\Desktop :: WindowArrangementActive [String] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleTaskbarAlignment",
+    "Name": "Alineación de iconos de barra",
+    "Category": "Personalización",
+    "Description": "Toggles the Taskbar alignment either to the left or center.",
+    "Risks": "Preferencia visual compatible según opciones de Windows; no aumenta FPS.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: TaskbarAl [DWord] → \"1\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "TaskbarSize",
+    "Name": "Barra de tareas e iconos más pequeños",
+    "Category": "Personalización",
+    "Description": "Opción añadida para evaluar en PCOptimizer.",
+    "Risks": "La altura completa de la barra y el tamaño de los iconos son distintos. En Windows 11, evaluar opciones nativas por compilación; TaskbarSi no es una solución universal.",
+    "ReferenceTargets": "Sin ejecutor de registro. Puede abrirse la página nativa desde Personalización.",
+    "Source": "https://support.microsoft.com/en-us/windows/customize-the-taskbar-in-windows-0657a50f-0cc7-dbfd-ae6b-05020b195b07"
+  },
+  {
+    "Id": "WPFToggleScrollbars",
+    "Name": "Barras de desplazamiento visibles",
+    "Category": "Personalización",
+    "Description": "If enabled, scrollbars will always be visible. If disabled, Windows will automatically hide scrollbars when not in use.",
+    "Risks": "Preferencia de accesibilidad; no es un ajuste de FPS.",
+    "ReferenceTargets": "HKCU:\\Control Panel\\Accessibility :: DynamicScrollbars [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleBingSearch",
+    "Name": "Búsqueda web en Inicio",
+    "Category": "Personalización",
+    "Description": "Toggles Bing web search results in Windows Search.",
+    "Risks": "Cambia resultados y funciones de búsqueda; objetivo de preferencia o privacidad, no FPS demostrado.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search :: BingSearchEnabled [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleDisableLockscreen",
+    "Name": "Desactivar pantalla de bloqueo",
+    "Category": "Personalización",
+    "Description": "Skips the lock screen entirely and goes directly to the sign-in screen on boot and wake.",
+    "Risks": "Puede cambiar el flujo de acceso y privacidad visual. No desactiva la necesidad de autenticación por sí mismo.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization :: NoLockScreen [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleLoginBlur",
+    "Name": "Desenfoque al iniciar sesión",
+    "Category": "Personalización",
+    "Description": "Toggles the acrylic blur effect on login screen background.",
+    "Risks": "Cambia apariencia del inicio de sesión; sin mejora de gaming demostrada.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System :: DisableAcrylicBackgroundOnLogon [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableExplorerAutoDiscovery",
+    "Name": "Detección automática del tipo de carpeta",
+    "Category": "Personalización",
+    "Description": "Windows Explorer automatically tries to guess the type of the folder based on its contents, slowing down the browsing experience. WARNING! Will disable File Explorer grouping.",
+    "Risks": "Cambia la vista de carpetas; no demuestra mejora de gaming.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisplay",
+    "Name": "Efectos visuales de Windows",
+    "Category": "Personalización",
+    "Description": "Sets the system preferences to performance. You can do this manually with sysdm.cpl as well.",
+    "Risks": "Cambia animaciones y apariencia; medir respuesta de escritorio y no atribuir FPS sin pruebas.",
+    "ReferenceTargets": "HKCU:\\Control Panel\\Desktop :: DragFullWindows [String] → \"0\"\nHKCU:\\Control Panel\\Desktop :: MenuShowDelay [String] → \"200\"\nHKCU:\\Control Panel\\Desktop\\WindowMetrics :: MinAnimate [String] → \"0\"\nHKCU:\\Control Panel\\Keyboard :: KeyboardDelay [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: ListviewAlphaSelect [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: ListviewShadow [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: TaskbarAnimations [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects :: VisualFXSetting [DWord] → \"3\"\nHKCU:\\Software\\Microsoft\\Windows\\DWM :: EnableAeroPeek [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: TaskbarMn [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: ShowTaskViewButton [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search :: SearchboxTaskbarMode [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksEndTaskOnTaskbar",
+    "Name": "Finalizar tarea desde barra",
+    "Category": "Personalización",
+    "Description": "Enables option to end task when right-clicking a program in the taskbar.",
+    "Risks": "Facilita cerrar procesos; finalizar una aplicación puede perder trabajo no guardado.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings :: TaskbarEndTask [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleTaskView",
+    "Name": "Icono de Vista de tareas",
+    "Category": "Personalización",
+    "Description": "Toggles the Task View Button in the Taskbar.",
+    "Risks": "Cambia acceso a escritorios y ventanas; no demuestra mejora de rendimiento.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: ShowTaskViewButton [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleTaskbarSearch",
+    "Name": "Icono de búsqueda en barra",
+    "Category": "Personalización",
+    "Description": "Toggles the Search Button on the Taskbar.",
+    "Risks": "Oculta o muestra un acceso; la búsqueda puede seguir disponible por otros medios.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search :: SearchboxTaskbarMode [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleHideSettingsHome",
+    "Name": "Inicio de Configuración",
+    "Category": "Personalización",
+    "Description": "Toggles the Home Page in the Windows Settings app.",
+    "Risks": "Depende de Windows; cambia navegación y no demuestra mejora de gaming.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer :: SettingsPageVisibility [String] → \"show:home\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRemoveHomeAndGallery",
+    "Name": "Inicio y Galería del Explorador",
+    "Category": "Personalización",
+    "Description": "Removes the Home and Gallery from Explorer and sets This PC as default.",
+    "Risks": "Quita accesos de la interfaz; sin beneficio de gaming demostrado.",
+    "ReferenceTargets": "HKCU:\\Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903} :: System.IsPinnedToNameSpaceTree [DWord] → \"0\"\nHKCU:\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} :: System.IsPinnedToNameSpaceTree [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: LaunchTo [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRevertStartMenu",
+    "Name": "Menú Inicio anterior",
+    "Category": "Personalización",
+    "Description": "Bring back the old Start Menu layout from before the gradual rollout of the new one in 25H2. On newer versions of Windows !!THIS TWEAK WILL NOT WORK!!",
+    "Risks": "Depende de la compilación; una actualización puede ignorar el cambio o alterar Explorer.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\ControlSet001\\Control\\FeatureManagement\\Overrides\\8\\3036241548 :: EnabledState [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRightClickMenu",
+    "Name": "Menú contextual anterior",
+    "Category": "Personalización",
+    "Description": "Restores the classic context menu when right-clicking in File Explorer, replacing the simplified Windows 11 version.",
+    "Risks": "Cambia Explorer y depende de su versión. No demuestra mejora de gaming.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleHiddenFiles",
+    "Name": "Mostrar archivos ocultos",
+    "Category": "Personalización",
+    "Description": "Reveals hidden files in Explorer.",
+    "Risks": "Expone archivos que conviene no modificar; no demuestra mejora de FPS.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: Hidden [DWord] → \"1\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleShowExt",
+    "Name": "Mostrar extensiones de archivos",
+    "Category": "Personalización",
+    "Description": "Shows .file extensions in Explorer (.exe, .png, etc.)",
+    "Risks": "Ayuda a reconocer tipos de archivo; no modifica rendimiento del juego.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: HideFileExt [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableNotifications",
+    "Name": "Notificaciones y calendario de la bandeja",
+    "Category": "Personalización",
+    "Description": "Disables all Notifications INCLUDING Calendar.",
+    "Risks": "Puede ocultar avisos útiles. Es una preferencia; no una mejora de FPS demostrada.",
+    "ReferenceTargets": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer :: DisableNotificationCenter [DWord] → \"1\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications :: ToastEnabled [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleBatteryPercentage",
+    "Name": "Porcentaje de batería en bandeja",
+    "Category": "Personalización",
+    "Description": "Shows numeric battery percentage next to the battery icon in the system tray.",
+    "Risks": "Depende del hardware y compilación. Es una preferencia visual.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: IsBatteryPercentageEnabled [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksWidget",
+    "Name": "Quitar Widgets",
+    "Category": "Personalización",
+    "Description": "Removes the annoying widgets in the bottom left of the Taskbar.",
+    "Risks": "Se pierden sus paneles y contenido; mejora de gaming no demostrada.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableStoreSearch",
+    "Name": "Recomendaciones de Store en búsqueda",
+    "Category": "Personalización",
+    "Description": "Will not display recommended Microsoft Store apps when searching for apps in the Start menu.",
+    "Risks": "Cambia resultados sugeridos; no demuestra mejora de FPS.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleStartMenuRecommendations",
+    "Name": "Recomendaciones en Inicio",
+    "Category": "Personalización",
+    "Description": "Toggles the recommendations section in the Start Menu. WARNING: This will also disable Windows Spotlight on your Lock Screen as a side effect.",
+    "Risks": "Puede quitar sugerencias o accesos útiles; depende de políticas y versión.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Start :: HideRecommendedSection [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Education :: IsEducationEnvironment [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer :: HideRecommendedSection [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleDarkMode",
+    "Name": "Tema oscuro",
+    "Category": "Personalización",
+    "Description": "Dark Mode for the system and applications.",
+    "Risks": "Preferencia visual; no se anuncia mejora de rendimiento.",
+    "ReferenceTargets": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize :: AppsUseLightTheme [DWord] → \"0\"\nHKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize :: SystemUsesLightTheme [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksWindowsAI",
+    "Name": "Desactivar o quitar funciones de IA de Windows",
+    "Category": "Privacidad",
+    "Description": "Removes and disables all AI features/packages",
+    "Risks": "Afecta funciones concretas según Windows, edición y hardware; evaluar componentes por separado y no prometer FPS.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer :: SettingsPageVisibility [String] → \"hide:aicomponents\"\nHKLM:\\SOFTWARE\\Policies\\WindowsNotepad :: DisableAIFeatures [DWord] → \"1\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksLocation",
+    "Name": "Desactivar ubicación",
+    "Category": "Privacidad",
+    "Description": "Disables Location Tracking.",
+    "Risks": "Puede afectar mapas, ubicación y Encontrar mi dispositivo.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location :: Value [String] → \"Deny\"\nHKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44} :: SensorPermissionState [DWord] → \"0\"\nHKLM:\\SYSTEM\\Maps :: AutoUpdateEnabled [DWord] → \"0\"\nServicio: lfsvc → Disabled",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksConsumerFeatures",
+    "Name": "Experiencias de consumidor",
+    "Category": "Privacidad",
+    "Description": "Stops promoted app installs and reduces app suggestions from Microsoft Store content.",
+    "Risks": "Controla promociones y contenido sugerido; no demuestra mejora de FPS y depende de la edición de Windows.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent :: DisableWindowsConsumerFeatures [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksActivity",
+    "Name": "Historial de actividad",
+    "Category": "Privacidad",
+    "Description": "Stops Windows from publishing or uploading user activities while preserving clipboard history.",
+    "Risks": "Puede perderse el historial; no hay mejora de FPS demostrada.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System :: EnableActivityFeed [DWord] → \"1\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System :: PublishUserActivities [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System :: UploadUserActivities [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFOOSUbutton",
+    "Name": "O&O ShutUp10++",
+    "Category": "Privacidad",
+    "Description": "Sin descripción en el catálogo de referencia.",
+    "Risks": "Herramienta externa con sus propias políticas. No se ejecuta ni se aplican sus perfiles desde este catálogo.",
+    "ReferenceTargets": "Acción definida por funciones o controles de la referencia. Sus efectos completos requieren revisión.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksTelemetry",
+    "Name": "Opciones de telemetría",
+    "Category": "Privacidad",
+    "Description": "Disables Microsoft Telemetry.",
+    "Risks": "Puede limitar diagnósticos y soporte. Las políticas varían por edición; no equivale a ganancia de rendimiento.",
+    "ReferenceTargets": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo :: Enabled [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy :: TailoredExperiencesWithDiagnosticDataEnabled [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy :: HasAccepted [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Input\\TIPC :: Enabled [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\InputPersonalization :: RestrictImplicitInkCollection [DWord] → \"1\"\nHKCU:\\Software\\Microsoft\\InputPersonalization :: RestrictImplicitTextCollection [DWord] → \"1\"\nHKCU:\\Software\\Microsoft\\InputPersonalization\\TrainedDataStore :: HarvestContacts [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Personalization\\Settings :: AcceptedPrivacyPolicy [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection :: AllowTelemetry [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced :: Start_TrackProgs [DWord] → \"0\"\nHKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System :: PublishUserActivities [DWord] → \"0\"\nHKCU:\\Software\\Microsoft\\Siuf\\Rules :: NumberOfSIUFInPeriod [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksRestorePoint",
+    "Name": "Crear punto de restauración",
+    "Category": "Recuperación",
+    "Description": "Creates a restore point at runtime in case a revert is needed from WinUtil modifications.",
+    "Risks": "Depende de protección del sistema y espacio disponible. No sustituye una copia de archivos o valores por acción.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SystemRestore :: SystemRestorePointCreationFrequency [DWord] → \"0\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksBlockAdobeNet",
+    "Name": "Bloqueo de dominios de Adobe",
+    "Category": "Red",
+    "Description": "Reduces user interruptions by selectively blocking connections to Adobe's activation and telemetry servers. Credit: Ruddernation-Designs",
+    "Risks": "Puede romper actualizaciones, autenticación o servicios legítimos. No recomendado como optimización de gaming.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableIPv6",
+    "Name": "Desactivar IPv6",
+    "Category": "Red",
+    "Description": "Disables IPv6.",
+    "Risks": "Microsoft desaconseja desactivarlo; puede afectar componentes de Windows. Visible para evaluación, fuera de perfiles automáticos.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters :: DisabledComponents [DWord] → \"255\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksTeredo",
+    "Name": "Desactivar Teredo",
+    "Category": "Red",
+    "Description": "Teredo network tunneling is an IPv6 feature that can cause additional latency, but may cause problems with some games.",
+    "Risks": "Puede afectar conectividad de juegos y NAT. Comprobar dependencias antes de cambiar.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters :: DisabledComponents [DWord] → \"1\"\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDeliveryOptimization",
+    "Name": "Optimización de distribución",
+    "Category": "Red",
+    "Description": "Stops Windows from using your bandwidth to upload updates to other PCs on the internet or local network.",
+    "Risks": "Cambia distribución de actualizaciones; puede aumentar las descargas del servidor. Evaluar límites de ancho de banda antes de desactivar.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization :: DODownloadMode [DWord] → \"0\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksIPv46",
+    "Name": "Preferir IPv4 sobre IPv6",
+    "Category": "Red",
+    "Description": "Setting the IPv4 preference can have latency and security benefits on private networks where IPv6 is not configured.",
+    "Risks": "Solo valorar para un problema de conectividad identificado; afecta selección de rutas y no garantiza menos ping.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters :: DisabledComponents [DWord] → \"32\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFchangedns",
+    "Name": "Seleccionar DNS",
+    "Category": "Red",
+    "Description": "Sin descripción en el catálogo de referencia.",
+    "Risks": "Cambia resolución de nombres y operador de consultas. No garantiza menor ping dentro de una partida.",
+    "ReferenceTargets": "Acción definida por funciones o controles de la referencia. Sus efectos completos requieren revisión.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableWarningForUnsignedRdp",
+    "Name": "Avisos de archivos RDP sin firma",
+    "Category": "Seguridad",
+    "Description": "Disables warnings shown when launching unsigned RDP files introduced with the latest Windows 10 and 11 updates.",
+    "Risks": "Quitar avisos reduce protección al abrir conexiones de origen no confiable. No recomendado como ajuste de gaming.",
+    "ReferenceTargets": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services\\Client :: RedirectionWarningDialogVersion [DWord] → \"1\"\nHKCU:\\SOFTWARE\\Microsoft\\Terminal Server Client :: RdpLaunchConsentAccepted [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksDisableBitLocker",
+    "Name": "Desactivar BitLocker",
+    "Category": "Seguridad",
+    "Description": "Disables BitLocker.",
+    "Risks": "Reduce la protección de datos y puede desencriptar la unidad. No recomendado como optimización de gaming; revisar cifrado y recuperación.",
+    "ReferenceTargets": "También contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksServices",
+    "Name": "Poner servicios en inicio manual",
+    "Category": "Sistema",
+    "Description": "Sets some services to Manual startup and adjusts the SvcHostSplitThresholdInKB registry value to better match system memory, which can significantly reduce the number of svchost.exe processes.",
+    "Risks": "Puede afectar audio, mandos, red, impresoras y juegos. Evaluar cada servicio y sus dependencias.",
+    "ReferenceTargets": "Servicio: CscService → Disabled\nServicio: DiagTrack → Disabled\nServicio: MapsBroker → Manual\nServicio: StorSvc → Manual\nServicio: SharedAccess → Disabled\nTambién contiene scripts en la referencia: sus efectos completos requieren revisión. No se incluyen ni se ejecutan aquí.",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksUTC",
+    "Name": "Reloj de hardware en UTC",
+    "Category": "Sistema",
+    "Description": "Essential for computers that are dual booting. Fixes the time sync with Linux systems.",
+    "Risks": "Útil en ciertos equipos con arranque dual; puede desajustar la hora. No demuestra mejora de FPS.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation :: RealTimeIsUniversal [QWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFToggleLongPaths",
+    "Name": "Rutas largas",
+    "Category": "Sistema",
+    "Description": "Toggles support for file paths longer than 260 characters in Explorer.",
+    "Risks": "Requiere compatibilidad de cada aplicación. Soluciona límites de rutas, no es una optimización de FPS.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\FileSystem :: LongPathsEnabled [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  },
+  {
+    "Id": "WPFTweaksWPBT",
+    "Name": "Windows Platform Binary Table (WPBT)",
+    "Category": "Sistema",
+    "Description": "If enabled, WPBT allows your computer vendor to execute programs at boot time, such as anti-theft software, software drivers, as well as force install software without user consent. Poses potential security risk.",
+    "Risks": "Puede cambiar la carga de componentes OEM. Evaluar seguridad, mantenimiento y soporte del fabricante.",
+    "ReferenceTargets": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager :: DisableWpbtExecution [DWord] → \"1\"",
+    "Source": "https://github.com/ChrisTitusTech/winutil/blob/07ccd8e2e755a706f31569808b31f5b77acad6a9/config/tweaks.json"
+  }
+]
