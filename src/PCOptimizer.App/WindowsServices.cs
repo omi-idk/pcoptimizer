@@ -68,16 +68,21 @@ internal static class WindowsCommands
         const string script = """
             $ErrorActionPreference = 'Stop'
             [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+            $env:PSModulePath = [IO.Path]::Combine($PSHOME, 'Modules')
             $cpu = @(Get-CimInstance Win32_Processor)
             $gpu = @(Get-CimInstance Win32_VideoController)
             $system = Get-CimInstance Win32_ComputerSystem
             $os = Get-CimInstance Win32_OperatingSystem
             $disks = @(Get-CimInstance Win32_DiskDrive)
+            $board = @(Get-CimInstance Win32_BaseBoard)
+            $bios = @(Get-CimInstance Win32_BIOS)
             [pscustomobject]@{
                 Cpu = ($cpu.Name -join ' / ')
                 Gpu = ($gpu.Name -join ' / ')
                 MemoryBytes = [long]$system.TotalPhysicalMemory
                 Os = $os.Caption + ' · ' + $os.Version
+                Motherboard = (($board | ForEach-Object { $_.Manufacturer + ' ' + $_.Product }) -join ' / ')
+                Bios = ($bios.SMBIOSBIOSVersion -join ' / ')
                 Disks = @($disks | ForEach-Object {
                     [pscustomobject]@{ Model = $_.Model; Size = [long]$_.Size }
                 })
@@ -90,7 +95,7 @@ internal static class WindowsCommands
     }
 }
 
-internal sealed record Inventory(string Cpu, string Gpu, long MemoryBytes, string Os, DiskInfo[] Disks);
+internal sealed record Inventory(string Cpu, string Gpu, long MemoryBytes, string Os, DiskInfo[] Disks, string Motherboard, string Bios);
 internal sealed record DiskInfo(string Model, long Size);
 internal sealed record PowerChange(Guid Previous, Guid Target, DateTimeOffset Date, string State);
 

@@ -1,6 +1,6 @@
 # Catálogo ampliado y opciones de Windows
 
-Revisión: 15 de octubre de 2026. Alcance acordado: incluir las aplicaciones y ajustes de las capturas; mantener los ajustes sensibles visibles con evaluación pendiente. Se amplía la interfaz sin presentar esos candidatos como mejoras comprobadas o funciones ya aplicables.
+Revisión: 15 de octubre de 2026. Alcance acordado: incluir las aplicaciones y ajustes de las capturas; mantener los ajustes sensibles visibles con evaluación pendiente. Esta revisión documenta el catálogo original. La Preview 0.2 añade ajustes ejecutables independientes: consulta [el estado actual](ajustes-aplicables.md). Los candidatos restantes no se presentan como mejoras comprobadas.
 
 ## Cobertura del software
 

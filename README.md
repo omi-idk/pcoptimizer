@@ -2,21 +2,28 @@
 
 Aplicación gráfica en español para diagnosticar y ajustar una PC Windows orientada a gaming. Base inicial en **C# / .NET 10 / WPF**. No se anuncian mejoras de rendimiento sin mediciones.
 
-## Estado actual
+## Preview 0.2: funciones implementadas
 
-Implementado:
+- **14 ajustes ejecutables** de registro, lectura del estado actual, selección individual y perfiles Mínimo, Recomendado, Gaming e Intensivo. Revisión de los valores exactos antes de escribir, respaldo por valor/tipo/existencia, verificación posterior y reversión con detección de conflictos. Consulta [qué aplica cada perfil](docs/ajustes-aplicables.md).
+- **Ajustes del equipo con UAC:** HAGS y MPO para evaluación manual, aplazamiento de funciones y exclusión de drivers en Windows Update compatible. Los perfiles automáticos no incluyen estos ajustes. No se cambian voltajes ni protecciones.
+- Interfaz renovada: inicio con tarjetas de hardware y accesos, perfiles visibles, buscador de ajustes aplicables, barra de aplicación persistente y sección de reversión. El catálogo de referencia queda separado, con sus candidatos no implementados identificados.
+- Inventario real de CPU, GPU, memoria, Windows, motherboard, BIOS y unidades. Consulta de carga actual de CPU, memoria disponible y máximo de instancia de motor 3D; no es medición de FPS ni diagnóstico suficiente de cuello de botella.
+- **Red:** diez muestras ICMP por destino, puerta de enlace detectada, Cloudflare y Google; media/mínimo/máximo, variación entre respuestas consecutivas y porcentaje sin respuesta. No se confunde ping a un resolvedor con rendimiento DNS ni con latencia de un juego.
+- **Drivers:** inventario de versiones, fechas, proveedor, INF y firma reportada por Windows. Enlaces oficiales según proveedor; no se marca un driver como desactualizado por su fecha ni se recomienda una versión sin evidencia.
+- **Almacenamiento:** consulta de salud y contadores de fiabilidad de Windows (temperatura, desgaste, horas y errores cuando se informen). Soporte y permisos dependen del controlador; no se predice vida restante ni se inventan contadores ausentes.
+- **Audio:** detección de dispositivos y acceso al panel de mejoras. Loudness Equalization depende del driver; no se promete activación universal ni se fuerzan propiedades no documentadas.
+- Planes de energía existentes: aplicar, comprobar y recuperar el anterior, con detección de cambios externos.
+- Instalación rápida: **236 aplicaciones en diez categorías**, búsqueda, selección y revisión completa del lote, fuentes WinGet/Store explícitas y acuerdos interactivos. Historial individual; los códigos de WinGet no sustituyen una verificación independiente de instalación.
+- Limpieza: análisis y eliminación selectiva de cuatro apps opcionales para el usuario actual, comprobación de ausencia e historial. No elimina componentes críticos ni guarda datos de las apps.
+- Puntos de Windows antes de cambios/lotes (intento activado por defecto), registros asociados, creación manual y acceso al asistente nativo. Los puntos no son copias de archivos personales.
 
-- Interfaz con navegación por Inicio, Gaming, Optimización, Personalización, Windows Update, Instalación rápida, Limpieza de apps, Energía, Red, Audio, Almacenamiento e Historial.
-- Inventario de CPU, adaptadores gráficos, memoria, Windows y unidades físicas mediante consultas CIM de solo lectura.
-- Enumeración y selección de planes de energía existentes, confirmación explícita, elevación de `powercfg` y comprobación del plan activo.
-- Historial local escrito antes de cada cambio y restauración del plan anterior. La restauración se detiene si el plan actual cambió por otra vía o el anterior ya no existe.
-- Instalación rápida: **236 aplicaciones en diez categorías**, tarjetas, búsqueda por nombre/categoría/identificador y selección conservada al filtrar. Revisión desplazable de todo el lote, términos interactivos y resultados individuales. 234 identificadores comprobados en el índice público de WinGet y dos fichas de Microsoft Store verificadas. Esto no prueba su instalación ni recomienda una versión. No se omiten hashes ni se actualizan instalaciones existentes. Las solicitudes de reinicio detienen el lote; no se programa un reinicio automático.
-- Catálogo de **71 ajustes por evaluar**: los 67 controles de la referencia de WinUtil más tamaño de barra, timers, HAGS y capturas. Fichas con riesgos, fuente y objetivos de la referencia; no se consultan valores actuales ni se ejecutan los cambios.
-- Personalización y Windows Update: accesos a las opciones nativas. Tamaño de barra/iconos, aplazamientos, restauración de políticas y desactivación de updates quedan visibles con evaluación pendiente. No se aplican políticas ni se reinicia Explorer desde estos módulos.
-- Respaldo y recuperación: intento de crear y consultar un punto de Windows antes de cada cambio de energía o lote de instalación/limpieza, activado por defecto. Registro local previo de acciones y sus resultados, asociado al punto confirmado cuando exista. Creación manual, acceso a Protección del sistema y al asistente de restauración. Si no se confirma un punto, se pide decidir antes de aplicar cambios. Recuperación de la selección de plan anterior si ese plan aún existe.
-- Limpieza de apps: análisis y desinstalación selectiva de cuatro aplicaciones opcionales para el usuario actual, comprobación de ausencia e historial. No tiene copia/restauración automática de datos.
+**Límites actuales:** los candidatos restantes del catálogo no tienen ejecutor. No hay captura de FPS/frametimes, sensores térmicos de CPU/GPU, comparación automática de último driver frente a recomendado, cambios de red automáticos, ajuste universal de altura de barra ni pruebas de anticheat. La compilación y pruebas del núcleo no validan el funcionamiento real en Windows ni garantizan rendimiento.
 
-Gaming, perfiles aplicables de optimización general, red y audio son funciones **pendientes**, identificadas en la interfaz. Optimización explica los niveles y límites previstos; no cambia registro, timers o arranque. El inventario de discos no evalúa aún salud SMART/NVMe. No hay captura de FPS, sensores térmicos, pruebas de anticheat ni exportación de datos.
+## Descargar y abrir
+
+El código actualizado está en la rama `work`. En [GitHub Actions](https://github.com/omi-idk/pcoptimizer/actions), abre un flujo **Build and test** de esa rama que haya terminado correctamente y descarga el artefacto **PCOptimizer-windows-x64-preview**. Extrae todo el ZIP y abre `PCOptimizer.App.exe` como usuario normal. El artefacto incluye .NET y caduca a los 14 días; requiere acceso a GitHub. Su disponibilidad depende de que se complete el trabajo de publicación del flujo.
+
+El ejecutable preliminar no está firmado. Conserva las protecciones de Windows si lo bloquean. Empieza en un equipo de prueba; lee [la guía de primera prueba](docs/primera-prueba.md).
 
 Consulta los [criterios técnicos y fuentes](docs/criterios-tecnicos.md) para conocer la evidencia revisada, limitaciones y requisitos antes de ampliar estas funciones.
 La [revisión de WinUtil, Sophia Script y Win11Debloat](docs/revision-de-optimizadores.md) registra las implementaciones estudiadas y mejoras adoptadas. Los [criterios de instalación, limpieza, registro y timers](docs/optimizacion-y-software.md) explican los nuevos flujos y sus límites.
@@ -59,7 +66,7 @@ WPF solo se ejecuta en Windows. Linux permite restaurar, compilar con `EnableWin
 8. En Limpieza de apps, analizar como usuario normal; comparar con `Get-AppxPackage`. Confirmar que nada está seleccionado automáticamente. Guardar antes cualquier dato y probar una app prescindible. Verificar ausencia para ese usuario, presencia intacta para otros usuarios y errores de desinstalación sin informar falsamente de éxito. Reinstalar desde Store si se desea, sin asumir recuperación de datos.
 9. Buscar con/sin acentos, filtrar por categoría y seleccionar apps en filtros distintos. Comprobar que la revisión muestra todas las seleccionadas, incluidas las ocultas por el filtro; cancelar no debe iniciar nada. Revisar la disposición de tarjetas y el contraste de filtros con escalado de pantalla.
 10. En un equipo de prueba, comprobar las rutas separadas de WinGet y Microsoft Store. Rechazar acuerdos debe impedir la instalación. Verificar individualmente programas y versiones en Windows después de cada solicitud.
-11. Confirmar que las 71 fichas avanzadas muestran evaluación pendiente y ningún botón ejecuta scripts de la referencia. Abrir barra de tareas, Modo Juego y opciones de Update y comprobar las páginas que ofrece la compilación real. No confundir abrir Configuración con aplicar un ajuste.
+11. Confirmar que los candidatos restantes muestran evaluación pendiente, que los cubiertos aparecen en ajustes ejecutables sin duplicados y que ningún botón ejecuta scripts descargados de la referencia. Abrir barra de tareas, Modo Juego y opciones de Update y comprobar las páginas que ofrece la compilación real. No confundir abrir Configuración con aplicar un ajuste.
 12. En una máquina de prueba con Protección del sistema configurada, crear un punto y verificar descripción/secuencia con `Get-ComputerRestorePoint` elevado. Ejecutar un cambio de energía o un lote pequeño y contrastar sus acciones con el registro asociado. No considerar el método validado sin esta prueba real.
 13. Probar cancelación de UAC, protección desactivada, espacio insuficiente y el límite de 24 horas. Cancelar la continuación sin punto no debe lanzar el cambio ni instaladores. Desmarcar la opción debe producir un registro marcado como punto no solicitado, sin afirmar que existe uno.
 14. Comprobar que un error al guardar el respaldo impide la operación, que los pasos no ejecutados siguen diferenciados de los confirmados y que no se borran registros corruptos. Reiniciar la app y comprobar los registros y la recuperación de selección de energía. Abrir el asistente y cancelar sin restaurar; cualquier restauración real debe probarse aparte en una máquina preparada para ello.
@@ -67,3 +74,5 @@ WPF solo se ejecuta en Windows. Linux permite restaurar, compilar con `EnableWin
 La integración continua está configurada para compilar y ejecutar pruebas del núcleo en Windows. Un build correcto no sustituye estas pruebas manuales.
 
 Consulta [SECURITY.md](SECURITY.md) para conocer el alcance de la revisión, los controles implementados y las comprobaciones que faltan antes de distribuir. Se configuraron auditoría NuGet, avisos de actualización y CodeQL; no se ha ejecutado el flujo remoto de GitHub desde este entorno.
+
+Pruebas adicionales de Preview 0.2: aplicar cada perfil y restaurar exactamente valores y tipos, incluidos valores originalmente ausentes; comprobar interrupciones parciales y conflictos. Validar UAC de HAGS/MPO y las políticas en ediciones compatibles y rechazadas. Contrastar red con herramientas de Windows, drivers con Administrador de dispositivos y discos con la utilidad del fabricante. Revisar interfaz con escalado de 100%, 125%, 150% y navegación por teclado.

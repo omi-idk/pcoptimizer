@@ -17,6 +17,19 @@ jobs:
       - run: dotnet restore PCOptimizer.slnx --locked-mode
       - run: dotnet build PCOptimizer.slnx -c Release --no-restore
       - run: dotnet test tests/PCOptimizer.Core.Tests -c Release --no-build --no-restore
+      - name: Publish portable Windows x64 preview
+        run: |
+          dotnet publish src/PCOptimizer.App/PCOptimizer.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false "-p:NuGetLockFilePath=$env:RUNNER_TEMP/pcoptimizer-publish.lock.json" -o artifacts/PCOptimizer-win-x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item docs/primera-prueba.md artifacts/PCOptimizer-win-x64/LEEME-PRIMERO.md
+          Copy-Item SECURITY.md artifacts/PCOptimizer-win-x64/SECURITY.md
+      - name: Upload portable preview
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: PCOptimizer-windows-x64-preview
+          path: artifacts/PCOptimizer-win-x64/
+          if-no-files-found: error
+          retention-days: 14
   codeql:
     runs-on: windows-latest
     permissions:

@@ -5,8 +5,17 @@ namespace PCOptimizer.Core;
 public sealed record TweakDefinition(string Id, string Name, string Category, string Description,
     string Risks, string ReferenceTargets, string Source)
 {
-    public string Status => "Requiere evaluación · Sin ejecutor conectado";
-    public string CurrentState => "Estado de tu equipo: no consultado";
+    public string? ExecutableId => Id switch
+    {
+        "WPFToggleGameMode" => "game-mode", "GameCapture" => "game-capture",
+        "WPFToggleMouseAcceleration" => "mouse-acceleration", "HAGS" => "hags",
+        "WPFMultiplaneOverlay" => "mpo", "WPFToggleTaskbarAlignment" => "taskbar-left",
+        "WPFToggleTaskView" => "task-view", "WPFToggleHiddenFiles" => "hidden-files",
+        "WPFToggleShowExt" => "file-extensions", "WPFToggleDarkMode" => "dark-theme",
+        _ => null
+    };
+    public string Status => ExecutableId is null ? "Requiere evaluación · Sin ejecutor conectado" : "Disponible en los ajustes aplicables";
+    public string CurrentState => ExecutableId is null ? "Estado de tu equipo: no consultado" : "El estado se consulta en la ficha aplicable, fuera del catálogo de referencia.";
 }
 
 public static class TweakCatalog
