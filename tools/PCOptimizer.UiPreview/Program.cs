@@ -23,7 +23,6 @@ internal static class Program
         app.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/PCOptimizer.App;component/Themes/SharedTemplates.xaml", UriKind.Relative) });
         var window = new MainWindow();
         window.ConfigureDesignPreview();
-        window.Show();
         _ = window.Dispatcher.InvokeAsync(async () =>
         {
             try
@@ -41,19 +40,21 @@ internal static class Program
                     window.ShowDesignSection(section);
                     await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
                     await Task.Delay(150);
-                    // Render the WPF content at the requested logical size; hosted runners may
-                    // clamp HWND dimensions to their small virtual display. No display settings change.
+                    // Keep the design window unshown: hosted runner HWNDs are clipped to a
+                    // small virtual display. Render its real WPF content without creating a native surface.
                     var visual = (FrameworkElement)window.Content;
                     visual.DataContext = window.DataContext;
                     visual.SetValue(TextElement.ForegroundProperty, window.Foreground);
                     visual.SetValue(TextElement.FontFamilyProperty, window.FontFamily);
                     visual.SetValue(TextElement.FontSizeProperty, window.FontSize);
                     window.Content = null; // Remove the HWND layout clip while preserving real resources and bindings.
-                    window.UpdateLayout();
                     await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
                     if (VisualTreeHelper.GetParent(visual) is not null)
                         throw new InvalidOperationException("The design content was not detached from its native window.");
                     visual.Clip = null;
+                    visual.Visibility = Visibility.Visible;
+                    visual.InvalidateMeasure();
+                    visual.InvalidateArrange();
                     visual.Width = width;
                     visual.Height = height;
                     visual.Measure(new Size(width, height));
