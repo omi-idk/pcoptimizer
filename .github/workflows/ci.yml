@@ -37,6 +37,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Copy-Item docs/primera-prueba.md artifacts/PCOptimizer-win-x64/LEEME-PRIMERO.md
           Copy-Item SECURITY.md artifacts/PCOptimizer-win-x64/SECURITY.md
+          Copy-Item docs/BENCHMARKING.md artifacts/PCOptimizer-win-x64/BENCHMARKING.md
       - name: Upload portable preview
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

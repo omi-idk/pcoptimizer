@@ -28,6 +28,10 @@ La interfaz, UAC, WinGet, los puntos de restauración y la compatibilidad con an
 
 Anota la versión de Windows (`winver`), la sección y los pasos, qué esperabas y el mensaje exacto. Comparte una captura si ayuda, ocultando información personal. Los registros locales están en `%LOCALAPPDATA%\PCOptimizer`; revísalos antes de compartirlos y conserva los originales si necesitas recuperación.
 
-## Preview 0.3
+## Ajustes heredados de Preview 0.3
 
-Comprueba el título Preview 0.3 para evitar ejecutar una copia antigua. En Ajustes usa Ctrl+F, área y estado; el panel lateral muestra detalles de la fila seleccionada. Los perfiles Mínimo/Recomendado/Gaming/Intensivo seleccionan 4/9/7/16 candidatos y excluyen los no disponibles. Prueba Guardar/Cargar perfil: no debe aplicar al cargar. Comprueba que seleccionar HAGS desactivado desmarca HAGS activado. En Recuperación, elige una operación y revisa la inversa; el catálogo de candidatos por evaluar está en una pestaña separada.
+Comprueba el título Preview 0.4 para evitar ejecutar una copia antigua. En Ajustes usa Ctrl+F, área y estado; el panel lateral muestra detalles de la fila seleccionada. Los perfiles Mínimo/Recomendado/Gaming/Intensivo seleccionan 4/9/7/16 candidatos y excluyen los no disponibles. Prueba Guardar/Cargar perfil: no debe aplicar al cargar. Comprueba que seleccionar HAGS desactivado desmarca HAGS activado. En Recuperación, elige una operación y revisa la inversa; el catálogo de candidatos por evaluar está en una pestaña separada.
+
+## Benchmarks (Preview 0.4)
+
+Abre **Benchmarks** en Diagnóstico. Puedes comenzar importando un CSV PresentMon que contenga `MsBetweenPresents` y elegir el proceso/PID/swapchain. Para captura manual, descarga el console oficial desde el botón de la app, selecciónalo para verificar su hash, actualiza procesos, selecciona el juego y pulsa Iniciar captura. Si ETW no tiene permisos se mostrará el error sin cambiar grupos ni elevar la GUI. Detener cierra solo la sesión propia. Completa el contexto, guarda y exporta. Para A/B usa al menos tres capturas independientes por estado; no prometemos mejora ni certificación anticheat. Consulta [las fórmulas y límites](BENCHMARKING.md).

@@ -26,3 +26,5 @@ No hay garantía de FPS, cero riesgo, EQ universal, lifespan exacta de SSD o cer
 ## Seguimiento de esta entrega
 
 La auditoría y la investigación preceden al código. Las comprobaciones de esta rama y sus límites se registran en `BENCHMARKING.md`; la validación previa de 96 pruebas no se presenta como resultado de funcionalidades nuevas.
+
+En esta rama se implementó la primera entrega de medición: módulo separado, captura manual PresentMon con pin y hash, importación, cálculos, historial, exportación, gráficas y comparación descriptiva / entre repeticiones. La captura ETW y el cierre del auxiliar aún requieren prueba real Windows. Continúan pendientes el diagnóstico sincronizado, Game Booster, sensores completos, perfil Warzone calibrado y resto de la tabla. No se declaran implementados por estar descritos aquí.

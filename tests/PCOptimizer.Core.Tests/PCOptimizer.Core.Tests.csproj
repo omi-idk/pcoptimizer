@@ -13,5 +13,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <ProjectReference Include="../../src/PCOptimizer.Core/PCOptimizer.Core.csproj" />
+    <ProjectReference Include="../../src/PCOptimizer.Benchmarking/PCOptimizer.Benchmarking.csproj" />
   </ItemGroup>
 </Project>

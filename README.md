@@ -1,3 +1,5 @@
+> **Rama Ultimate · Preview 0.4:** añade la página **Benchmarks**: captura manual mediante PresentMon 2.6.0 x64 verificado, importación CSV por proceso/swapchain, lows/percentiles, gráficas, historial, CSV/JSON y comparación A/B por repeticiones. La captura ETW en juegos y su compatibilidad anticheat requieren validación Windows real. [Uso y fórmulas](docs/BENCHMARKING.md) · [Auditoría](docs/ARCHITECTURE_AUDIT.md) · [Hoja de ruta](docs/PRODUCT_ROADMAP.md) · [Comparativa técnica](docs/COMPETITOR_RESEARCH.md).
+
 # PCOptimizer
 
 Aplicación gráfica en español para diagnosticar y ajustar una PC Windows orientada a gaming. Base inicial en **C# / .NET 10 / WPF**. No se anuncian mejoras de rendimiento sin mediciones.

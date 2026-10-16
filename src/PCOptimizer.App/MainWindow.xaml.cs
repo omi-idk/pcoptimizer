@@ -31,7 +31,7 @@ public partial class MainWindow : Window
         Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
         Closing += (_, e) =>
         {
-            if (model.IsIdle) return;
+            if (model.IsIdle && !BenchmarkPanel.IsBusy) return;
             e.Cancel = true;
             model.Status = "Espera a que termine la operación antes de cerrar.";
         };
@@ -59,6 +59,7 @@ public partial class MainWindow : Window
     {
         model.Title = section switch { "Inicio" => "Resumen", "Optimización" => "Ajustes de Windows", "Gaming" => "Uso de recursos", "Respaldo y recuperación" => "Recuperación", _ => section };
         model.Cards.Clear();
+        BenchmarkPanel.Visibility = section == "Benchmarks" ? Visibility.Visible : Visibility.Collapsed;
         HomePanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
         HomeToolsPanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
         NetworkPanel.Visibility = section == "Red" ? Visibility.Visible : Visibility.Collapsed;
@@ -139,6 +140,9 @@ public partial class MainWindow : Window
             case "Gaming":
                 model.Subtitle = "Selecciona un perfil, revisa los cambios y aplícalos. Los valores anteriores quedan guardados para revertir.";
                 if (section == "Gaming") { model.Subtitle = "Lectura actual de CPU, memoria e instancias de motor 3D; no estima FPS ni un porcentaje de cuello de botella."; AddDiagnosticCards("Gaming"); }
+                break;
+            case "Benchmarks":
+                model.Subtitle = "Captura ETW, importación PresentMon y análisis de intervalos de presentación con procedencia y contexto.";
                 break;
             case "Red":
                 model.Subtitle = "Mide antes de cambiar: router y destinos públicos con diez muestras por destino.";

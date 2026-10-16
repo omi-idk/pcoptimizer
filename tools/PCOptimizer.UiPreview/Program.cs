@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Text;
 using PCOptimizer.App;
 using PCOptimizer.Core;
+using PCOptimizer.Benchmarking;
+using PCOptimizer.App.Benchmarking;
 
 internal static class Program
 {
@@ -23,6 +25,9 @@ internal static class Program
         app.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/PCOptimizer.App;component/Themes/SharedTemplates.xaml", UriKind.Relative) });
         var window = new MainWindow();
         window.ConfigureDesignPreview();
+        var previewFrames = Enumerable.Range(0, 3600).Select(i => new FrameSample(i % 377 == 0 ? 55 : 8 + Math.Sin(i * .07), 3, 6, true, "Application")).ToArray();
+        ((BenchmarkView)window.FindName("BenchmarkPanel")).ConfigureDesignPreview(new ImportedCapture(new string('A',64),
+            new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1));
         _ = window.Dispatcher.InvokeAsync(async () =>
         {
             try
@@ -32,7 +37,7 @@ internal static class Program
                 {
                     ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
-                    ("recovery", "Respaldo y recuperación", 1400, 880)
+                    ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740)
                 })
                 {
                     window.Width = width;

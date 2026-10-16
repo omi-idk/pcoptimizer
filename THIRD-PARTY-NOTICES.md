@@ -9,3 +9,5 @@ The evaluation-only tweak catalog adapts names, descriptions and target metadata
 WinUtil is licensed under the MIT License. The complete license is retained in `licenses/WinUtil-MIT.txt` and distributed with PCOptimizer. Changes include Spanish categories and evaluation notes, source validation and dedicated installation routing. Neither WinUtil nor Microsoft certifies this application.
 
 Product names are the property of their respective owners. Each application has its own license and terms, presented by its source or installer.
+
+PCOptimizer can launch the separately obtained **Intel PresentMon 2.6.0 x64 console** under its MIT license, using a fixed SHA-256. The executable, service and SDK binaries are not bundled. Its MIT notice is retained in `licenses/PresentMon-MIT.txt` for reference. Source: <https://github.com/GameTechDev/PresentMon/tree/v2.6.0>. No association or anticheat certification is implied. See `docs/BENCHMARKING.md` for supported output and limitations.

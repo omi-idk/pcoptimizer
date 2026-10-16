@@ -87,6 +87,9 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "pcoptimizer.benchmarking": {
+        "type": "Project"
+      },
       "pcoptimizer.core": {
         "type": "Project"
       }
