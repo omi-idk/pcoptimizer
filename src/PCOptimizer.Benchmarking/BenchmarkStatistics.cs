@@ -8,7 +8,7 @@ public static class BenchmarkStatistics
         if (frames.Count is < 2 or > MaximumFrames) throw new InvalidDataException("Se requieren entre 2 y 200000 intervalos válidos por sesión.");
         foreach (var frame in frames)
         {
-            if (frame is null || !double.IsFinite(frame.IntervalMs) || frame.IntervalMs <= 0 || frame.IntervalMs > 3_600_000)
+            if (frame is null || !double.IsFinite(frame.IntervalMs) || frame.IntervalMs < 0.000001 || frame.IntervalMs > 3_600_000)
                 throw new InvalidDataException("Intervalo de presentación inválido.");
             foreach (var busy in new[] { frame.CpuBusyMs, frame.GpuBusyMs })
                 if (busy is { } n && (!double.IsFinite(n) || n < 0 || n > 3_600_000))

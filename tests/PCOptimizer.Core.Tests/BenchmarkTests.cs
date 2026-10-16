@@ -40,7 +40,7 @@ public sealed class BenchmarkTests : IDisposable
         Assert.Equal(1000 / 15.0, s.AverageFps, 8);
     }
     [Theory]
-    [InlineData(double.NaN)] [InlineData(double.PositiveInfinity)] [InlineData(-1)] [InlineData(0)] [InlineData(3600001)]
+    [InlineData(double.NaN)] [InlineData(double.PositiveInfinity)] [InlineData(-1)] [InlineData(0)] [InlineData(1e-320)] [InlineData(3600001)]
     public void InvalidIntervalsNeverProduceFps(double interval) => Assert.Throws<InvalidDataException>(() => BenchmarkStatistics.Calculate([F(10), F(interval)]));
     [Fact]
     public async Task CsvSeparatesApplicationsPidsAndSwapchainsAndParsesQuotedNames()
