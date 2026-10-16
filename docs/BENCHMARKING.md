@@ -8,6 +8,8 @@ La captura manual requiere seleccionar el console oficial **PresentMon 2.6.0 x64
 
 Duración admitida: 5–600 segundos. El auxiliar funciona como el usuario actual, con argumentos separados, nombre de sesión aleatorio y sin DLL inyectada. Usa `--process_id`, `--session_name`, `--timed`, `--terminate_after_timed`, `--terminate_on_proc_exit`, `--track_frame_type`. No termina sesiones de otras herramientas. Detener solicita cerrar únicamente nuestra sesión; si el auxiliar no responde tras el plazo se termina únicamente el proceso auxiliar creado por la app. Si queda un CSV cerrado con datos al detener, se importa como captura parcial. Un timeout/fallo conserva el CSV y muestra el error.
 
+Mientras hay una operación de benchmarks, la aplicación bloquea los cambios del sistema y sus otras consultas; Detener permanece disponible. El módulo tampoco se inicia durante otra operación de la app. Los controles de captura se pliegan al importar datos para dejar visibles las métricas y gráficas.
+
 PresentMon documenta la pertenencia a **Performance Log Users** y limitaciones sin privilegios administrativos. La app informa los fallos ETW; no cambia grupos, no eleva toda la GUI ni intenta sortear restricciones anticheat. No está certificada para RICOCHET/Vanguard/EAC/BattlEye. El inicio/cierre ETW real y su overhead en juegos necesitan prueba manual Windows.
 
 ## Formatos, identidad y límites

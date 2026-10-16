@@ -15,23 +15,26 @@
       <StackPanel Margin="0,0,8,18">
         <Border Style="{StaticResource Card}">
           <StackPanel>
-            <TextBlock Text="CAPTURA MANUAL · ETW" Style="{StaticResource SectionLabel}"/>
-            <TextBlock Text="{Binding Capability}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,6,0,10"/>
-            <WrapPanel IsEnabled="{Binding IsIdle}">
-              <Button Content="Obtener PresentMon oficial" Click="OpenPresentMon"/>
-              <Button Content="Seleccionar auxiliar" Click="SelectExecutable"/>
-              <Button Content="Actualizar procesos" Click="RefreshProcesses"/>
-            </WrapPanel>
-            <Grid Margin="0,8,0,0" IsEnabled="{Binding IsIdle}">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <ComboBox ItemsSource="{Binding Targets}" SelectedItem="{Binding SelectedTarget}" ToolTip="Proceso en ejecución que se medirá"/>
-              <TextBox Grid.Column="1" Text="{Binding DurationSeconds, UpdateSourceTrigger=PropertyChanged}" Tag="Segundos" ToolTip="Duración: 5–600 segundos" Margin="8,0"/>
-              <Button Grid.Column="2" Content="Iniciar captura" Click="StartCapture"/>
-            </Grid>
+            <Expander Header="Captura manual · PresentMon 2.6.0 · proceso y duración" IsExpanded="{Binding CaptureExpanded}">
+              <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="{Binding Capability}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,6,0,10"/>
+                <WrapPanel IsEnabled="{Binding IsIdle}">
+                  <Button Content="Obtener PresentMon oficial" Click="OpenPresentMon"/>
+                  <Button Content="Seleccionar auxiliar" Click="SelectExecutable"/>
+                  <Button Content="Actualizar procesos" Click="RefreshProcesses"/>
+                </WrapPanel>
+                <Grid Margin="0,8,0,0" IsEnabled="{Binding IsIdle}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <ComboBox ItemsSource="{Binding Targets}" SelectedItem="{Binding SelectedTarget}" ToolTip="Proceso en ejecución que se medirá"/>
+                  <TextBox Grid.Column="1" Text="{Binding DurationSeconds, UpdateSourceTrigger=PropertyChanged}" Tag="Segundos" ToolTip="Duración: 5–600 segundos" Margin="8,0"/>
+                  <Button Grid.Column="2" Content="Iniciar captura" Click="StartCapture"/>
+                </Grid>
+              </StackPanel>
+            </Expander>
           </StackPanel>
         </Border>
         <ComboBox ItemsSource="{Binding Streams}" SelectedItem="{Binding SelectedStream}" Margin="0,14,0,12" IsEnabled="{Binding IsIdle}" ToolTip="Elige aplicación, PID y swapchain; no se mezclan streams"/>

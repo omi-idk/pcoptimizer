@@ -13,6 +13,37 @@ using PCOptimizer.App.Benchmarking;
 
 internal static class Program
 {
+    private static async Task ValidateBenchmarkIsolation(MainWindow window)
+    {
+        var view = (BenchmarkView)window.FindName("BenchmarkPanel");
+        var module = (BenchmarkViewModel)view.DataContext;
+        var shell = (MainViewModel)window.DataContext;
+        var previousStatus = shell.Status;
+        var isolated = false;
+        await module.RunAsync(_ =>
+        {
+            isolated = !shell.IsIdle && view.IsEnabled;
+            return Task.CompletedTask;
+        });
+        if (!isolated || !shell.IsIdle)
+            throw new InvalidOperationException("Benchmark operations must block system changes and keep their own Stop control enabled.");
+        shell.Status = previousStatus;
+        var fake = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".exe");
+        try
+        {
+            await File.WriteAllTextAsync(fake, "not PresentMon");
+            var service = new PresentMonCaptureService(Path.GetTempPath());
+            var result = await service.CheckAsync(fake, CancellationToken.None);
+            if (result.State != CapabilityState.Unsupported)
+                throw new InvalidOperationException("An unrecognized PresentMon binary was accepted.");
+            var rejected = false;
+            try { await service.CaptureAsync(fake, new CaptureTarget(Environment.ProcessId, DateTime.UtcNow, "test"), 5, CancellationToken.None); }
+            catch (InvalidDataException) { rejected = true; }
+            if (!rejected) throw new InvalidOperationException("Capture did not reject a wrong SHA-256 before execution.");
+        }
+        finally { File.Delete(fake); }
+    }
+
     [STAThread]
     private static void Main(string[] args)
     {
@@ -32,6 +63,7 @@ internal static class Program
         {
             try
             {
+                await ValidateBenchmarkIsolation(window);
                 await ValidateElevatedScriptSyntax();
                 foreach (var (name, section, width, height) in new[]
                 {

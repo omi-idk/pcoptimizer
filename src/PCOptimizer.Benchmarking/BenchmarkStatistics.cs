@@ -42,7 +42,7 @@ public static class BenchmarkStatistics
         return sorted[lo] + (sorted[hi] - sorted[lo]) * (position - lo);
     }
 
-    public static bool ContextMatches(BenchmarkSession baseline, BenchmarkSession candidate) =>
+    internal static bool ContextMatches(BenchmarkSession baseline, BenchmarkSession candidate) =>
         baseline.Context == candidate.Context && new[] { baseline.Context.Scenario, baseline.Context.GameVersion,
             baseline.Context.DriverVersion, baseline.Context.Settings, baseline.Context.Hardware, baseline.Context.WindowsVersion }
             .All(value => !string.IsNullOrWhiteSpace(value))

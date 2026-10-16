@@ -17,6 +17,7 @@ public partial class MainWindow : Window
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Recovery"));
     private string? recoveryListIssue;
     private Inventory? inventory;
+    private bool benchmarkOwnsBusyState;
     private string section = "Inicio";
 
     public MainWindow()
@@ -28,6 +29,28 @@ public partial class MainWindow : Window
         Width = Math.Min(Width, area.Width - 24);
         Height = Math.Min(Height, area.Height - 24);
         DataContext = model;
+        // A capture and a system mutation must not overlap. Keep Stop available for the owning module.
+        BenchmarkPanel.IsEnabled = model.IsIdle;
+        model.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(MainViewModel.IsIdle))
+                BenchmarkPanel.IsEnabled = model.IsIdle || BenchmarkPanel.IsBusy;
+        };
+        BenchmarkPanel.BusyChanged += (_, _) =>
+        {
+            if (BenchmarkPanel.IsBusy)
+            {
+                benchmarkOwnsBusyState = true;
+                model.IsIdle = false;
+                model.Status = "Operación de benchmarks en curso. Los cambios del sistema y otras consultas esperan a que termine.";
+            }
+            else if (benchmarkOwnsBusyState)
+            {
+                benchmarkOwnsBusyState = false;
+                model.IsIdle = true;
+                model.Status = "Operación de benchmarks finalizada. Revisa el resultado en su panel.";
+            }
+        };
         Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
         Closing += (_, e) =>
         {
@@ -189,7 +212,11 @@ public partial class MainWindow : Window
 
     private void Add(string label, string value, string detail) => model.Cards.Add(new(label, value, detail));
 
-    private async void Refresh(object sender, RoutedEventArgs e) => await RefreshAsync();
+    private async void Refresh(object sender, RoutedEventArgs e)
+    {
+        if (!model.IsIdle) return;
+        await RefreshAsync();
+    }
 
     private async Task RefreshAsync()
     {

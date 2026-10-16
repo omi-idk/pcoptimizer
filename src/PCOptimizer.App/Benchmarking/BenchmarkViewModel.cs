@@ -16,6 +16,8 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     private readonly List<BenchmarkSession> repetitionsB = [];
     public string RepetitionCounts => $"Repeticiones independientes · A: {repetitionsA.Count} · B: {repetitionsB.Count}";
     private bool busy;
+    private bool captureExpanded = true;
+    public bool CaptureExpanded { get => captureExpanded; set { captureExpanded = value; Changed(); } }
     private string status = "Importa un CSV de PresentMon o configura una captura manual. No se modifica el juego ni Windows.";
     private string executable = "";
     private CancellationTokenSource? operation;
@@ -88,6 +90,7 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     internal void SetImport(ImportedCapture result)
     {
         imported = result;
+        CaptureExpanded = false;
         Streams.Clear();
         foreach (var stream in result.Streams.Keys) Streams.Add(stream);
         SelectedStream = Streams.Count == 1 ? Streams[0] : null;

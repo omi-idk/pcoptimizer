@@ -11,12 +11,17 @@ public partial class BenchmarkView : UserControl
 {
     private readonly BenchmarkViewModel model;
     public bool IsBusy => model.IsBusy;
+    internal event EventHandler? BusyChanged;
     public BenchmarkView() : this(new BenchmarkSessionStore(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Benchmarks")),
         new PresentMonCaptureService(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Captures"))) { }
     internal BenchmarkView(IBenchmarkSessionStore store, IPresentMonCaptureService capture)
     {
         InitializeComponent();
         model = new(store, capture); DataContext = model;
+        model.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(BenchmarkViewModel.IsBusy)) BusyChanged?.Invoke(this, EventArgs.Empty);
+        };
     }
     internal void ConfigureDesignPreview(ImportedCapture capture) => model.SetImport(capture);
     private async void ImportCsv(object sender, RoutedEventArgs e)
