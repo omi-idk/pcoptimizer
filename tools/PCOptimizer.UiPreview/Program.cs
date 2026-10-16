@@ -49,12 +49,16 @@ internal static class Program
                     visual.SetValue(TextElement.FontFamilyProperty, window.FontFamily);
                     visual.SetValue(TextElement.FontSizeProperty, window.FontSize);
                     window.Content = null; // Remove the HWND layout clip while preserving real resources and bindings.
+                    window.UpdateLayout();
+                    await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
+                    if (VisualTreeHelper.GetParent(visual) is not null)
+                        throw new InvalidOperationException("The design content was not detached from its native window.");
+                    visual.Clip = null;
                     visual.Width = width;
                     visual.Height = height;
                     visual.Measure(new Size(width, height));
                     visual.Arrange(new Rect(0, 0, width, height));
                     visual.UpdateLayout();
-                    await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
                     visual.UpdateLayout();
                     var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
                     bitmap.Render(visual);

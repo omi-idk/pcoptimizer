@@ -51,7 +51,7 @@
       </Border>
     </DataTemplate>
   </Window.Resources>
-  <Border BorderBrush="#323B49" BorderThickness="1">
+  <Border BorderBrush="#323B49" BorderThickness="1" Background="{StaticResource Canvas}">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="36"/>
