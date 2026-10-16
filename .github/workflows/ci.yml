@@ -18,11 +18,13 @@ jobs:
       - run: dotnet build PCOptimizer.slnx -c Release --no-restore
       - run: dotnet test tests/PCOptimizer.Core.Tests -c Release --no-build --no-restore
       - name: Render actual WPF layout with illustrative data
+        timeout-minutes: 3
         run: |
           dotnet restore tools/PCOptimizer.UiPreview/PCOptimizer.UiPreview.csproj --locked-mode
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet run --project tools/PCOptimizer.UiPreview/PCOptimizer.UiPreview.csproj -c Release --no-restore -- artifacts/ui-preview
       - name: Upload UI design screenshots
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: PCOptimizer-ui-preview

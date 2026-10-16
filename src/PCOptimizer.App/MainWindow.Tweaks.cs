@@ -7,7 +7,6 @@ namespace PCOptimizer.App;
 
 public partial class MainWindow
 {
-    private readonly WindowsTweakValueStore tweakValues = new();
     private readonly TweakEngine tweakEngine = new(new WindowsTweakValueStore(), Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Tweaks"));
 
@@ -71,20 +70,6 @@ public partial class MainWindow
     {
         if (!model.IsIdle || model.SelectedTweakOperation is not { } selected) return;
         await ReviewAndRunTweaksAsync(() => tweakEngine.PreviewUndo(selected.Id), undo: true);
-    }
-
-    private async void ApplyUpdatePolicy(object sender, RoutedEventArgs e)
-    {
-        if (!model.IsIdle || ((FrameworkElement)sender).Tag is not string id) return;
-        if (id is not ("update-feature-delay" or "update-driver-exclusion")) return;
-        await ReviewAndRunTweaksAsync(() => tweakEngine.Preview([id]), undo: false);
-    }
-
-    private async void ApplyPersonalization(object sender, RoutedEventArgs e)
-    {
-        if (!model.IsIdle || ((FrameworkElement)sender).Tag is not string id) return;
-        if (id is not ("taskbar-left" or "dark-theme" or "task-view")) return;
-        await ReviewAndRunTweaksAsync(() => tweakEngine.Preview([id]), undo: false);
     }
 
     private async Task ReviewAndRunTweaksAsync(Func<TweakOperation> preview, bool undo)

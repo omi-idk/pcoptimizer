@@ -119,8 +119,14 @@ internal sealed class MainViewModel : INotifyPropertyChanged
         ExecutableView = new ListCollectionView(ExecutableChoices);
         ExecutableView.Filter = value => value is ExecutableTweakChoice choice
             && (ExecutableCategory == "Todas las áreas" || choice.Category == ExecutableCategory)
-            && (ExecutableStatus switch { "Seleccionados" => choice.IsSelected, "Listos" => choice.ReadState == TweakReadState.Ready,
-                "Configurados" => choice.ReadState == TweakReadState.Configured, "No disponibles" => choice.ReadState == TweakReadState.Unavailable, _ => true })
+            && (ExecutableStatus switch
+            {
+                "Seleccionados" => choice.IsSelected,
+                "Listos" => choice.ReadState == TweakReadState.Ready,
+                "Configurados" => choice.ReadState == TweakReadState.Configured,
+                "No disponibles" => choice.ReadState == TweakReadState.Unavailable,
+                _ => true
+            })
             && CatalogSearch.Matches(ExecutableSearch, choice.Name, choice.Category, choice.Benefit);
         foreach (var choice in ExecutableChoices)
             choice.PropertyChanged += (_, args) =>
@@ -130,8 +136,10 @@ internal sealed class MainViewModel : INotifyPropertyChanged
                     if (choice.IsSelected && choice.Definition.ExclusiveGroup is { } group)
                         foreach (var other in ExecutableChoices.Where(t => t != choice && t.Definition.ExclusiveGroup == group)) other.IsSelected = false;
                     if (!changingProfile) { ActiveProfileId = ""; SelectedProfile = "Personalizado"; ProfileNote = "Selección manual. Revisa el alcance y los riesgos antes de aplicar."; }
-                    Changed(nameof(TweakSelectionSummary)); Changed(nameof(SelectedTweakCount));
-                    // Selection filters refresh on explicit filter/selection actions, never during a checkbox binding update.
+                    Changed(nameof(TweakSelectionSummary)); Changed(nameof(SelectedTweakCount)); Changed(nameof(CanApplySelected));
+                    if (!changingProfile && ExecutableStatus == "Seleccionados")
+                        System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(
+                            System.Windows.Threading.DispatcherPriority.Background, new Action(RefreshTweaks));
                 }
                 if (args.PropertyName == nameof(ExecutableTweakChoice.ReadState)) { Changed(nameof(ConfiguredSummary)); Changed(nameof(AvailableSummary)); }
             };
@@ -141,7 +149,7 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     public string Title { get => title; set { title = value; Changed(); } }
     public string Subtitle { get => subtitle; set { subtitle = value; Changed(); } }
     public string Status { get => status; set { status = value; Changed(); } }
-    public bool IsIdle { get => isIdle; set { isIdle = value; Changed(); } }
+    public bool IsIdle { get => isIdle; set { isIdle = value; Changed(); Changed(nameof(CanApplySelected)); Changed(nameof(CanUndoSelected)); Changed(nameof(CanRestoreSavedPlan)); } }
     public PowerPlan? SelectedPlan { get => selectedPlan; set { selectedPlan = value; Changed(); } }
     public string SearchText { get => searchText; set { searchText = value; Changed(); RefreshCatalog(); } }
     public string SelectedCategory { get => selectedCategory; set { selectedCategory = value; Changed(); RefreshCatalog(); } }
@@ -157,9 +165,12 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     public IReadOnlyList<string> ExecutableStates { get; } = ["Todos los estados", "Listos", "Configurados", "Seleccionados", "No disponibles"];
     public string ExecutableSummary => $"{ExecutableChoices.Count} ajustes ejecutables";
     public string AvailableSummary => $"{ExecutableChoices.Count(t => t.CanSelect)} compatibles";
-    public string ConfiguredSummary => $"{ExecutableChoices.Count(t => t.ReadState == TweakReadState.Configured)} configurados";
+    public string ConfiguredSummary
+    {
+        get { var count = ExecutableChoices.Count(t => t.ReadState == TweakReadState.Configured); return $"{count} {(count == 1 ? "configurado" : "configurados")}"; }
+    }
     public string VisibleTweakSummary => $"{ExecutableView.Cast<object>().Count()} resultados";
-    public string TweakBackupIssue { get => tweakBackupIssue; set { tweakBackupIssue = value; Changed(); } }
+    public string TweakBackupIssue { get => tweakBackupIssue; set { tweakBackupIssue = value; Changed(); Changed(nameof(CanApplySelected)); } }
     public string ExecutableSearch { get => executableSearch; set { executableSearch = value; Changed(); RefreshTweaks(); } }
     public string ExecutableCategory { get => executableCategory; set { executableCategory = value; Changed(); RefreshTweaks(); } }
     public string ExecutableStatus { get => executableStatus; set { executableStatus = value; Changed(); RefreshTweaks(); } }
@@ -172,15 +183,18 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     public string GamingCount => $"{ExecutableTweaks.Profile("gaming").Count} ajustes";
     public string IntensiveCount => $"{ExecutableTweaks.Profile("intensive").Count} ajustes";
     public int SelectedTweakCount => ExecutableChoices.Count(t => t.IsSelected);
+    public bool CanApplySelected => IsIdle && SelectedTweakCount > 0 && string.IsNullOrEmpty(TweakBackupIssue);
+    public bool CanUndoSelected => IsIdle && SelectedTweakOperation is not null;
+    public bool CanRestoreSavedPlan => IsIdle && SelectedRecoverySession?.Actions.Any(a => a.Kind == RecoveryActionKind.PowerPlan) == true;
     public string TweakSelectionSummary => $"{SelectedTweakCount} seleccionados en todo el catálogo";
     public ObservableCollection<TweakOperation> TweakOperations { get; } = [];
     public ObservableCollection<InstalledDriver> Drivers { get; } = [];
-    public TweakOperation? SelectedTweakOperation { get => selectedTweakOperation; set { selectedTweakOperation = value; Changed(); Changed(nameof(SelectedTweakChanges)); } }
+    public TweakOperation? SelectedTweakOperation { get => selectedTweakOperation; set { selectedTweakOperation = value; Changed(); Changed(nameof(SelectedTweakChanges)); Changed(nameof(CanUndoSelected)); } }
     public string SelectedTweakChanges => SelectedTweakOperation is not { } operation ? "Selecciona una operación para revisar los valores guardados." :
         string.Join("\n\n", operation.Changes.Select(c => $"{ExecutableTweaks.Get(c.TweakId).Name} · {c.TargetId}\nAnterior: {c.Before.Display}\nSolicitado: {c.After.Display}\n{c.State}"));
     public bool CreateRestorePointBeforeChanges { get => createRestorePointBeforeChanges; set { createRestorePointBeforeChanges = value; Changed(); } }
     public ObservableCollection<RecoverySession> RecoverySessions { get; } = [];
-    public RecoverySession? SelectedRecoverySession { get => selectedRecoverySession; set { selectedRecoverySession = value; Changed(); Changed(nameof(RecoveryActions)); } }
+    public RecoverySession? SelectedRecoverySession { get => selectedRecoverySession; set { selectedRecoverySession = value; Changed(); Changed(nameof(RecoveryActions)); Changed(nameof(CanRestoreSavedPlan)); } }
     public IReadOnlyList<RecoveryAction> RecoveryActions => SelectedRecoverySession?.Actions ?? [];
     public ObservableCollection<InfoCard> Cards { get; } = [];
     public ObservableCollection<PowerPlan> PowerPlans { get; } = [];
@@ -198,6 +212,10 @@ internal sealed class MainViewModel : INotifyPropertyChanged
         var skipped = ids.Count - SelectedTweakCount;
         ProfileNote = id == "clear" ? "Selección vacía. Nada se ha modificado." : $"{SelectedProfile}: {SelectedTweakCount} ajustes seleccionados." +
             (skipped == 0 ? " Revisa la selección antes de aplicar." : $" {skipped} no disponibles en este equipo; se excluyeron. Consulta su motivo en la lista.");
+        ExecutableSearch = "";
+        ExecutableCategory = "Todas las áreas";
+        ExecutableStatus = id == "clear" ? "Todos los estados" : SelectedTweakCount == 0 ? "No disponibles" : "Seleccionados";
+        SelectedExecutableTweak = ExecutableChoices.FirstOrDefault(t => t.IsSelected) ?? ExecutableChoices.FirstOrDefault();
         RefreshTweaks();
     }
     public void SelectVisibleStandard()

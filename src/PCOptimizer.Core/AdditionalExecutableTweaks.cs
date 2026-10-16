@@ -114,7 +114,7 @@ internal static class AdditionalExecutableTweaks
             "Actualizar el reloj con más frecuencia puede aumentar consumo, especialmente en laptops.", TaskbarSource,
             D("clock-seconds", Explorer, "ShowSecondsInSystemClock", 1)) with { MinimumWindowsBuild = 22631 },
         Setting("numlock", "Activar Bloq Num al iniciar sesión", "Entrada",
-            "Guarda InitialKeyboardIndicators=2 para el inicio de sesión del usuario. No modifica firmware ni la cuenta de la pantalla de bienvenida.",
+            "Activa el bit de Bloq Num conservando las demás banderas de InitialKeyboardIndicators. No modifica firmware ni la cuenta de la pantalla de bienvenida.",
             "El estado puede depender del teclado, fabricante y del inicio rápido. Confirma el resultado después de volver a iniciar sesión.", InputSource,
             new RegistryTweakTarget("numlock", @"Control Panel\Keyboard", "InitialKeyboardIndicators", new(true, "String", "2"), SetBits: 2)),
         Setting("restart-apps", "Evitar reabrir apps reiniciables al iniciar sesión", "Sistema",

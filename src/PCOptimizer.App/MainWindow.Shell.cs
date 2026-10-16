@@ -33,6 +33,10 @@ public partial class MainWindow
         model.SelectVisibleStandard();
         model.Status = "Seleccionados los ajustes estándar compatibles del filtro actual. Los avanzados requieren selección individual.";
     }
+    private void SelectTweakRow(object sender, MouseButtonEventArgs e)
+    {
+        if (((FrameworkElement)sender).DataContext is ExecutableTweakChoice choice) model.SelectedExecutableTweak = choice;
+    }
     private void OpenTweakSource(object sender, RoutedEventArgs e)
     {
         if (model.SelectedExecutableTweak is not { } choice) return;
