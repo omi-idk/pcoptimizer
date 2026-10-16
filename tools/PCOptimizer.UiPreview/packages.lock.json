@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0-windows7.0": {
+      "pcoptimizer.app": {
+        "type": "Project",
+        "dependencies": {
+          "PCOptimizer.Benchmarking": "[1.0.0, )",
+          "PCOptimizer.Core": "[1.0.0, )"
+        }
+      },
+      "pcoptimizer.benchmarking": {
+        "type": "Project"
+      },
+      "pcoptimizer.core": {
+        "type": "Project"
+      }
+    }
+  }
+}

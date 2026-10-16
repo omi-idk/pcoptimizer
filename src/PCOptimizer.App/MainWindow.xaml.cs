@@ -17,16 +17,44 @@ public partial class MainWindow : Window
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Recovery"));
     private string? recoveryListIssue;
     private Inventory? inventory;
+    private bool benchmarkOwnsBusyState;
     private string section = "Inicio";
 
     public MainWindow()
     {
         InitializeComponent();
+        var area = SystemParameters.WorkArea;
+        MinWidth = Math.Min(MinWidth, area.Width - 24);
+        MinHeight = Math.Min(MinHeight, area.Height - 24);
+        Width = Math.Min(Width, area.Width - 24);
+        Height = Math.Min(Height, area.Height - 24);
         DataContext = model;
-        Loaded += async (_, _) => { RefreshRecoverySessions(); await RefreshAsync(); };
+        // A capture and a system mutation must not overlap. Keep Stop available for the owning module.
+        BenchmarkPanel.IsEnabled = model.IsIdle;
+        model.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(MainViewModel.IsIdle))
+                BenchmarkPanel.IsEnabled = model.IsIdle || BenchmarkPanel.IsBusy;
+        };
+        BenchmarkPanel.BusyChanged += (_, _) =>
+        {
+            if (BenchmarkPanel.IsBusy)
+            {
+                benchmarkOwnsBusyState = true;
+                model.IsIdle = false;
+                model.Status = "Operación de benchmarks en curso. Los cambios del sistema y otras consultas esperan a que termine.";
+            }
+            else if (benchmarkOwnsBusyState)
+            {
+                benchmarkOwnsBusyState = false;
+                model.IsIdle = true;
+                model.Status = "Operación de benchmarks finalizada. Revisa el resultado en su panel.";
+            }
+        };
+        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
         Closing += (_, e) =>
         {
-            if (model.IsIdle) return;
+            if (model.IsIdle && !BenchmarkPanel.IsBusy) return;
             e.Cancel = true;
             model.Status = "Espera a que termine la operación antes de cerrar.";
         };
@@ -52,8 +80,9 @@ public partial class MainWindow : Window
 
     private void Render()
     {
-        model.Title = section;
+        model.Title = section switch { "Inicio" => "Resumen", "Optimización" => "Ajustes de Windows", "Gaming" => "Uso de recursos", "Respaldo y recuperación" => "Recuperación", _ => section };
         model.Cards.Clear();
+        BenchmarkPanel.Visibility = section == "Benchmarks" ? Visibility.Visible : Visibility.Collapsed;
         HomePanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
         HomeToolsPanel.Visibility = section == "Inicio" ? Visibility.Visible : Visibility.Collapsed;
         NetworkPanel.Visibility = section == "Red" ? Visibility.Visible : Visibility.Collapsed;
@@ -61,13 +90,16 @@ public partial class MainWindow : Window
         StoragePanel.Visibility = section == "Almacenamiento" ? Visibility.Visible : Visibility.Collapsed;
         DriversPanel.Visibility = section == "Drivers" ? Visibility.Visible : Visibility.Collapsed;
         GamingMetricsPanel.Visibility = section == "Gaming" ? Visibility.Visible : Visibility.Collapsed;
-        ApplyTweaksBar.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        ApplyTweaksBar.Visibility = section == "Optimización" ? Visibility.Visible : Visibility.Collapsed;
         EnergyPanel.Visibility = section == "Energía" ? Visibility.Visible : Visibility.Collapsed;
         InstallPanel.Visibility = section == "Instalación rápida" ? Visibility.Visible : Visibility.Collapsed;
         OptionalAppsPanel.Visibility = section == "Limpieza de apps" ? Visibility.Visible : Visibility.Collapsed;
         PersonalizationPanel.Visibility = section == "Personalización" ? Visibility.Visible : Visibility.Collapsed;
         UpdatesPanel.Visibility = section == "Windows Update" ? Visibility.Visible : Visibility.Collapsed;
-        OptimizationPanel.Visibility = section is "Optimización" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        OptimizationPanel.Visibility = section == "Optimización" ? Visibility.Visible : Visibility.Collapsed;
+        DiagnosticsPanel.Visibility = section is "Drivers" or "Red" or "Audio" or "Almacenamiento" or "Gaming" ? Visibility.Visible : Visibility.Collapsed;
+        DriverResults.Visibility = section == "Drivers" ? Visibility.Visible : Visibility.Collapsed;
+        HistoryPanel.Visibility = section == "Historial" ? Visibility.Visible : Visibility.Collapsed;
         RecoveryPanel.Visibility = section == "Respaldo y recuperación" ? Visibility.Visible : Visibility.Collapsed;
         switch (section)
         {
@@ -130,7 +162,10 @@ public partial class MainWindow : Window
             case "Optimización":
             case "Gaming":
                 model.Subtitle = "Selecciona un perfil, revisa los cambios y aplícalos. Los valores anteriores quedan guardados para revertir.";
-                if (section == "Gaming") AddDiagnosticCards("Gaming");
+                if (section == "Gaming") { model.Subtitle = "Lectura actual de CPU, memoria e instancias de motor 3D; no estima FPS ni un porcentaje de cuello de botella."; AddDiagnosticCards("Gaming"); }
+                break;
+            case "Benchmarks":
+                model.Subtitle = "Captura ETW, importación PresentMon y análisis de intervalos de presentación con procedencia y contexto.";
                 break;
             case "Red":
                 model.Subtitle = "Mide antes de cambiar: router y destinos públicos con diez muestras por destino.";
@@ -177,7 +212,11 @@ public partial class MainWindow : Window
 
     private void Add(string label, string value, string detail) => model.Cards.Add(new(label, value, detail));
 
-    private async void Refresh(object sender, RoutedEventArgs e) => await RefreshAsync();
+    private async void Refresh(object sender, RoutedEventArgs e)
+    {
+        if (!model.IsIdle) return;
+        await RefreshAsync();
+    }
 
     private async Task RefreshAsync()
     {

@@ -1,12 +1,14 @@
+> **Rama Ultimate · Preview 0.4:** añade la página **Benchmarks**: captura manual mediante PresentMon 2.6.0 x64 verificado, importación CSV por proceso/swapchain, lows/percentiles, gráficas, historial, CSV/JSON y comparación A/B por repeticiones. La captura ETW en juegos y su compatibilidad anticheat requieren validación Windows real. [Uso y fórmulas](docs/BENCHMARKING.md) · [Auditoría](docs/ARCHITECTURE_AUDIT.md) · [Hoja de ruta](docs/PRODUCT_ROADMAP.md) · [Comparativa técnica](docs/COMPETITOR_RESEARCH.md).
+
 # PCOptimizer
 
 Aplicación gráfica en español para diagnosticar y ajustar una PC Windows orientada a gaming. Base inicial en **C# / .NET 10 / WPF**. No se anuncian mejoras de rendimiento sin mediciones.
 
-## Preview 0.2: funciones implementadas
+## Preview 0.3: funciones implementadas
 
-- **14 ajustes ejecutables** de registro, lectura del estado actual, selección individual y perfiles Mínimo, Recomendado, Gaming e Intensivo. Revisión de los valores exactos antes de escribir, respaldo por valor/tipo/existencia, verificación posterior y reversión con detección de conflictos. Consulta [qué aplica cada perfil](docs/ajustes-aplicables.md).
-- **Ajustes del equipo con UAC:** HAGS y MPO para evaluación manual, aplazamiento de funciones y exclusión de drivers en Windows Update compatible. Los perfiles automáticos no incluyen estos ajustes. No se cambian voltajes ni protecciones.
-- Interfaz renovada: inicio con tarjetas de hardware y accesos, perfiles visibles, buscador de ajustes aplicables, barra de aplicación persistente y sección de reversión. El catálogo de referencia queda separado, con sus candidatos no implementados identificados.
+- **41 ajustes ejecutables** de registro, lectura del estado actual, selección individual y perfiles Mínimo, Recomendado, Gaming e Intensivo. Revisión de los valores exactos antes de escribir, respaldo por valor/tipo/existencia, verificación posterior y reversión con detección de conflictos. Consulta [qué aplica cada perfil](docs/ajustes-aplicables.md).
+- **Ajustes del equipo con UAC por lote:** HAGS activado o desactivado y MPO para evaluación manual; rutas largas, ejecución de apps compatibles en segundo plano, descarga de actualizaciones sin pares y dos políticas de Windows Update. Los perfiles automáticos no incluyen estos ajustes. No se cambian voltajes ni protecciones.
+- Interfaz reconstruida: barra lateral por función, resumen de hardware, tabla de ajustes virtualizada con búsqueda/filtros, detalle lateral de motivo/riesgo/activación y recuperación por operación. Los perfiles seleccionan 4 / 9 / 7 / 16 ajustes antes de excluir los no compatibles. Se pueden guardar y cargar perfiles personalizados de identificadores, sin scripts ni respaldos privados.
 - Inventario real de CPU, GPU, memoria, Windows, motherboard, BIOS y unidades. Consulta de carga actual de CPU, memoria disponible y máximo de instancia de motor 3D; no es medición de FPS ni diagnóstico suficiente de cuello de botella.
 - **Red:** diez muestras ICMP por destino, puerta de enlace detectada, Cloudflare y Google; media/mínimo/máximo, variación entre respuestas consecutivas y porcentaje sin respuesta. No se confunde ping a un resolvedor con rendimiento DNS ni con latencia de un juego.
 - **Drivers:** inventario de versiones, fechas, proveedor, INF y firma reportada por Windows. Enlaces oficiales según proveedor; no se marca un driver como desactualizado por su fecha ni se recomienda una versión sin evidencia.
@@ -14,7 +16,7 @@ Aplicación gráfica en español para diagnosticar y ajustar una PC Windows orie
 - **Audio:** detección de dispositivos y acceso al panel de mejoras. Loudness Equalization depende del driver; no se promete activación universal ni se fuerzan propiedades no documentadas.
 - Planes de energía existentes: aplicar, comprobar y recuperar el anterior, con detección de cambios externos.
 - Instalación rápida: **236 aplicaciones en diez categorías**, búsqueda, selección y revisión completa del lote, fuentes WinGet/Store explícitas y acuerdos interactivos. Historial individual; los códigos de WinGet no sustituyen una verificación independiente de instalación.
-- Limpieza: análisis y eliminación selectiva de cuatro apps opcionales para el usuario actual, comprobación de ausencia e historial. No elimina componentes críticos ni guarda datos de las apps.
+- Limpieza: análisis y eliminación selectiva de 18 apps opcionales para el usuario actual, comprobación de ausencia e historial. No elimina componentes críticos ni guarda datos de las apps.
 - Puntos de Windows antes de cambios/lotes (intento activado por defecto), registros asociados, creación manual y acceso al asistente nativo. Los puntos no son copias de archivos personales.
 
 **Límites actuales:** los candidatos restantes del catálogo no tienen ejecutor. No hay captura de FPS/frametimes, sensores térmicos de CPU/GPU, comparación automática de último driver frente a recomendado, cambios de red automáticos, ajuste universal de altura de barra ni pruebas de anticheat. La compilación y pruebas del núcleo no validan el funcionamiento real en Windows ni garantizan rendimiento.
@@ -76,3 +78,7 @@ La integración continua está configurada para compilar y ejecutar pruebas del 
 Consulta [SECURITY.md](SECURITY.md) para conocer el alcance de la revisión, los controles implementados y las comprobaciones que faltan antes de distribuir. Se configuraron auditoría NuGet, avisos de actualización y CodeQL; no se ha ejecutado el flujo remoto de GitHub desde este entorno.
 
 Pruebas adicionales de Preview 0.2: aplicar cada perfil y restaurar exactamente valores y tipos, incluidos valores originalmente ausentes; comprobar interrupciones parciales y conflictos. Validar UAC de HAGS/MPO y las políticas en ediciones compatibles y rechazadas. Contrastar red con herramientas de Windows, drivers con Administrador de dispositivos y discos con la utilidad del fabricante. Revisar interfaz con escalado de 100%, 125%, 150% y navegación por teclado.
+
+## Revisar la nueva interfaz
+
+CI genera el artefacto **PCOptimizer-ui-preview** con capturas de las vistas de resumen, ajustes, tamaño compacto, aplicaciones y recuperación. Se renderiza el XAML real en Windows, con datos ilustrativos identificados y sin consultar hardware ni escribir ajustes. Es una comprobación visual de diseño, no una validación de los cambios de Windows. El renderer no se incluye en el portable. También analiza la sintaxis PowerShell del lote elevado de aplicación y reversión sin ejecutarlo.

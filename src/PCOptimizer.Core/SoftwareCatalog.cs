@@ -45,7 +45,21 @@ public static class SoftwareCatalog
         new("Microsoft.BingNews", "Noticias de Microsoft", "Quita esta aplicación de noticias para tu usuario; no desactiva Widgets ni sus servicios."),
         new("Microsoft.BingWeather", "El Tiempo de Microsoft", "Quita esta aplicación meteorológica para tu usuario; no elimina el clima de todos los componentes de Windows."),
         new("Microsoft.MicrosoftSolitaireCollection", "Microsoft Solitaire Collection", "Quita la colección de solitarios. Puede perder preferencias o datos locales no sincronizados."),
-        new("Clipchamp.Clipchamp", "Microsoft Clipchamp", "Quita este editor de vídeo. Guarda y exporta tus proyectos antes; puede perder datos locales.")
+        new("Clipchamp.Clipchamp", "Microsoft Clipchamp", "Quita este editor de vídeo. Guarda y exporta tus proyectos antes; puede perder datos locales."),
+        new("Microsoft.GetHelp", "Obtener ayuda", "Quita la aplicación de ayuda para este usuario. Algunos enlaces de solución de problemas pueden solicitarla."),
+        new("Microsoft.Getstarted", "Sugerencias de Windows", "Quita la app de sugerencias si sigue instalada en esta compilación; no elimina Configuración."),
+        new("Microsoft.MicrosoftOfficeHub", "Microsoft 365 / Office Hub", "Quita el acceso central de Office, no las aplicaciones de escritorio de Office ni su licencia. Puede perder preferencias locales."),
+        new("Microsoft.People", "Contactos", "Quita la app Contactos. Guarda o sincroniza los contactos y datos locales antes."),
+        new("Microsoft.WindowsFeedbackHub", "Centro de opiniones", "Quita la app para enviar comentarios a Microsoft, no servicios de diagnóstico o seguridad."),
+        new("Microsoft.YourPhone", "Enlace Móvil", "Quita la app de integración con el teléfono. Perderás sus accesos a llamadas, mensajes y notificaciones desde esta app."),
+        new("Microsoft.Microsoft3DViewer", "Visor 3D", "Quita este visor opcional; no modifica drivers gráficos, DirectX ni archivos de modelos."),
+        new("Microsoft.SkypeApp", "Skype", "Quita la versión empaquetada de Skype si aún existe. Guarda conversaciones o datos locales no sincronizados."),
+        new("Microsoft.ZuneMusic", "Reproductor multimedia", "Quita la app multimedia para este usuario. Guarda listas y preferencias; no elimina archivos de música."),
+        new("Microsoft.ZuneVideo", "Películas y TV", "Quita la app de vídeo. Puede afectar la reproducción de compras vinculadas a esta app; no elimina vídeos personales."),
+        new("MSTeams", "Microsoft Teams", "Quita este paquete de Teams, no otros instaladores de Teams. Guarda datos y comprueba si lo necesitas para trabajo o estudio."),
+        new("MicrosoftTeams", "Teams / Chat de Windows", "Quita este paquete de chat si está instalado. No elimina automáticamente otros paquetes o versiones de Teams."),
+        new("Microsoft.Todos", "Microsoft To Do", "Quita la app de tareas. Sincroniza o exporta las tareas importantes antes; puede perder datos locales."),
+        new("MicrosoftCorporationII.QuickAssist", "Asistencia rápida", "Quita la app de asistencia remota. No podrás usarla para recibir soporte hasta reinstalarla.")
     ]);
 
     public static SoftwarePackage GetPackage(string id) => Packages.SingleOrDefault(p => p.Id == id)
