@@ -61,14 +61,17 @@
         <Border Style="{StaticResource Card}">
           <StackPanel>
             <TextBlock Text="{Binding Percentiles}" FontSize="16" FontWeight="SemiBold"/>
-            <TextBlock Text="{Binding Evidence}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            <TextBlock Text="{Binding Coverage}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            <Expander Header="Busy, spikes, frames mostrados y límites" Margin="0,8,0,0">
+              <TextBlock Text="{Binding Evidence}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            </Expander>
           </StackPanel>
         </Border>
         <Border Style="{StaticResource Card}" Margin="0,12,0,0">
           <StackPanel>
             <TextBlock Text="FRAMETIMES DE PRESENTACIÓN" Style="{StaticResource SectionLabel}"/>
             <TextBlock Text="Eje temporal: suma de intervalos válidos. Máximo por columna para conservar spikes; no es el reloj ETW." Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0"/>
-            <local:FrameChart Frames="{Binding Frames}" Height="210"/>
+            <local:FrameChart Frames="{Binding Frames}" Height="180"/>
             <TextBlock Text="DISTRIBUCIÓN DE FPS INSTANTÁNEOS · 20 INTERVALOS" Style="{StaticResource SectionLabel}" Margin="0,12,0,0"/>
             <local:FrameChart Frames="{Binding Frames}" Histogram="True" Height="170"/>
           </StackPanel>

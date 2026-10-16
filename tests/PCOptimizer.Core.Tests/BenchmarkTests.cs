@@ -171,5 +171,35 @@ public sealed class BenchmarkTests : IDisposable
         var flatB = new[] { Repetition(120,'D'), Repetition(120,'E'), Repetition(120,'F') };
         Assert.Null(RepeatedComparison.Calculate(flatA, flatB).Lower95Fps);
     }
+    [Fact]
+    public async Task CaptureStopCompletesCleanupAndReturnsPartialCaptureControl()
+    {
+        using var cts = new CancellationTokenSource();
+        var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var cleanup = false;
+        var wait = CaptureLifetime.WaitAsync(async token => { started.SetResult(); await Task.Delay(Timeout.Infinite, token); },
+            () => { cleanup = true; return Task.CompletedTask; }, TimeSpan.FromSeconds(30), cts.Token);
+        await started.Task; cts.Cancel();
+        Assert.Equal(CaptureCompletion.Stopped, await wait);
+        Assert.True(cleanup);
+    }
+    [Fact]
+    public async Task CaptureTimeoutAndNormalExitAreDistinct()
+    {
+        var cleanup = 0;
+        var timed = await CaptureLifetime.WaitAsync(token => Task.Delay(Timeout.Infinite, token),
+            () => { cleanup++; return Task.CompletedTask; }, TimeSpan.FromMilliseconds(20), default);
+        Assert.Equal(CaptureCompletion.TimedOut, timed); Assert.Equal(1, cleanup);
+        var normal = await CaptureLifetime.WaitAsync(_ => Task.CompletedTask,
+            () => { cleanup++; return Task.CompletedTask; }, TimeSpan.FromSeconds(1), default);
+        Assert.Equal(CaptureCompletion.Finished, normal); Assert.Equal(1, cleanup);
+    }
+    [Fact]
+    public async Task CaptureCleanupFailureIsReported()
+    {
+        using var cts = new CancellationTokenSource(); cts.Cancel();
+        await Assert.ThrowsAsync<IOException>(() => CaptureLifetime.WaitAsync(token => Task.Delay(Timeout.Infinite, token),
+            () => throw new IOException("stop failed"), TimeSpan.FromSeconds(1), cts.Token));
+    }
     public void Dispose() { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
 }

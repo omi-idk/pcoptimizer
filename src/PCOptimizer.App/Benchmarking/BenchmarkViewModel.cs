@@ -58,6 +58,8 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     public string Low1 => Summary is { } s ? $"{s.Low1Fps:N1} FPS" : "—";
     public string Low01 => Summary is { } s ? $"{s.Low01Fps:N1} FPS" : "—";
     public string Percentiles => Summary is { } s ? $"p50 {s.MedianMs:N2} · p95 {s.P95Ms:N2} · p99 {s.P99Ms:N2} ms" : "—";
+    public string Coverage => Summary is { } s ? $"{s.Samples:N0} intervalos · suma {s.ObservedIntervalSeconds:N2} s · Presentación; no mide FPS de pantalla ni latencia de entrada." +
+        (s.Samples < 1000 ? " Muestra corta para 0.1% low." : "") : "Sin mediciones. Importa una captura o inicia una sesión manual.";
     public string Evidence => Summary is { } s ?
         $"{s.Samples:N0} intervalos · suma {s.ObservedIntervalSeconds:N2} s · FPS instantáneos medianos {s.MedianInstantaneousFps:N1}\n" +
         $"Desviación {s.StandardDeviationMs:N2} ms · {s.Spikes} spikes (>máx[50 ms, 2×mediana])\n" +
@@ -191,7 +193,7 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     }
     private void NotifyResult()
     {
-        foreach (var name in new[] { nameof(ContextReadOnly), nameof(Frames), nameof(Summary), nameof(StreamLabel), nameof(Average), nameof(Low1), nameof(Low01), nameof(Percentiles), nameof(Evidence) }) Changed(name);
+        foreach (var name in new[] { nameof(ContextReadOnly), nameof(Frames), nameof(Summary), nameof(StreamLabel), nameof(Average), nameof(Low1), nameof(Low01), nameof(Percentiles), nameof(Coverage), nameof(Evidence) }) Changed(name);
     }
     public event PropertyChangedEventHandler? PropertyChanged;
     private void Changed([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new(name));
