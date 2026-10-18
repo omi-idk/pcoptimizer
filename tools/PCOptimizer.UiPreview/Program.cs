@@ -44,6 +44,89 @@ internal static class Program
         finally { File.Delete(fake); }
     }
 
+    private sealed class MissingGpuProvider : IGpuTelemetryProvider
+    {
+        public int Reads { get; private set; }
+        public Task<NvidiaProbeResult> ReadAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested(); Reads++;
+            return Task.FromResult(new NvidiaProbeResult([], "GPU fixture intentionally unavailable."));
+        }
+    }
+    private static async Task ValidatePerformanceCapture()
+    {
+        var gpu = new MissingGpuProvider();
+        var service = new PerformanceCaptureService(gpu);
+        var result = await service.CaptureAsync(async token => { await Task.Delay(1100, token); return "fixture.csv"; }, CancellationToken.None);
+        PerformanceTrace.Validate(result.Trace);
+        if (result.Trace.Observations.Length < 2 || !result.Trace.Observations.SelectMany(o => o.Readings).Any(r => r.Metric == SensorMetric.MemoryUsedPercent && r.Value.HasValue))
+            throw new InvalidOperationException("Read-only Windows memory sampling did not produce a bounded trace.");
+        var reads = gpu.Reads;
+        await Task.Delay(600);
+        if (gpu.Reads != reads) throw new InvalidOperationException("Sampler remained active after capture.");
+        using var cancel = new CancellationTokenSource(100);
+        var canceled = false;
+        try { await service.CaptureAsync(async token => { await Task.Delay(15000, token); return "unused.csv"; }, cancel.Token); }
+        catch (OperationCanceledException) { canceled = true; }
+        if (!canceled) throw new InvalidOperationException("Capture cancellation was not propagated.");
+        reads = gpu.Reads;
+        await Task.Delay(600);
+        if (gpu.Reads != reads) throw new InvalidOperationException("Sampler remained active after cancellation.");
+        Console.WriteLine("Read-only performance sampler: missing GPU, real Windows memory, stop and cancellation passed. No game or system modifications.");
+    }
+    private sealed class FixturePresentMon(string csvPath) : IPresentMonCaptureService
+    {
+        public Task<BenchmarkCapability> CheckAsync(string executable, CancellationToken token) => Task.FromResult(new BenchmarkCapability(CapabilityState.ValidationRequired, "Test fixture; no helper executed."));
+        public async Task<string> CaptureAsync(string executable, CaptureTarget target, int seconds, CancellationToken token)
+        {
+            await Task.Delay(650, token);
+            var qpc = System.Diagnostics.Stopwatch.GetTimestamp();
+            await File.WriteAllTextAsync(csvPath, $"Application,ProcessID,SwapChainAddress,MsBetweenPresents,CPUStartQPC\nfixture.exe,{target.Id},0x1,10,{qpc - 1000}\nfixture.exe,{target.Id},0x1,20,{qpc}\n", token);
+            return csvPath;
+        }
+    }
+    private static async Task ValidatePerformanceWorkflow()
+    {
+        var folder = Path.Combine(Path.GetTempPath(), "pcoptimizer-performance-smoke-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(folder);
+        try
+        {
+            var csv = Path.Combine(folder, "fixture.csv");
+            var store = new BenchmarkSessionStore(Path.Combine(folder, "sessions"));
+            var capture = new FixturePresentMon(csv);
+            var model = new BenchmarkViewModel(store, capture, new PerformanceCaptureService(new MissingGpuProvider()));
+            using var self = System.Diagnostics.Process.GetCurrentProcess();
+            model.SelectedTarget = new(self.Id, self.StartTime.ToUniversalTime(), "fixture");
+            model.CaptureSensors = true;
+            await model.ConfigureExecutableAsync("test fixture", CancellationToken.None);
+            await model.CaptureAsync(CancellationToken.None);
+            if (model.Telemetry?.TargetProcessId != self.Id || model.PerformanceReport is null)
+                throw new InvalidOperationException("Capture workflow did not attach and analyze its trace.");
+            await model.SaveAsync(CancellationToken.None);
+            var reopened = new BenchmarkViewModel(store, capture);
+            await reopened.RefreshHistoryAsync(CancellationToken.None);
+            reopened.SelectedHistory = reopened.History.Single();
+            await reopened.LoadAsync(CancellationToken.None);
+            if (reopened.Telemetry?.CaptureId != model.Telemetry.CaptureId || reopened.PerformanceReport?.Frames != 2)
+                throw new InvalidOperationException("Reopening lost the trace or report.");
+            var markdown = Path.Combine(folder, "report.md");
+            await reopened.ExportReportAsync(markdown, CancellationToken.None);
+            if (!File.ReadAllText(markdown).Contains("Sin atribución concluyente")) throw new InvalidOperationException("Report export is incomplete.");
+            await reopened.ImportAsync(csv, CancellationToken.None);
+            if (reopened.Telemetry is not null || reopened.PerformanceReport is not null)
+                throw new InvalidOperationException("A manual import retained sensors from a different operation.");
+            Console.WriteLine("Performance workflow: fixture CSV + read-only memory, save/reopen, report and stale-trace reset passed. No PresentMon helper/game executed.");
+        }
+        finally { Directory.Delete(folder, true); }
+    }
+
+    private static bool IsAncestor(DependencyObject ancestor, DependencyObject child)
+    {
+        for (var current = VisualTreeHelper.GetParent(child); current is not null; current = VisualTreeHelper.GetParent(current))
+            if (ReferenceEquals(current, ancestor)) return true;
+        return false;
+    }
+
     [STAThread]
     private static void Main(string[] args)
     {
@@ -59,23 +142,40 @@ internal static class Program
         window.ConfigureResourceDesignPreview(new ResourceCapture(DateTimeOffset.UtcNow,
             Enumerable.Range(0,20).Select(i=>new ResourceSample(i,[new("0",95),new("1",10)],6000,32000,60,0)).ToArray(),
             ["Datos ilustrativos de la vista; no se midió ni modificó Windows."]));
-        var previewFrames = Enumerable.Range(0, 3600).Select(i => new FrameSample(i % 377 == 0 ? 55 : 8 + Math.Sin(i * .07), 3, 6, true, "Application")).ToArray();
+        var previewFrames = Enumerable.Range(0, 3600).Select(i => new FrameSample(i % 377 == 0 ? 55 : 8 + Math.Sin(i * .07), 3, 6, true, "Application") { CpuStartQpc = 1000000 + i * 10000L }).ToArray();
+        var previewTrace = new PerformanceTrace(1, Guid.NewGuid(), 1000000, 999999, 37000000, DateTimeOffset.UtcNow,
+            Enumerable.Range(0,72).Select(i => new SensorObservation(1000000 + i * 500000, 1001000 + i * 500000, DateTimeOffset.UtcNow,
+                [new(SensorMetric.GpuUtilizationPercent, "GPU ilustrativa", "Fixture de diseño", "%", 60 + 30 * Math.Sin(i * .3), SensorAvailability.Available, "Datos simulados de diseño; no medición."),
+                 new(SensorMetric.MemoryUsedPercent, "Sistema ilustrativo", "Fixture de diseño", "%", 55, SensorAvailability.Available, "Datos simulados de diseño; no medición.")])).ToArray(),
+            ["Datos simulados exclusivamente para revisar el diseño. No pertenecen al equipo del propietario."], 0);
         ((BenchmarkView)window.FindName("BenchmarkPanel")).ConfigureDesignPreview(new ImportedCapture(new string('A',64),
-            new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1));
+            new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1), previewTrace);
         _ = window.Dispatcher.InvokeAsync(async () =>
         {
             try
             {
                 await ValidateBenchmarkIsolation(window);
+                await ValidatePerformanceCapture();
+                await ValidatePerformanceWorkflow();
                 await ValidateElevatedScriptSyntax();
                 await ValidateReadOnlyProbes();
                 foreach (var (name, section, width, height) in new[]
                 {
                     ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
-                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740)
+                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740), ("performance", "Benchmarks", 1400, 880), ("performance-compact", "Benchmarks", 1120, 740), ("performance-unavailable", "Benchmarks", 1120, 740)
                 })
                 {
+                    if (name == "performance-unavailable")
+                    {
+                        var missingTrace = previewTrace with { Observations = previewTrace.Observations.Select(o => o with
+                            { Readings = o.Readings.Select(r => r with { Value = null, Availability = SensorAvailability.Unavailable }).ToArray() }).ToArray() };
+                        var view = (BenchmarkView)window.FindName("BenchmarkPanel");
+                        view.ConfigureDesignPreview(new ImportedCapture(new string('A',64), new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1), missingTrace);
+                        var module = (BenchmarkViewModel)view.DataContext;
+                        if (module.PerformanceReport!.Associations.Any(a => a.MatchedFrames != 0))
+                            throw new InvalidOperationException("Unavailable sensor fixture gained false coverage.");
+                    }
                     window.Width = width;
                     window.Height = height;
                     window.ShowDesignSection(section);
@@ -101,6 +201,18 @@ internal static class Program
                     visual.Measure(new Size(width, height));
                     visual.Arrange(new Rect(0, 0, width, height));
                     visual.UpdateLayout();
+                    if (section == "Benchmarks")
+                    {
+                        var benchmark = (BenchmarkView)window.FindName("BenchmarkPanel");
+                        var chart = Descendants<CorrelatedChart>(benchmark).Single();
+                        var scroll = Descendants<ScrollViewer>(benchmark).First(v => IsAncestor(v, chart));
+                        if (name.StartsWith("performance"))
+                        {
+                            var position = chart.TransformToAncestor(scroll).Transform(new Point());
+                            scroll.ScrollToVerticalOffset(scroll.VerticalOffset + position.Y - 140);
+                        }
+                        else scroll.ScrollToTop();
+                    }
                     visual.UpdateLayout();
                     var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
                     bitmap.Render(visual);

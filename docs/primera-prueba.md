@@ -1,3 +1,5 @@
+> **Preview 0.6:** para probar sensores, correlación e informes entra en **Benchmarks** y sigue [Performance Intelligence](PERFORMANCE_INTELLIGENCE.md). Activa sensores solo para una captura voluntaria; guarda y reabre desde el historial. No hay mediciones reales de Warzone incluidas ni ajustes automáticos derivados del diagnóstico.
+
 # Primera prueba en Windows
 
 Esta es una versión preliminar para Windows 11 x64. La publicación incluye .NET: no necesitas instalar el SDK para abrirla. La compilación desde Linux no valida su funcionamiento real en Windows.

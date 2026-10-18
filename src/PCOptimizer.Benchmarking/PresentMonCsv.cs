@@ -58,11 +58,20 @@ public static class PresentMonCsv
                 { "0" => true, "1" => false, "" or "NA" => null, _ => throw new InvalidDataException("Dropped debe ser 0, 1 o NA.") };
             else if (columns.ContainsKey("DisplayedTime")) displayed = Field("DisplayedTime") == "" ? null : OptionalNumber(Field("DisplayedTime")) is > 0;
             frames.Add(new(interval.Value, OptionalNumber(Field("MsCPUBusy")), OptionalNumber(Field("MsGPUBusy")), displayed,
-                string.IsNullOrEmpty(Field("FrameType")) ? null : Field("FrameType")));
+                string.IsNullOrEmpty(Field("FrameType")) ? null : Field("FrameType"))
+            { CpuStartQpc = OptionalQpc(Field("CPUStartQPC")) });
         }
         if (groups.Values.All(g => g.Count < 2)) throw new InvalidDataException("No hay un stream con al menos dos intervalos válidos.");
         foreach (var frames in groups.Values.Where(g => g.Count >= 2)) _ = BenchmarkStatistics.Calculate(frames);
         return new(hash, groups.Where(p => p.Value.Count >= 2).ToDictionary(p => p.Key, p => p.Value.ToArray()), missing);
+    }
+
+    private static long? OptionalQpc(string text)
+    {
+        if (text is "" or "NA" or "N/A" or "0") return null;
+        if (!long.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out var value) || value <= 0)
+            throw new InvalidDataException("CPUStartQPC debe contener ticks enteros positivos; no se convierte un reloj relativo en QPC.");
+        return value;
     }
 
     private static double? OptionalNumber(string text)

@@ -7,6 +7,8 @@
     </Grid.RowDefinitions>
     <WrapPanel Margin="0,0,0,12" IsEnabled="{Binding IsIdle}">
       <Button Content="Importar CSV PresentMon" Style="{StaticResource PrimaryButton}" Click="ImportCsv"/>
+      <Button Content="Analizar coincidencias" Click="AnalyzePerformance"/>
+      <Button Content="Informe de rendimiento" Click="ExportReport"/>
       <Button Content="Guardar sesión" Click="SaveSession"/>
       <Button Content="Exportar JSON" Tag="json" Click="ExportSession"/>
       <Button Content="Exportar CSV" Tag="csv" Click="ExportSession"/>
@@ -23,6 +25,7 @@
                   <Button Content="Seleccionar auxiliar" Click="SelectExecutable"/>
                   <Button Content="Actualizar procesos" Click="RefreshProcesses"/>
                 </WrapPanel>
+                <CheckBox Content="Incluir sensores · experimental · muestreo cada 500 ms" IsChecked="{Binding CaptureSensors}" IsEnabled="{Binding IsIdle}" Margin="0,10,0,4" ToolTip="Solo durante esta captura. CPU global, memoria y NVML si está disponible. Sin cambios del sistema; overhead físico pendiente de medir."/>
                 <Grid Margin="0,8,0,0" IsEnabled="{Binding IsIdle}">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -74,6 +77,19 @@
             <local:FrameChart Frames="{Binding Frames}" Height="180"/>
             <TextBlock Text="DISTRIBUCIÓN DE FPS INSTANTÁNEOS · 20 INTERVALOS" Style="{StaticResource SectionLabel}" Margin="0,12,0,0"/>
             <local:FrameChart Frames="{Binding Frames}" Histogram="True" Height="170"/>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+          <StackPanel>
+            <TextBlock Text="PERFORMANCE INTELLIGENCE · EXPERIMENTAL" Style="{StaticResource SectionLabel}"/>
+            <TextBlock Text="Frametime (arriba) y sensor elegido (abajo), con el mismo eje QPC. Los puntos no se interpolan; la temperatura no demuestra throttling." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            <ComboBox ItemsSource="{Binding SensorSeries}" SelectedItem="{Binding SelectedSensor}" IsEnabled="{Binding IsIdle}" Margin="0,10,0,0" AutomationProperties.Name="Sensor y dispositivo de la gráfica correlacionada" ToolTip="Selecciona la métrica y el dispositivo; no se presupone que esta GPU renderice el juego."/>
+            <local:CorrelatedChart Frames="{Binding Frames}" Trace="{Binding Telemetry}" Series="{Binding SelectedSensor}" Height="270" AutomationProperties.Name="Frametimes y sensores con reloj común QPC"/>
+            <TextBlock Text="{Binding PerformanceCoverage}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            <TextBlock Text="{Binding PerformanceEvidence}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+            <Expander Header="Método, fuentes y límites" Margin="0,10,0,0">
+              <TextBlock Text="{Binding PerformanceLimits}" TextWrapping="Wrap" Foreground="{StaticResource Muted}"/>
+            </Expander>
           </StackPanel>
         </Border>
         <Expander Header="Contexto reproducible · completa antes de guardar" Margin="0,12,0,0" IsEnabled="{Binding IsIdle}">

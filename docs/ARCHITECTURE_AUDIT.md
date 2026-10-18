@@ -1,4 +1,26 @@
-# Auditoría de arquitectura — base Ultimate
+# Auditoría de arquitectura — PCOptimizer Ultimate
+
+## Revisión actual · primer incremento 0.6
+
+Se revisaron remoto, ramas, commits, proyectos, locks y `ci.yml`. `origin/main` estaba en `f7231eb`, con PR #8 integrado; la rama nueva `feature/performance-intelligence` parte de ese commit. No se modificó main ni se reemplazó trabajo. El [prompt comercial completo](requirements/PCOptimizer-Ultimate-comercial-recibido.md) sustituye la limitación del texto anterior truncado.
+
+| Área | Estado observado y trabajo de esta entrega | Riesgo restante |
+| --- | --- | --- |
+| Benchmarks | Se conserva módulo independiente, estadísticas, A/B e historial; QPC entero opcional y telemetría amplían aditivamente el esquema 1. | Importaciones antiguas no tienen reloj suficiente. Captura real de juegos pendiente. |
+| Diagnóstico | Reglas deterministas separadas en `PerformanceAnalysis`, cobertura por serie y sin interpolación; no se infiere causa por carga alta constante. | Inicio CPU no es instante Present; ventanas internas NVML desconocidas. Confianza baja, no causal. |
+| Aplicación | BenchmarkViewModel coordina con servicios inyectables; métricas y validación no están en la ventana. Se conservan módulos existentes de recursos, energía y Warzone. | Otros módulos continúan coordinados por MainWindow; migración MVVM/DI incompleta. |
+| Infraestructura | Colector optativo de solo lectura; QPC por consulta, CPU global/memoria y NVML instalado. Cierre/cancelación esperan al bucle antes de publicar traza. | Una llamada nativa NVML en vuelo no puede abortarse; sin proveedores AMD/Intel ni sensores térmicos CPU. |
+| Archivos | Sesiones inmutables, temporales/flush/move, validación de esquemas/unidades/valores/límites. Informes y JSON mantienen contexto/procedencia. | Archivos locales no firmados ni cifrados; SHA-256 no autentica mediciones. Perfil de datos y permisos heredan al usuario Windows. |
+| Tweaks/seguridad | 41 ajustes y recuperación preservados. Las mediciones nuevas no invocan ejecutores ni UAC. No se modifican protecciones ni procesos del juego. | UAC/fallos parciales/reinicio necesitan VM física/integración real. |
+| CI/dependencias | .NET 10.0.402, locks y Actions fijados; tests, renderizado WPF, sondeos de solo lectura, publicación y CodeQL. Sin paquetes añadidos. | CI no valida RICOCHET ni mejora de FPS; auditoría complementaria no garantiza cero vulnerabilidades. |
+
+Prioridades: P0 validación física/overhead y cobertura temporal; P1 alineación Present/CPU, sensores y experimentos A/B persistidos; P1 recuperación real y capacidades; P2 distribución comercial y accesibilidad. No se añaden proyectos vacíos ni se migra a WinUI: no resolvería estas carencias.
+
+Licencias: sin componentes redistribuidos nuevos. El catálogo conserva aviso MIT WinUtil; PresentMon MIT se obtiene separadamente; NVML se carga del driver instalado y no se distribuye. Los nuspec de pruebas declaran Microsoft.NET.Test.Sdk MIT y xUnit/runner Apache-2.0; no se publican los proyectos de pruebas. La distribución self-contained incorpora runtime .NET/WPF. En el artefacto 0.5 inspeccionado faltaban avisos específicos del runtime; esta entrega incorpora las licencias y avisos oficiales runtime/WPF v10.0.13 y hace fallar la publicación CI si cambia la versión sin revisar avisos o si falta alguno. Permanece pendiente la auditoría completa de transitivas, activos y obligaciones de redistribución comercial. No se ha realizado revisión legal ni firma comercial.
+
+[Reglas, fuentes y validación Windows](PERFORMANCE_INTELLIGENCE.md). Lo siguiente conserva el análisis histórico de la base 0.4; sus carencias se actualizan por los avances 0.5/0.6 descritos arriba.
+
+## Auditoría histórica de la base 0.4
 
 ## Alcance y ramas
 

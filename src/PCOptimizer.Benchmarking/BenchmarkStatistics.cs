@@ -13,6 +13,7 @@ public static class BenchmarkStatistics
             foreach (var busy in new[] { frame.CpuBusyMs, frame.GpuBusyMs })
                 if (busy is { } n && (!double.IsFinite(n) || n < 0 || n > 3_600_000))
                     throw new InvalidDataException("Tiempo Busy inválido.");
+            if (frame.CpuStartQpc is <= 0) throw new InvalidDataException("Timestamp QPC inválido.");
             if (frame.FrameType?.Length > 80) throw new InvalidDataException("Tipo de frame demasiado largo.");
         }
         var sorted = frames.Select(f => f.IntervalMs).Order().ToArray();
