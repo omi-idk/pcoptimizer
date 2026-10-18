@@ -4,7 +4,7 @@ namespace PCOptimizer.Core;
 
 public enum ProfileCheckState { Match, Mismatch, Unknown }
 public sealed record ProfileHardware(string Cpu, string Motherboard, string Gpu, long? DedicatedVramBytes,
-    MemoryModuleDetails[] MemoryModules, bool Windows11X64);
+    MemoryModuleDetails[] MemoryModules, bool Windows11X64, SystemSecurityDetails? Security = null);
 public sealed record ProfileCheck(string Name, ProfileCheckState State, string Expected, string Observed);
 
 public static partial class KnownGamingProfile
@@ -35,6 +35,11 @@ public static partial class KnownGamingProfile
                 modules.All(m => m.ConfiguredClock == 3200) ? ProfileCheckState.Match : ProfileCheckState.Mismatch,
                 "ConfiguredClockSpeed 3200 en los cuatro módulos; comprobar DDR4/DOCP manualmente", string.Join(", ", modules.Select(m => m.ConfiguredClock?.ToString() ?? "No informado"))),
             new("Windows", hardware.Windows11X64 ? ProfileCheckState.Match : ProfileCheckState.Mismatch, "Windows 11 x64", hardware.Windows11X64 ? "Windows 11 x64 detectado" : "No coincide"),
+            new("TPM · versión declarada", string.IsNullOrWhiteSpace(hardware.Security?.TpmSpecification) ? ProfileCheckState.Unknown :
+                hardware.Security.TpmSpecification.Split(',').Any(v => v.Trim().StartsWith("2.0", StringComparison.Ordinal)) ? ProfileCheckState.Match : ProfileCheckState.Mismatch,
+                "TPM 2.0; no certifica compatibilidad RICOCHET", hardware.Security?.TpmSpecification ?? "No se pudo consultar sin elevar permisos"),
+            new("Secure Boot", hardware.Security?.SecureBoot is null ? ProfileCheckState.Unknown : hardware.Security.SecureBoot.Value ? ProfileCheckState.Match : ProfileCheckState.Mismatch,
+                "UEFI Secure Boot habilitado; verificar requisitos actuales del juego", hardware.Security?.SecureBoot?.ToString() ?? "No informado; no equivale a desactivado"),
             new("Refrigeración y mando", ProfileCheckState.Unknown, "DeepCool AK500 Digital / GameSir G7 Pro", "Requiere confirmación del usuario; no se presume a partir de CPU o USB genérico.")
         };
         return result;

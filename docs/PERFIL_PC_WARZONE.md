@@ -4,7 +4,7 @@ Objetivo solicitado: Ryzen 7 5800X3D, ASUS ROG Strix B550-F Gaming WiFi II, RTX 
 
 ## Uso real
 
-Abre **Uso de recursos → Evaluar mi PC · Warzone**. Se leen CPU/placa/GPU/módulos y sistema y se muestra **Coincide / Difiere / Por comprobar** por componente. La VRAM solo se confirma si un único dispositivo NVML coincidente expone su total; no se deducen 16 GB del nombre ni se usa AdapterRAM de 32 bits. La clase de 16 GiB admite una pequeña reserva informada por el driver. Refrigeración y mando requieren confirmación del usuario. Que el hardware coincida no demuestra estabilidad ni valida un driver.
+Abre **Uso de recursos → Evaluar mi PC · Warzone**. Se leen CPU/placa/GPU/módulos y sistema y se muestra **Coincide / Difiere / Por comprobar** por componente. La VRAM solo se confirma si un único dispositivo NVML coincidente expone su total; no se deducen 16 GB del nombre ni se usa AdapterRAM de 32 bits. La clase de 16 GiB admite una pequeña reserva informada por el driver. Refrigeración y mando requieren confirmación del usuario. Que el hardware coincida no demuestra estabilidad ni valida un driver. También se muestra TPM 2.0/Secure Boot cuando las API permiten leerlos: falta de permisos queda por comprobar, no como desactivado; estas lecturas no certifican RICOCHET.
 
 **Seleccionar base Warzone** carga una selección revisable de Modo Juego; no aplica nada al cargar. Pasa por el mismo motor, revisión, respaldo y reversión que los otros ajustes. No desactiva captura de OBS/Game Bar ni cambia ratón para un jugador que usa mando. HAGS/MPO, afinidades, temporizadores y energía no se incluyen automáticamente. La sesión temporal de energía se elige aparte, entre planes presentes en el equipo, y exige consentimiento.
 

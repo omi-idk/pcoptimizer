@@ -64,6 +64,16 @@ public sealed class ResourceDiagnosticsTests
         Assert.DoesNotContain("hags", KnownGamingProfile.BaseTweaks.TweakIds);
     }
     [Fact]
+    public void MissingSecurityReadingsNeverMeanDisabled()
+    {
+        var machine = new ProfileHardware("", "", "", null, [], true);
+        Assert.Equal(ProfileCheckState.Unknown, KnownGamingProfile.Evaluate(machine).Single(c => c.Name == "Secure Boot").State);
+        Assert.Equal(ProfileCheckState.Unknown, KnownGamingProfile.Evaluate(machine).Single(c => c.Name == "TPM · versión declarada").State);
+        var observed = machine with { Security = new("2.0, 0, 1.38", true, 2, true, []) };
+        Assert.Equal(ProfileCheckState.Match, KnownGamingProfile.Evaluate(observed).Single(c => c.Name == "Secure Boot").State);
+        Assert.Equal(ProfileCheckState.Match, KnownGamingProfile.Evaluate(observed).Single(c => c.Name == "TPM · versión declarada").State);
+    }
+    [Fact]
     public void NetworkRateRejectsCounterResets()
     {
         Assert.Null(NetworkCounterRate.Calculate(100, 1, 100, 200, 2).ReceiveBytesPerSecond);

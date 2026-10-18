@@ -8,6 +8,8 @@ El inventario informa núcleos/procesadores lógicos, cachés y frecuencia máxi
 
 En NVIDIA, un proveedor opcional consulta **NVML instalado en System32**: nombre, VRAM total/usada, utilización GPU, temperatura, reloj gráfico, consumo y máscara de eventos de reloj cuando el driver los expone. Solo usa funciones de lectura; no instala drivers, no carga DLL desde PATH o descargas y no escribe voltajes ni límites. Cada valor puede ser N/D sin impedir el inventario CIM. La espera NVML tiene un límite de ocho segundos y una sola consulta nativa en vuelo: cancelar deja de esperar, no intenta terminar el driver. Temperatura/VRAM AMD e Intel y temperatura CPU permanecen sin proveedor. La máscara se muestra en hexadecimal, sin atribuir automáticamente throttling térmico. Consumo/utilización pueden estar promediados por el propio driver y no son métricas del proceso del juego.
 
+También se consultan versión TPM por CIM, Secure Boot por API y VBS/HVCI por Win32_DeviceGuard. Los errores de permisos/proveedor son «No informado», nunca «desactivado». VBS distingue habilitado de en ejecución; no se modifican estas protecciones ni se infiere certificación anticheat. Secure Boot puede requerir permisos que la GUI normal no tenga y no se eleva automáticamente para leerlo.
+
 ## Reglas del diagnóstico
 
 `ResourceDiagnostics` es independiente de Windows. Valida números, orden, duplicados y límites. Exige diez muestras y ocho segundos como mínimo, sin huecos mayores de cinco segundos. Para cada regla requiere cobertura en al menos el 80% de las muestras; falta de datos no significa ausencia de presión.
@@ -44,6 +46,7 @@ En **Drivers**, la nueva búsqueda usa `Microsoft.Update.Session` y `IUpdateSear
 
 - [Win32_Processor](https://learn.microsoft.com/windows/win32/cimwin32prov/win32-processor), [Win32_PhysicalMemory](https://learn.microsoft.com/windows/win32/cimwin32prov/win32-physicalmemory), [Win32_VideoController](https://learn.microsoft.com/windows/win32/cimwin32prov/win32-videocontroller).
 - [NVML oficial](https://docs.nvidia.com/deploy/nvml-api/index.html) y [encabezado publicado por NVIDIA](https://github.com/NVIDIA/go-nvml/blob/main/pkg/nvml/nvml.h). Se contrastaron firmas de lectura y estructuras memory/utilization. No se redistribuye la biblioteca ni se copió su implementación. Funciones antiguas pueden ser no soportadas por drivers nuevos: N/D explícito.
+- [Confirm-SecureBootUEFI](https://learn.microsoft.com/powershell/module/secureboot/confirm-securebootuefi) y [VBS/Win32_DeviceGuard](https://learn.microsoft.com/windows/security/hardware-security/enable-virtualization-based-protection-of-code-integrity).
 - [QueryFullProcessImageName](https://learn.microsoft.com/windows/win32/api/winbase/nf-winbase-queryfullprocessimagenamew), [derechos de proceso](https://learn.microsoft.com/windows/win32/procthread/process-security-and-access-rights).
 - [IUpdateSearcher.Search](https://learn.microsoft.com/windows/win32/api/wuapi/nf-wuapi-iupdatesearcher-search), [IWindowsDriverUpdate](https://learn.microsoft.com/windows/win32/api/wuapi/nn-wuapi-iwindowsdriverupdate).
 

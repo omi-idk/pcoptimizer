@@ -86,4 +86,8 @@ public static class ResourceDiagnostics
 public sealed record ProcessorDetails(string Name, int Cores, int LogicalProcessors, long? L2CacheKb, long? L3CacheKb, int? MaximumClockMhz);
 public sealed record MemoryModuleDetails(string Locator, long CapacityBytes, int? ConfiguredClock, int? RatedClock);
 public sealed record DisplayDetails(string Name, int? Width, int? Height, int? RefreshRate);
-public sealed record HardwareDetails(ProcessorDetails[] Processors, MemoryModuleDetails[] MemoryModules, DisplayDetails[] Displays, string[] Limitations);
+public sealed record SystemSecurityDetails(string? TpmSpecification, bool? SecureBoot, int? VbsStatus, bool? HvciRunning, string[] Limitations);
+public sealed record HardwareDetails(ProcessorDetails[] Processors, MemoryModuleDetails[] MemoryModules, DisplayDetails[] Displays, string[] Limitations)
+{
+    public SystemSecurityDetails? Security { get; init; }
+}

@@ -29,7 +29,23 @@ internal sealed class WindowsResourceProbe : IResourceProbe
                 Height=if ($_.CurrentVerticalResolution -gt 0) {[int]$_.CurrentVerticalResolution} else {$null};
                 RefreshRate=if ($_.CurrentRefreshRate -gt 1) {[int]$_.CurrentRefreshRate} else {$null}}
         })
+        $securityIssues = [Collections.Generic.List[string]]::new()
+        $tpm = $null; $secureBoot = $null; $vbs = $null; $hvci = $null
+        try {
+            $device = Get-CimInstance -Namespace 'root/CIMV2/Security/MicrosoftTpm' -ClassName Win32_Tpm -ErrorAction Stop | Select-Object -First 1
+            if ($device) { $tpm = [string]$device.SpecVersion } else { $securityIssues.Add('El proveedor no devolvió TPM; no se certifica ausencia física.') }
+        } catch { $securityIssues.Add('TPM no informado: ' + $_.Exception.Message) }
+        try { $secureBoot = [bool](Confirm-SecureBootUEFI -ErrorAction Stop) }
+        catch { $securityIssues.Add('Secure Boot no informado: ' + $_.Exception.Message) }
+        try {
+            $guard = Get-CimInstance -Namespace 'root/Microsoft/Windows/DeviceGuard' -ClassName Win32_DeviceGuard -ErrorAction Stop | Select-Object -First 1
+            if ($guard) {
+                $vbs = [int]$guard.VirtualizationBasedSecurityStatus
+                if ($null -ne $guard.SecurityServicesRunning) { $hvci = [bool](@($guard.SecurityServicesRunning) -contains 2) }
+            }
+        } catch { $securityIssues.Add('VBS/HVCI no informados: ' + $_.Exception.Message) }
         [pscustomobject]@{Processors=$cpu; MemoryModules=$ram; Displays=$display;
+            Security=[pscustomobject]@{TpmSpecification=$tpm; SecureBoot=$secureBoot; VbsStatus=$vbs; HvciRunning=$hvci; Limitations=$securityIssues.ToArray()};
             Limitations=@('CPU: datos CIM; frecuencia máxima informada, no frecuencia efectiva ni throttling.',
                 'RAM: campos SMBIOS; no prueban canales, XMP/DOCP ni estabilidad.',
                 'Vídeo: modo informado por Win32_VideoController; no identifica cada monitor, HDR, VRR ni VRAM física.')

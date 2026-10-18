@@ -167,7 +167,7 @@ public partial class MainWindow
                 var matching = gpuData.Devices.Where(g => g.Name.Contains("RTX 5060 Ti", StringComparison.OrdinalIgnoreCase)).ToArray();
                 long? vram = matching.Length == 1 && matching[0].VramTotal is { } total && total <= long.MaxValue ? (long)total : null;
                 var checks = KnownGamingProfile.Evaluate(new(machine.Cpu, machine.Motherboard, machine.Gpu, vram,
-                    data.MemoryModules, OperatingSystem.IsWindowsVersionAtLeast(10,0,22000) && System.Runtime.InteropServices.RuntimeInformation.OSArchitecture == System.Runtime.InteropServices.Architecture.X64));
+                    data.MemoryModules, OperatingSystem.IsWindowsVersionAtLeast(10,0,22000) && System.Runtime.InteropServices.RuntimeInformation.OSArchitecture == System.Runtime.InteropServices.Architecture.X64, data.Security));
                 var cards = checks.Select(c => new InfoCard(c.State switch { ProfileCheckState.Match => "COINCIDE", ProfileCheckState.Mismatch => "DIFIERE", _ => "POR COMPROBAR" },
                     c.Name, $"Esperado: {c.Expected}\nDetectado: {c.Observed}")).ToList();
                 cards.Add(new("PERFIL EXPERIMENTAL", KnownGamingProfile.Name, string.Join("\n\n", KnownGamingProfile.CalibrationChecklist)));
@@ -203,6 +203,14 @@ public partial class MainWindow
                     cards.Add(new("MÓDULO RAM · SMBIOS", ram.Locator, $"{ram.CapacityBytes / Math.Pow(1024,3):N1} GiB\nConfiguredClockSpeed: {N(ram.ConfiguredClock)} · Speed: {N(ram.RatedClock)} (valores SMBIOS). No confirma canales, DOCP/XMP ni estabilidad."));
                 foreach (var display in data.Displays)
                     cards.Add(new("MODO DE VÍDEO · CIM", display.Name, $"{N(display.Width)} × {N(display.Height)} · {N(display.RefreshRate)} Hz informados. No equivale a FPS del juego ni confirma HDR/VRR."));
+                if (data.Security is { } security)
+                {
+                    string Flag(bool? value) => value.HasValue ? (value.Value ? "Sí" : "No") : "No informado";
+                    cards.Add(new("SEGURIDAD · SOLO LECTURA", "TPM, Secure Boot y aislamiento",
+                        $"TPM: {security.TpmSpecification ?? "No informado"} (versión declarada)\nSecure Boot confirmado por API: {Flag(security.SecureBoot)}\n" +
+                        $"Estado VBS: {security.VbsStatus switch {0 => "No habilitado",1 => "Habilitado, sin ejecutar",2 => "En ejecución",_ => "No informado"}} · HVCI en ejecución: {Flag(security.HvciRunning)}\n" +
+                        $"{string.Join("\n",security.Limitations)}\nNo informado no significa desactivado. No se cambia seguridad ni se infiere compatibilidad anticheat."));
+                }
                 var gpuData = await gpuProbe.ReadAsync(cancellation.Token);
                 foreach (var gpu in gpuData.Devices)
                     cards.Add(new("GPU · NVML · SOLO LECTURA", gpu.Name,
