@@ -51,10 +51,10 @@ public partial class MainWindow : Window
                 model.Status = "Operación de benchmarks finalizada. Revisa el resultado en su panel.";
             }
         };
-        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
+        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); NotifyPendingSessions(); };
         Closing += (_, e) =>
         {
-            if (model.IsIdle && !BenchmarkPanel.IsBusy) return;
+            if (model.IsIdle && !BenchmarkPanel.IsBusy && sessionsWindow?.ControlsActiveSession != true) return;
             e.Cancel = true;
             model.Status = "Espera a que termine la operación antes de cerrar.";
         };
@@ -202,6 +202,14 @@ public partial class MainWindow : Window
                             string.Join("\n", operation.Changes.Select(c => $"{ExecutableTweaks.Get(c.TweakId).Name}: {c.Before.Display} → {c.After.Display} · {c.State}")));
                 }
                 catch (Exception ex) { Add("RESPALDO DE AJUSTES NO DISPONIBLE", "Se conservó el registro original", ex.Message); }
+                try
+                {
+                    foreach (var session in sessionEngine.List().Take(40))
+                        Add("SESIÓN GAMING · " + session.StateLabel, session.Game.Name,
+                            $"{session.CreatedUtc.ToLocalTime():g} · ID {session.Id:N}\nPlan original: {session.PreviousPlan:D}\nPlan temporal: {session.TemporaryPlan:D}\n" +
+                            $"Intento de aplicación registrado: {(session.ApplyAttempted ? "Sí" : "No")}\n{session.Error}");
+                }
+                catch (Exception ex) { Add("SESIONES GAMING NO DISPONIBLES", "Se conservaron los registros", ex.Message); }
                 if (model.Cards.Count == 0) Add("SIN CAMBIOS", "Todavía no hay operaciones registradas", "Los diagnósticos solo consultan información.");
                 break;
             default:
@@ -262,7 +270,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task<RecoverySession?> PrepareRecoveryAsync(IReadOnlyList<RecoveryAction> actions, bool manual = false)
+    private async Task<RecoverySession?> PrepareRecoveryAsync(IReadOnlyList<RecoveryAction> actions, bool manual = false, Window? reviewOwner = null)
     {
         // Save the intended changes before elevation or any application/system change.
         var session = recoveryStore.Begin(actions);
@@ -286,7 +294,7 @@ public partial class MainWindow : Window
         session = recoveryStore.SetPoint(session.Id, null, "Sin nuevo punto confirmado");
         RefreshRecoverySessions(session.Id);
         if (manual) { model.Status = failure ?? "No se confirmó un punto nuevo."; return null; }
-        var decision = MessageBox.Show(this,
+        var decision = MessageBox.Show(reviewOwner ?? this,
             $"{failure}\n\nNo se ha iniciado la operación. El registro local de acciones no sustituye un punto de restauración ni una copia de archivos.\n\n¿Continuar con la operación SIN un nuevo punto confirmado? Elige No para cancelar y revisar Protección del sistema.",
             "Punto de restauración no confirmado", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
         if (decision != MessageBoxResult.Yes)

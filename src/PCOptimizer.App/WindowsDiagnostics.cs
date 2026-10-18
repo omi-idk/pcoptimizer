@@ -19,6 +19,7 @@ internal sealed record InstalledDriver(string Name, string Provider, string Vers
         _ => "https://support.microsoft.com/windows/update-drivers-through-device-manager-in-windows"
     };
 }
+internal sealed record WindowsDriverOffer(string Title, string HardwareId, string Manufacturer, string Provider, string Class, string DriverDate);
 internal sealed record DiskHealth(string Model, string Health, string Operational, long Size,
     long? Temperature, long? Wear, long? PowerOnHours, long? ReadErrors, long? WriteErrors, string? ReliabilityError);
 internal sealed record SoundDevice(string Name, string Manufacturer, string Status);
@@ -26,11 +27,11 @@ internal sealed record LoadSnapshot(double? CpuPercent, double? AvailableMemoryM
 
 internal static class WindowsDiagnostics
 {
-    private static async Task<T> QueryAsync<T>(string script)
+    private static async Task<T> QueryAsync<T>(string script, CancellationToken cancellationToken = default)
     {
         var prefix = "[Console]::OutputEncoding = [Text.Encoding]::UTF8; $ErrorActionPreference = 'Stop'; $env:PSModulePath = [IO.Path]::Combine($PSHOME, 'Modules');\n";
         var path = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
-        var json = await WindowsCommands.ReadAsync(path, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", prefix + script);
+        var json = await WindowsCommands.ReadCancelableAsync(path, cancellationToken, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", prefix + script);
         return JsonSerializer.Deserialize<T>(json.Trim().TrimStart('\uFEFF'))
             ?? throw new InvalidDataException("Windows no devolvió datos válidos.");
     }
@@ -50,6 +51,22 @@ internal static class WindowsDiagnostics
         })
         ConvertTo-Json -InputObject $drivers -Depth 4 -Compress
         """);
+
+    internal const string WindowsDriverOffersScript = """
+        $session = New-Object -ComObject Microsoft.Update.Session
+        $session.ClientApplicationID = 'PCOptimizer read-only driver inventory'
+        $searcher = $session.CreateUpdateSearcher()
+        $result = $searcher.Search("IsInstalled=0 and IsHidden=0 and Type='Driver'")
+        if ([int]$result.ResultCode -ne 2) { throw ('La búsqueda de drivers no se completó correctamente; código ' + $result.ResultCode) }
+        $offers = @($result.Updates | ForEach-Object {
+            [pscustomobject]@{Title=[string]$_.Title; HardwareId=[string]$_.DriverHardwareID;
+                Manufacturer=[string]$_.DriverManufacturer; Provider=[string]$_.DriverProvider;
+                Class=[string]$_.DriverClass;
+                DriverDate=if ($_.DriverVerDate) {$_.DriverVerDate.ToString('yyyy-MM-dd')} else {'No informada'}}
+        })
+        ConvertTo-Json -InputObject $offers -Depth 4 -Compress
+        """;
+    public static Task<WindowsDriverOffer[]> GetWindowsDriverOffersAsync(CancellationToken cancellationToken = default) => QueryAsync<WindowsDriverOffer[]>(WindowsDriverOffersScript, cancellationToken);
 
     private const string DiskHealthScript = """
         $disks = @(Get-PhysicalDisk | ForEach-Object {

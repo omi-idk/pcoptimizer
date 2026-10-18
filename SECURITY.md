@@ -51,3 +51,9 @@ La consulta elevada de almacenamiento ejecuta únicamente la consulta de lectura
 Los perfiles importados contienen solo identificadores del catálogo; se rechazan desconocidos, duplicados y conflictos. Las banderas de accesibilidad/teclado se modifican con máscara preservando bits ajenos. Los destinos HKLM de un lote se respaldan antes de una sola elevación; el script se construye en `MachineTweakScript` con identidades cerradas, booleanos y UInt32. El perfil no puede aportar rutas o código. El parser de PowerShell en CI valida sintaxis de aplicación/reversión sin ejecutar escrituras. Las pruebas de lógica cubren el lote parcial y su reversión; no sustituyen validar UAC y políticas efectivas en un Windows real.
 
 El renderer de diseño es una herramienta separada no distribuida en el portable. Instancia la vista con datos ilustrativos, bloquea interacción y no inicia diagnóstico o tweaks. No incorpora un argumento para omitir la comprobación de privilegios de la aplicación de producción. Sus capturas no son mediciones ni resultados de prueba de hardware.
+
+## Resource and gaming-session boundaries
+
+Optional NVML is loaded only by absolute path from Windows System32 and uses read-only exports. No vendor DLL or kernel sensor driver is downloaded/bundled. Executable watching uses QUERY_LIMITED_INFORMATION/QueryFullProcessImageName, not VM read/write or module enumeration. Windows Update driver search retrieves metadata only and does not download/install drivers or change policies.
+
+Gaming energy sessions persist the previous plan and application-attempt state before requesting the fixed powercfg change. Restoration rechecks active/available plans, rejects external conflicts and never recreates a deleted plan. Journals remain after failure/crash; automatic recovery does not silently overwrite a new configuration. The shared UI gate prevents overlapping system mutations or benchmarking. Native Windows UAC/driver/game validation remains required.
