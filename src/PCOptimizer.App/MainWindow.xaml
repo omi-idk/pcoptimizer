@@ -1,4 +1,4 @@
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bench="clr-namespace:PCOptimizer.App.Benchmarking" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" x:Class="PCOptimizer.App.MainWindow" Title="PCOptimizer · Preview 0.5" Width="1400" Height="880" MinWidth="1100" MinHeight="700" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" FontSize="13" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bench="clr-namespace:PCOptimizer.App.Benchmarking" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" x:Class="PCOptimizer.App.MainWindow" Title="PCOptimizer · Preview 0.6" Width="1400" Height="880" MinWidth="1100" MinHeight="700" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" FontSize="13" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize">
   <shell:WindowChrome.WindowChrome>
     <shell:WindowChrome CaptionHeight="36" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
   </shell:WindowChrome.WindowChrome>
@@ -63,7 +63,7 @@
           <StackPanel Orientation="Horizontal" Margin="16,0,0,0" VerticalAlignment="Center">
             <TextBlock Text="" Style="{StaticResource Glyph}" Foreground="{StaticResource Accent}" FontSize="14"/>
             <TextBlock Text="PCOptimizer" FontWeight="SemiBold" FontSize="12"/>
-            <TextBlock Text="  /  PREVIEW 0.5" Foreground="{StaticResource Muted}" FontSize="10" Margin="8,2,0,0"/>
+            <TextBlock Text="  /  PREVIEW 0.6" Foreground="{StaticResource Muted}" FontSize="10" Margin="8,2,0,0"/>
             <TextBlock x:Name="PreviewLabel" Visibility="Collapsed" Text="  ·  VISTA PREVIA DE DISEÑO" Foreground="#EDB96F" FontSize="10" Margin="14,2,0,0"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True">

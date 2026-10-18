@@ -37,3 +37,17 @@ En esta rama se implementó la primera entrega de medición: módulo separado, c
 - Pendientes: correlación sincronizada, display/generated FPS, protocolo completo persistente, medición del consumo de la app, bufferbloat bajo carga controlada, recomendaciones de drivers verificadas, validación Windows física y matriz de juegos/anticheats. Se conservan los criterios de aceptación originales; este avance no los declara completados por estar documentados.
 
 [Funcionamiento, fuentes y pruebas](RESOURCE_AND_GAMING_SESSIONS.md).
+
+## Plan comercial actualizado y avance 0.6
+
+El [nuevo prompt comercial completo](requirements/PCOptimizer-Ultimate-comercial-recibido.md) amplía el requisito anterior. Se preserva la base integrada Preview 0.5; este incremento no reconstruye la aplicación ni completa todos los hitos.
+
+| Hito | Estado de esta entrega / criterio restante |
+| --- | --- |
+| 0.6 Performance Intelligence | **Primer incremento funcional:** QPC en PresentMon y sensores optativos CPU global/memoria/NVML; sesión unificada y persistida, análisis de coincidencias con cobertura, gráfica temporal común, informe y cancelación. Pendiente ampliar sensores, alinear eventos Present, capturar contexto automáticamente y validar física/overhead. |
+| 0.7 Optimization Intelligence | Pendiente: recomendaciones por capacidades, contratos enriquecidos, objetivos adaptativos y flujo revisión→un cambio→A/B→conservar/revertir con experimento persistente. Se conservan los 41 ejecutores existentes. |
+| 0.8 Universal Gaming Optimizer | Parcial por las sesiones de energía/perfil experimental existentes; faltan Booster ampliado, familias de hardware, proveedores adicionales y mejor diagnóstico de procesos/drivers/pantalla/red. |
+| 0.9 Product Hardening | Parcial: controles de seguridad/recuperación y CI existentes. Faltan MVVM/DI restante, integración Windows con UAC/reinicio/fallos, matriz física, accesibilidad y presupuesto de overhead. |
+| 1.0 Commercial Readiness | No alcanzado: firma, instalador, actualización autenticada, licencias de distribución verificadas y validación multi-equipo siguen pendientes. Sin DRM, pagos o cuentas en esta fase. |
+
+Criterios 0.6: modelo/contexto, correlación con QPC suficiente, ausencias explícitas, anomalías documentadas, hallazgos, persistencia/reapertura, exportación, gráfica, cancelación y mediciones sin cambios están implementados en este incremento. CI valida código y flujo con fixtures; no convierte una simulación en evidencia de mejora. Los resultados verificables y el procedimiento Windows están en [Performance Intelligence](PERFORMANCE_INTELLIGENCE.md). No se declara completa una release comercial por compilar.

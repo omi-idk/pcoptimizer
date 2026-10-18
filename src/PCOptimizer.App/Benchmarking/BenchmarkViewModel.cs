@@ -6,9 +6,19 @@ using PCOptimizer.Benchmarking;
 
 namespace PCOptimizer.App.Benchmarking;
 
-internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentMonCaptureService capture) : INotifyPropertyChanged
+internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentMonCaptureService capture, IPerformanceCaptureService? performance = null) : INotifyPropertyChanged
 {
     private ImportedCapture? imported;
+    private PerformanceTrace? telemetry;
+    public bool CaptureSensors { get; set; }
+    public PerformanceReport? PerformanceReport { get; private set; }
+    public PerformanceTrace? Telemetry => telemetry;
+    public string PerformanceEvidence => PerformanceReport is not { } report ? "Activa sensores durante una captura nueva para analizar coincidencias. Las importaciones antiguas conservan sus métricas sin sincronización inventada." :
+        string.Join("\n\n", report.Findings.Select(f => $"{f.Finding}\nEvidencia: {f.Evidence}\nHipótesis: {f.Hypothesis}\nConfianza: {f.Confidence}\nFalta: {f.MissingInformation}\nRecomendación: {f.Recommendation}\nRiesgo: {f.Risk}\nPrueba: {f.Experiment}"));
+    public string PerformanceCoverage => PerformanceReport is not { } r ? "Sin experimento correlacionado." :
+        $"{r.TimedFrames}/{r.Frames} frames con QPC · {r.Spikes} spikes >{r.SpikeThresholdMs:F2} ms · {r.Associations.Length} series. " +
+        string.Join(" · ", r.Associations.Select(a => $"{a.Device}/{a.Metric}: {a.MatchedFrames}/{r.Frames} frames, {a.MatchedSpikes}/{r.Spikes} spikes cubiertos"));
+    public string PerformanceLimits => PerformanceReport is { } r ? string.Join("\n", r.Limitations) : "No se modifica ninguna configuración durante las mediciones.";
     private CaptureStream? selectedStream;
     private BenchmarkSession? current;
     private BenchmarkSession? baseline;
@@ -45,7 +55,7 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
         set
         {
             selectedStream = value; Changed();
-            current = null; Summary = null;
+            current = null; Summary = null; PerformanceReport = null;
             Frames = value is not null && imported is not null ? imported.Streams[value] : [];
             if (Frames.Length >= 2) Summary = BenchmarkStatistics.Calculate(Frames);
             NotifyResult();
@@ -91,11 +101,19 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     }
     internal void SetImport(ImportedCapture result)
     {
+        telemetry = null;
+        PerformanceReport = null;
         imported = result;
         CaptureExpanded = false;
         Streams.Clear();
         foreach (var stream in result.Streams.Keys) Streams.Add(stream);
         SelectedStream = Streams.Count == 1 ? Streams[0] : null;
+    }
+    internal void SetDesignTelemetry(PerformanceTrace trace)
+    {
+        telemetry = trace;
+        PerformanceReport = PerformanceAnalysis.Calculate(BuildSession());
+        NotifyResult();
     }
     public async Task ConfigureExecutableAsync(string path, CancellationToken token)
     {
@@ -108,13 +126,25 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     {
         if (SelectedTarget is null || string.IsNullOrEmpty(Executable)) throw new InvalidOperationException("Selecciona PresentMon verificado y un proceso en ejecución.");
         Status = $"Capturando {SelectedTarget.Name} durante {DurationSeconds} s. Puedes detener la captura; no cierres la app hasta terminar.";
-        var output = await capture.CaptureAsync(Executable, SelectedTarget, DurationSeconds, token);
+        var target = SelectedTarget;
+        PerformanceTrace? capturedTrace = null;
+        string output;
+        if (CaptureSensors)
+        {
+            if (performance is null) throw new InvalidOperationException("Proveedor de telemetría no configurado.");
+            var result = await performance.CaptureAsync(t => capture.CaptureAsync(Executable, target, DurationSeconds, t), token);
+            output = result.CsvPath; capturedTrace = result.Trace with { TargetProcessId = target.Id, TargetStartUtc = target.StartTimeUtc };
+        }
+        else output = await capture.CaptureAsync(Executable, target, DurationSeconds, token);
         await ImportAsync(output, token.IsCancellationRequested ? CancellationToken.None : token);
+        telemetry = capturedTrace;
+        await AnalyzePerformanceAsync(token.IsCancellationRequested ? CancellationToken.None : token);
+        if (capturedTrace is not null) Status = "Captura con sensores terminada. Revisa cobertura y hallazgos, completa el contexto y guarda para reabrir el experimento.";
         if (token.IsCancellationRequested) Status = "Captura detenida por el usuario. Se importaron los intervalos completados; no equivale a una captura de la duración solicitada.";
     }
     private BenchmarkSession BuildSession() => current ?? (imported is not null && SelectedStream is not null
         ? new(1, Guid.NewGuid(), DateTimeOffset.UtcNow, imported.Sha256, SelectedStream,
-            new(Hardware.Trim(), GameVersion.Trim(), DriverVersion.Trim(), WindowsVersion.Trim(), Settings.Trim(), Scenario.Trim()), Frames, imported.MissingIntervals)
+            new(Hardware.Trim(), GameVersion.Trim(), DriverVersion.Trim(), WindowsVersion.Trim(), Settings.Trim(), Scenario.Trim()), Frames, imported.MissingIntervals) { Telemetry = telemetry }
         : throw new InvalidOperationException("Selecciona un stream con datos antes de continuar."));
     public async Task SaveAsync(CancellationToken token)
     {
@@ -134,12 +164,34 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     {
         if (SelectedHistory is null) throw new InvalidOperationException("Selecciona una sesión del historial.");
         var session = await Task.Run(() => store.LoadAsync(SelectedHistory.Id, token), token);
+        var report = await Task.Run(() => PerformanceAnalysis.Calculate(session, token), token);
+        token.ThrowIfCancellationRequested();
         SetImport(new(session.SourceSha256, new Dictionary<CaptureStream, FrameSample[]> { [session.Stream] = session.Frames }, session.MissingIntervals));
-        current = session;
+        current = session; telemetry = session.Telemetry; PerformanceReport = report;
         Hardware = session.Context.Hardware; GameVersion = session.Context.GameVersion; DriverVersion = session.Context.DriverVersion;
         WindowsVersion = session.Context.WindowsVersion; Settings = session.Context.Settings; Scenario = session.Context.Scenario;
         foreach (var name in new[] { nameof(Hardware), nameof(GameVersion), nameof(DriverVersion), nameof(WindowsVersion), nameof(Settings), nameof(Scenario) }) Changed(name);
         NotifyResult(); Status = "Sesión cargada; sus datos y contexto son inmutables. El historial muestra la fecha de guardado local.";
+    }
+    public async Task AnalyzePerformanceAsync(CancellationToken token)
+    {
+        var session = BuildSession();
+        var result = await Task.Run(() => PerformanceAnalysis.Calculate(session, token), token);
+        PerformanceReport = result;
+        foreach (var name in new[] { nameof(Telemetry), nameof(PerformanceReport), nameof(PerformanceEvidence), nameof(PerformanceCoverage), nameof(PerformanceLimits) }) Changed(name);
+    }
+    public async Task ExportReportAsync(string path, CancellationToken token)
+    {
+        var session = BuildSession();
+        var report = await Task.Run(() => PerformanceAnalysis.Calculate(session, token), token);
+        var temp = Path.Combine(Path.GetDirectoryName(path)!, Guid.NewGuid().ToString("N") + ".tmp");
+        try
+        {
+            await File.WriteAllTextAsync(temp, PerformanceAnalysis.ToMarkdown(session, report), token);
+            token.ThrowIfCancellationRequested(); File.Move(temp, path, true);
+        }
+        finally { if (File.Exists(temp)) File.Delete(temp); }
+        Status = "Informe exportado con evidencia, cobertura, contexto y límites. No demuestra causalidad ni mejora.";
     }
     public void SetBaseline()
     {
@@ -193,7 +245,7 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     }
     private void NotifyResult()
     {
-        foreach (var name in new[] { nameof(ContextReadOnly), nameof(Frames), nameof(Summary), nameof(StreamLabel), nameof(Average), nameof(Low1), nameof(Low01), nameof(Percentiles), nameof(Coverage), nameof(Evidence) }) Changed(name);
+        foreach (var name in new[] { nameof(ContextReadOnly), nameof(Frames), nameof(Summary), nameof(StreamLabel), nameof(Average), nameof(Low1), nameof(Low01), nameof(Percentiles), nameof(Coverage), nameof(Evidence), nameof(Telemetry), nameof(PerformanceReport), nameof(PerformanceEvidence), nameof(PerformanceCoverage), nameof(PerformanceLimits) }) Changed(name);
     }
     public event PropertyChangedEventHandler? PropertyChanged;
     private void Changed([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new(name));

@@ -13,17 +13,21 @@ public partial class BenchmarkView : UserControl
     public bool IsBusy => model.IsBusy;
     internal event EventHandler? BusyChanged;
     public BenchmarkView() : this(new BenchmarkSessionStore(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Benchmarks")),
-        new PresentMonCaptureService(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Captures"))) { }
-    internal BenchmarkView(IBenchmarkSessionStore store, IPresentMonCaptureService capture)
+        new PresentMonCaptureService(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PCOptimizer", "Captures")), new PerformanceCaptureService(new NvidiaTelemetry())) { }
+    internal BenchmarkView(IBenchmarkSessionStore store, IPresentMonCaptureService capture, IPerformanceCaptureService? performance = null)
     {
         InitializeComponent();
-        model = new(store, capture); DataContext = model;
+        model = new(store, capture, performance); DataContext = model;
         model.PropertyChanged += (_, args) =>
         {
             if (args.PropertyName == nameof(BenchmarkViewModel.IsBusy)) BusyChanged?.Invoke(this, EventArgs.Empty);
         };
     }
-    internal void ConfigureDesignPreview(ImportedCapture capture) => model.SetImport(capture);
+    internal void ConfigureDesignPreview(ImportedCapture capture, PerformanceTrace? trace = null)
+    {
+        model.SetImport(capture);
+        if (trace is not null) model.SetDesignTelemetry(trace);
+    }
     private async void ImportCsv(object sender, RoutedEventArgs e)
     {
         var dialog = new OpenFileDialog { Filter = "PresentMon CSV (*.csv)|*.csv", CheckFileExists = true };
@@ -62,6 +66,12 @@ public partial class BenchmarkView : UserControl
         model.Targets.Clear(); foreach (var target in targets) model.Targets.Add(target);
     });
     private async void StartCapture(object sender, RoutedEventArgs e) => await model.RunAsync(model.CaptureAsync);
+    private async void AnalyzePerformance(object sender, RoutedEventArgs e) => await model.RunAsync(model.AnalyzePerformanceAsync);
+    private async void ExportReport(object sender, RoutedEventArgs e)
+    {
+        var dialog = new SaveFileDialog { Filter = "Informe Markdown (*.md)|*.md", DefaultExt = ".md", AddExtension = true, FileName = "rendimiento.md" };
+        if (dialog.ShowDialog(Window.GetWindow(this)) == true) await model.RunAsync(t => model.ExportReportAsync(dialog.FileName, t));
+    }
     private void Cancel(object sender, RoutedEventArgs e) => model.Cancel();
     private async void SaveSession(object sender, RoutedEventArgs e) => await model.RunAsync(model.SaveAsync);
     private async void RefreshHistory(object sender, RoutedEventArgs e) => await model.RunAsync(model.RefreshHistoryAsync);

@@ -1,4 +1,5 @@
 using System.IO;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -6,7 +7,11 @@ namespace PCOptimizer.App;
 
 internal sealed record NvidiaGpuSnapshot(string Name, ulong? VramTotal, ulong? VramUsed, uint? Utilization,
     uint? TemperatureC, uint? GraphicsClockMhz, double? PowerWatts, ulong? ClockEventReasons, string[] Unavailable, DateTimeOffset ObservedUtc);
-internal sealed record NvidiaProbeResult(NvidiaGpuSnapshot[] Devices, string Status);
+internal sealed record NvidiaProbeResult(NvidiaGpuSnapshot[] Devices, string Status)
+{
+    public long? ReadStartQpc { get; init; }
+    public long? ReadEndQpc { get; init; }
+}
 
 // Read-only vendor API from the installed driver. No kernel driver is installed or redistributed.
 internal interface IGpuTelemetryProvider
@@ -36,7 +41,12 @@ internal sealed class NvidiaTelemetry : IGpuTelemetryProvider
         Task<NvidiaProbeResult> task;
         lock (gate)
         {
-            if (activeRead is null || activeRead.IsCompleted) activeRead = Task.Run(Read);
+            if (activeRead is null || activeRead.IsCompleted) activeRead = Task.Run(() =>
+            {
+                var start = Stopwatch.GetTimestamp();
+                var result = Read();
+                return result with { ReadStartQpc = start, ReadEndQpc = Stopwatch.GetTimestamp() };
+            });
             task = activeRead;
         }
         try { return await task.WaitAsync(TimeSpan.FromSeconds(8), cancellationToken); }

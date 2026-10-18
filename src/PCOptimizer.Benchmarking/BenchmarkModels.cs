@@ -5,12 +5,19 @@ public sealed record CaptureStream(string Application, int ProcessId, string Swa
     public override string ToString() => $"{Application} · PID {ProcessId} · {SwapChain}";
 }
 public sealed record FrameSample(double IntervalMs, double? CpuBusyMs, double? GpuBusyMs,
-    bool? Displayed, string? FrameType);
+    bool? Displayed, string? FrameType)
+{
+    // Raw CPU frame-start QPC ticks, never reconstructed from interval sums.
+    public long? CpuStartQpc { get; init; }
+}
 public sealed record ImportedCapture(string Sha256, IReadOnlyDictionary<CaptureStream, FrameSample[]> Streams, int MissingIntervals);
 public sealed record BenchmarkContext(string Hardware, string GameVersion, string DriverVersion,
     string WindowsVersion, string Settings, string Scenario);
 public sealed record BenchmarkSession(int SchemaVersion, Guid Id, DateTimeOffset ImportedAtUtc,
-    string SourceSha256, CaptureStream Stream, BenchmarkContext Context, FrameSample[] Frames, int MissingIntervals);
+    string SourceSha256, CaptureStream Stream, BenchmarkContext Context, FrameSample[] Frames, int MissingIntervals)
+{
+    public PerformanceTrace? Telemetry { get; init; }
+}
 public sealed record BenchmarkSummary(int Samples, double ObservedIntervalSeconds, double AverageFps,
     double MedianInstantaneousFps, double Low1Fps, double Low01Fps,
     double MedianMs, double P95Ms, double P99Ms, double StandardDeviationMs, int Spikes,
