@@ -1,3 +1,5 @@
+> **Preview 0.5:** inventario ampliado, proveedor NVIDIA NVML de solo lectura, muestreo cancelable de CPU/memoria con hipótesis y evidencia, sesiones temporales de energía con detección voluntaria del ejecutable y recuperación, red/DNS y ofertas de drivers de Windows Update. Incluye evaluación y selección base para tu perfil 5800X3D/5060 Ti. [Uso y límites](docs/RESOURCE_AND_GAMING_SESSIONS.md) · [Perfil de tu PC](docs/PERFIL_PC_WARZONE.md). La calibración real de Warzone y compatibilidad anticheat siguen pendientes.
+
 > **Rama Ultimate · Preview 0.4:** añade la página **Benchmarks**: captura manual mediante PresentMon 2.6.0 x64 verificado, importación CSV por proceso/swapchain, lows/percentiles, gráficas, historial, CSV/JSON y comparación A/B por repeticiones. La captura ETW en juegos y su compatibilidad anticheat requieren validación Windows real. [Uso y fórmulas](docs/BENCHMARKING.md) · [Auditoría](docs/ARCHITECTURE_AUDIT.md) · [Hoja de ruta](docs/PRODUCT_ROADMAP.md) · [Comparativa técnica](docs/COMPETITOR_RESEARCH.md).
 
 # PCOptimizer

@@ -35,3 +35,9 @@ Comprueba el título Preview 0.4 para evitar ejecutar una copia antigua. En Ajus
 ## Benchmarks (Preview 0.4)
 
 Abre **Benchmarks** en Diagnóstico. Puedes comenzar importando un CSV PresentMon que contenga `MsBetweenPresents` y elegir el proceso/PID/swapchain. Para captura manual, descarga el console oficial desde el botón de la app, selecciónalo para verificar su hash, actualiza procesos, selecciona el juego y pulsa Iniciar captura. Si ETW no tiene permisos se mostrará el error sin cambiar grupos ni elevar la GUI. Detener cierra solo la sesión propia. Completa el contexto, guarda y exporta. Para A/B usa al menos tres capturas independientes por estado; no prometemos mejora ni certificación anticheat. Consulta [las fórmulas y límites](BENCHMARKING.md).
+
+## Preview 0.5: recursos y sesiones
+
+En Uso de recursos prueba Inventario detallado y Analizar recursos; cancela una consulta y comprueba que la UI se recupere. Exporta JSON. Evalúa tu perfil Warzone; una métrica no soportada debe quedar por comprobar. Cargar su base solo selecciona Modo Juego.
+
+En Energía abre Sesiones gaming. Primero ensaya en una VM o equipo de prueba: inicio/salida del proceso, UAC denegado, cambio externo, plan eliminado, cierre inesperado y recuperación. La espera de ejecutable compara ruta completa sin iniciarlo. No deben cerrarse procesos ni modificarse prioridades. La restauración también puede pedir UAC/punto; no se reintenta en bucle. Ver [guía completa](RESOURCE_AND_GAMING_SESSIONS.md).

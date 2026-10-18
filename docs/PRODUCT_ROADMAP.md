@@ -28,3 +28,12 @@ No hay garantía de FPS, cero riesgo, EQ universal, lifespan exacta de SSD o cer
 La auditoría y la investigación preceden al código. Las comprobaciones de esta rama y sus límites se registran en `BENCHMARKING.md`; la validación previa de 96 pruebas no se presenta como resultado de funcionalidades nuevas.
 
 En esta rama se implementó la primera entrega de medición: módulo separado, captura manual PresentMon con pin y hash, importación, cálculos, historial, exportación, gráficas y comparación descriptiva / entre repeticiones. La captura ETW y el cierre del auxiliar aún requieren prueba real Windows. Continúan pendientes el diagnóstico sincronizado, Game Booster, sensores completos, perfil Warzone calibrado y resto de la tabla. No se declaran implementados por estar descritos aquí.
+
+## Avance Preview 0.5
+
+- Implementados: inventario CPU/módulos/vídeo ampliado, proveedor NVML opcional, capturas cancelables/exportables de CPU lógica/memoria y reglas de presión con evidencia, sesiones de energía temporales con detección voluntaria de ruta y salida, diario recuperable, protección frente a conflictos y aviso al reiniciar, consulta de adaptadores/DNS y ofertas WUA de drivers.
+- Perfil del equipo solicitado: evaluación por componente y base Warzone revisable. No está calibrado; ver [perfil de tu PC](PERFIL_PC_WARZONE.md).
+- Parciales: diagnóstico de recursos sin correlación automática con frametimes; Game Booster limitado a energía; drivers ofrecidos por Windows Update sin recomendación de fabricante; sensores térmicos CPU y GPU AMD/Intel ausentes.
+- Pendientes: correlación sincronizada, display/generated FPS, protocolo completo persistente, medición del consumo de la app, bufferbloat bajo carga controlada, recomendaciones de drivers verificadas, validación Windows física y matriz de juegos/anticheats. Se conservan los criterios de aceptación originales; este avance no los declara completados por estar documentados.
+
+[Funcionamiento, fuentes y pruebas](RESOURCE_AND_GAMING_SESSIONS.md).
