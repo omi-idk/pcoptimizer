@@ -11,7 +11,7 @@ internal sealed record NvidiaProbeResult(NvidiaGpuSnapshot[] Devices, string Sta
 // Read-only vendor API from the installed driver. No kernel driver is installed or redistributed.
 internal interface IGpuTelemetryProvider
 {
-    Task<NvidiaProbeResult> ReadAsync();
+    Task<NvidiaProbeResult> ReadAsync(CancellationToken cancellationToken = default);
 }
 internal sealed class NvidiaTelemetry : IGpuTelemetryProvider
 {
@@ -28,7 +28,20 @@ internal sealed class NvidiaTelemetry : IGpuTelemetryProvider
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)] private delegate int ReadReasons(IntPtr device, out ulong reasons);
 
     internal static (int MemoryBytes, int UtilizationBytes) LayoutSizes => (Marshal.SizeOf<Memory>(), Marshal.SizeOf<Utilization>());
-    public Task<NvidiaProbeResult> ReadAsync() => Task.Run(Read);
+    private readonly object gate = new();
+    private Task<NvidiaProbeResult>? activeRead;
+    public async Task<NvidiaProbeResult> ReadAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        Task<NvidiaProbeResult> task;
+        lock (gate)
+        {
+            if (activeRead is null || activeRead.IsCompleted) activeRead = Task.Run(Read);
+            task = activeRead;
+        }
+        try { return await task.WaitAsync(TimeSpan.FromSeconds(8), cancellationToken); }
+        catch (TimeoutException) { return new([], "NVML no respondió en ocho segundos. No se inicia otra consulta nativa mientras la anterior siga activa."); }
+    }
     private static NvidiaProbeResult Read()
     {
         if (!OperatingSystem.IsWindows() || !Environment.Is64BitProcess) return new([], "NVML requiere Windows x64; no disponible.");

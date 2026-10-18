@@ -94,15 +94,24 @@ public partial class MainWindow
             "Vídeo, red, audio, sistema y almacenamiento. La fecha no demuestra que un driver esté obsoleto. Los enlaces abren fuentes oficiales; no se descargan ni instalan drivers automáticamente.")];
     });
 
-    private async void ScanWindowsDriverOffers(object sender, RoutedEventArgs e) => await RunDiagnosisAsync("Drivers", async () =>
+    private async void ScanWindowsDriverOffers(object sender, RoutedEventArgs e)
     {
-        var offers = await WindowsDiagnostics.GetWindowsDriverOffersAsync();
+        if (!model.IsIdle) return;
+        using var cancellation = new CancellationTokenSource(); resourceCancellation = cancellation;
+        try
+        {
+            await RunDiagnosisAsync("Drivers", async () =>
+            {
+        var offers = await WindowsDiagnostics.GetWindowsDriverOffersAsync(cancellation.Token);
         var cards = offers.Select(d => new InfoCard("OFRECIDO POR WINDOWS UPDATE · NO INSTALADO", d.Title,
             $"Fabricante: {d.Manufacturer} · proveedor: {d.Provider}\nClase: {d.Class} · fecha declarada: {d.DriverDate}\nHardware ID: {d.HardwareId}\nWindows Update lo considera aplicable con su configuración actual. No demuestra que sea el último del fabricante ni el recomendado para tu juego; no se descarga ni instala el controlador.")).ToList();
         if (offers.Length == 0) cards.Add(new("SIN OFERTAS", "Windows Update no devolvió drivers pendientes", "No demuestra que todos sean los últimos. Depende del catálogo, políticas, conexión y compatibilidad del equipo."));
         cards.Add(new("ALCANCE DE LA CONSULTA", "Último y recomendado siguen separados", "La búsqueda usa el agente oficial y puede contactar el servicio de actualización configurado. No cambia políticas, no aprueba instalaciones ni se compara una fecha con una versión. El inventario instalado y las fuentes oficiales siguen disponibles. Timeout de consulta: 45 segundos."));
         return cards;
-    });
+            });
+        }
+        finally { resourceCancellation = null; }
+    }
 
     private void OpenDriverSource(object sender, RoutedEventArgs e)
     {
@@ -153,8 +162,8 @@ public partial class MainWindow
             await RunDiagnosisAsync("Gaming", async () =>
             {
                 var data = await resourceProbe.HardwareAsync(cancellation.Token);
-                var machine = await WindowsCommands.GetInventoryAsync();
-                var gpuData = await gpuProbe.ReadAsync();
+                var machine = await WindowsCommands.GetInventoryAsync(cancellation.Token);
+                var gpuData = await gpuProbe.ReadAsync(cancellation.Token);
                 var matching = gpuData.Devices.Where(g => g.Name.Contains("RTX 5060 Ti", StringComparison.OrdinalIgnoreCase)).ToArray();
                 long? vram = matching.Length == 1 && matching[0].VramTotal is { } total && total <= long.MaxValue ? (long)total : null;
                 var checks = KnownGamingProfile.Evaluate(new(machine.Cpu, machine.Motherboard, machine.Gpu, vram,
@@ -194,7 +203,7 @@ public partial class MainWindow
                     cards.Add(new("MÓDULO RAM · SMBIOS", ram.Locator, $"{ram.CapacityBytes / Math.Pow(1024,3):N1} GiB\nConfiguredClockSpeed: {N(ram.ConfiguredClock)} · Speed: {N(ram.RatedClock)} (valores SMBIOS). No confirma canales, DOCP/XMP ni estabilidad."));
                 foreach (var display in data.Displays)
                     cards.Add(new("MODO DE VÍDEO · CIM", display.Name, $"{N(display.Width)} × {N(display.Height)} · {N(display.RefreshRate)} Hz informados. No equivale a FPS del juego ni confirma HDR/VRR."));
-                var gpuData = await gpuProbe.ReadAsync();
+                var gpuData = await gpuProbe.ReadAsync(cancellation.Token);
                 foreach (var gpu in gpuData.Devices)
                     cards.Add(new("GPU · NVML · SOLO LECTURA", gpu.Name,
                         $"VRAM dedicada: {(gpu.VramTotal is { } total ? $"{total / Math.Pow(1024,3):N1} GiB" : "N/D")} · usada: {(gpu.VramUsed is { } used ? $"{used / Math.Pow(1024,3):N1} GiB" : "N/D")}\n" +

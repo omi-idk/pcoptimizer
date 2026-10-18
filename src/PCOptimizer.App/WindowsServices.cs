@@ -67,7 +67,7 @@ internal static class WindowsCommands
             throw new InvalidOperationException($"Windows rechazó el cambio de plan (código {process.ExitCode}).");
     }
 
-    public static async Task<Inventory> GetInventoryAsync()
+    public static async Task<Inventory> GetInventoryAsync(CancellationToken cancellationToken = default)
     {
         // Fixed read-only CIM queries. No downloaded scripts or game process access.
         const string script = """
@@ -94,7 +94,7 @@ internal static class WindowsCommands
             } | ConvertTo-Json -Depth 4 -Compress
             """;
         var executable = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
-        var json = await ReadAsync(executable, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", script);
+        var json = await ReadCancelableAsync(executable, cancellationToken, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", script);
         return JsonSerializer.Deserialize<Inventory>(json.Trim().TrimStart('\uFEFF'))
             ?? throw new InvalidOperationException("Windows devolvió un inventario vacío.");
     }

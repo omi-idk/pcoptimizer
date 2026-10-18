@@ -73,7 +73,7 @@ internal static class Program
                 {
                     ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
-                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740)
+                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740)
                 })
                 {
                     window.Width = width;

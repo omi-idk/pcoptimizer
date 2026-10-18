@@ -617,14 +617,16 @@
                   </WrapPanel>
                   <TextBlock Text="Loudness EQ depende del driver. En el panel clásico: Reproducción → Propiedades → Mejoras. Comprime la dinámica y puede alterar la percepción de distancia; no se fuerza cuando el dispositivo no lo ofrece." Foreground="{StaticResource Muted}" FontSize="12"/>
                 </StackPanel>
-                <StackPanel x:Name="DriversPanel" Visibility="Collapsed" IsEnabled="{Binding IsIdle}">
-                  <WrapPanel><Button Content="Analizar controladores instalados" Click="ScanDrivers" Style="{StaticResource PrimaryButton}" Margin="0,0,8,12"/><Button Content="Buscar drivers ofrecidos por Windows Update" Click="ScanWindowsDriverOffers" Margin="0,0,0,12"/></WrapPanel>
+                <StackPanel x:Name="DriversPanel" Visibility="Collapsed">
+                  <WrapPanel IsEnabled="{Binding IsIdle}"><Button Content="Analizar controladores instalados" Click="ScanDrivers" Style="{StaticResource PrimaryButton}" Margin="0,0,8,12"/><Button Content="Buscar drivers ofrecidos por Windows Update" Click="ScanWindowsDriverOffers" Margin="0,0,0,12"/></WrapPanel>
+                  <Button Content="Cancelar consulta de drivers ofrecidos" Click="CancelResources" HorizontalAlignment="Left"/>
                   <TextBlock Text="La búsqueda contacta el servicio de actualización configurado; consulta metadatos y no instala controladores." Foreground="{StaticResource Muted}" FontSize="12"/>
                   <TextBlock Text="Versiones instaladas y fuentes oficiales. La fecha no basta para declarar un driver obsoleto; último y recomendado requieren contrastar modelo, Windows y notas del fabricante." Foreground="{StaticResource Muted}" FontSize="12"/>
                 </StackPanel>
                 <StackPanel x:Name="GamingMetricsPanel" Visibility="Collapsed">
                   <WrapPanel>
                     <Button Content="Inventario detallado" Click="InspectHardware" IsEnabled="{Binding IsIdle}"/>
+                    <Button Content="Contadores actuales" Click="MeasureLoad" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Analizar recursos · 20 muestras" Click="CaptureResources" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Exportar captura" Click="ExportResources" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Evaluar mi PC · Warzone" Click="EvaluateWarzone" IsEnabled="{Binding IsIdle}"/>

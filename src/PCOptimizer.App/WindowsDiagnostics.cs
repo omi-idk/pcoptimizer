@@ -27,11 +27,11 @@ internal sealed record LoadSnapshot(double? CpuPercent, double? AvailableMemoryM
 
 internal static class WindowsDiagnostics
 {
-    private static async Task<T> QueryAsync<T>(string script)
+    private static async Task<T> QueryAsync<T>(string script, CancellationToken cancellationToken = default)
     {
         var prefix = "[Console]::OutputEncoding = [Text.Encoding]::UTF8; $ErrorActionPreference = 'Stop'; $env:PSModulePath = [IO.Path]::Combine($PSHOME, 'Modules');\n";
         var path = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
-        var json = await WindowsCommands.ReadAsync(path, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", prefix + script);
+        var json = await WindowsCommands.ReadCancelableAsync(path, cancellationToken, "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", prefix + script);
         return JsonSerializer.Deserialize<T>(json.Trim().TrimStart('\uFEFF'))
             ?? throw new InvalidDataException("Windows no devolvió datos válidos.");
     }
@@ -65,7 +65,7 @@ internal static class WindowsDiagnostics
         })
         ConvertTo-Json -InputObject $offers -Depth 4 -Compress
         """;
-    public static Task<WindowsDriverOffer[]> GetWindowsDriverOffersAsync() => QueryAsync<WindowsDriverOffer[]>(WindowsDriverOffersScript);
+    public static Task<WindowsDriverOffer[]> GetWindowsDriverOffersAsync(CancellationToken cancellationToken = default) => QueryAsync<WindowsDriverOffer[]>(WindowsDriverOffersScript, cancellationToken);
 
     private const string DiskHealthScript = """
         $disks = @(Get-PhysicalDisk | ForEach-Object {

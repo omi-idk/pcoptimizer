@@ -16,6 +16,7 @@ public partial class GamingSessionsWindow : Window
     private readonly Func<GamingPowerSession, bool, Task<bool>> prepareRecovery;
     private readonly CancellationTokenSource lifetime = new();
     private bool busy;
+    private bool visualPreview;
     private Guid? monitored;
     private CancellationTokenSource? watchCancellation;
     public bool ControlsActiveSession => monitored.HasValue || busy;
@@ -24,7 +25,7 @@ public partial class GamingSessionsWindow : Window
     {
         InitializeComponent(); this.engine = engine; this.platform = platform; this.acquire = acquire;
         this.release = release; this.prepareRecovery = prepareRecovery;
-        Loaded += async (_, _) => await RunAsync(RefreshAsync);
+        Loaded += async (_, _) => { if (!visualPreview) await RunAsync(RefreshAsync); };
         Closing += (_, e) =>
         {
             if (ControlsActiveSession) { e.Cancel = true; Status.Text = "Restaura la sesión activa antes de cerrar. Si hay otra operación, espera a que termine."; }
@@ -34,6 +35,7 @@ public partial class GamingSessionsWindow : Window
     }
     internal void ConfigureDesignPreview(GameIdentity game, PowerPlan plan, GamingPowerSession session)
     {
+        visualPreview = true;
         Games.ItemsSource = new[] { game }; Games.SelectedIndex = 0;
         Plans.ItemsSource = new[] { plan }; Plans.SelectedIndex = 0;
         Pending.ItemsSource = new[] { session }; Pending.SelectedIndex = 0;
