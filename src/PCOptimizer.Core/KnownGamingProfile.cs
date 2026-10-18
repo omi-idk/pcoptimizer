@@ -39,7 +39,7 @@ public static partial class KnownGamingProfile
                 hardware.Security.TpmSpecification.Split(',').Any(v => v.Trim().StartsWith("2.0", StringComparison.Ordinal)) ? ProfileCheckState.Match : ProfileCheckState.Mismatch,
                 "TPM 2.0; no certifica compatibilidad RICOCHET", hardware.Security?.TpmSpecification ?? "No se pudo consultar sin elevar permisos"),
             new("Secure Boot", hardware.Security?.SecureBoot is null ? ProfileCheckState.Unknown : hardware.Security.SecureBoot.Value ? ProfileCheckState.Match : ProfileCheckState.Mismatch,
-                "UEFI Secure Boot habilitado; verificar requisitos actuales del juego", hardware.Security?.SecureBoot?.ToString() ?? "No informado; no equivale a desactivado"),
+                "UEFI Secure Boot habilitado; verificar requisitos actuales del juego", hardware.Security?.SecureBoot switch { true => "Habilitado", false => "Deshabilitado", _ => "No informado; no equivale a desactivado" }),
             new("Refrigeración y mando", ProfileCheckState.Unknown, "DeepCool AK500 Digital / GameSir G7 Pro", "Requiere confirmación del usuario; no se presume a partir de CPU o USB genérico.")
         };
         return result;

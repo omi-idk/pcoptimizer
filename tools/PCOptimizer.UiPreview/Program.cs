@@ -178,6 +178,16 @@ internal static class Program
     private static async Task ValidateReadOnlyProbes()
     {
         if (NvidiaTelemetry.LayoutSizes != (24,8)) throw new InvalidOperationException("NVML ABI sizes are invalid.");
+        var selfPath = WindowsProcessPath.Read(Environment.ProcessId);
+        if (string.IsNullOrWhiteSpace(selfPath) || !Path.IsPathFullyQualified(selfPath))
+            throw new InvalidOperationException("Limited-information process path lookup failed for the test process.");
+        using (var self = System.Diagnostics.Process.GetCurrentProcess())
+        {
+            var identity = new GameIdentity(self.Id, new DateTimeOffset(self.StartTime.ToUniversalTime()), "Read-only smoke test");
+            var platform = new WindowsPowerSessionPlatform();
+            if (!await platform.IsGameRunningAsync(identity) || await platform.IsGameRunningAsync(identity with { StartedUtc = identity.StartedUtc.AddSeconds(1) }))
+                throw new InvalidOperationException("Process identity validation did not distinguish its creation time.");
+        }
         var gpu = await new NvidiaTelemetry().ReadAsync();
         Console.WriteLine($"Read-only NVML probe completed; {gpu.Devices.Length} exposed devices. This does not validate game/anticheat support.");
         foreach (var script in new[] {WindowsResourceProbe.HardwareScript,WindowsResourceProbe.CaptureScript, WindowsDiagnostics.WindowsDriverOffersScript})

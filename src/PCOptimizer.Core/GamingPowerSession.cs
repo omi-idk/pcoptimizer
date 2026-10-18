@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace PCOptimizer.Core;
 
 public enum GamingSessionState { Prepared, Applying, Active, Restoring, Restored, Canceled, ApplyFailed, RestoreFailed, Conflict }
@@ -6,7 +8,17 @@ public sealed record GamingPowerSession(int SchemaVersion, Guid Id, DateTimeOffs
     Guid PreviousPlan, Guid TemporaryPlan, GamingSessionState State, string? Error = null)
 {
     public bool ApplyAttempted { get; init; }
-    public string DisplayName => $"{CreatedUtc.ToLocalTime():g} · {Game.Name} · {State}";
+    [JsonIgnore]
+    public string StateLabel => State switch
+    {
+        GamingSessionState.Prepared => "Preparada", GamingSessionState.Applying => "Aplicando plan",
+        GamingSessionState.Active => "En curso", GamingSessionState.Restoring => "Restaurando",
+        GamingSessionState.Restored => "Restaurada", GamingSessionState.Canceled => "Cerrada sin restauración pendiente",
+        GamingSessionState.ApplyFailed => "Aplicación incompleta", GamingSessionState.RestoreFailed => "Restauración incompleta",
+        GamingSessionState.Conflict => "Conflicto externo", _ => "Estado no reconocido"
+    };
+    [JsonIgnore]
+    public string DisplayName => $"{CreatedUtc.ToLocalTime():g} · {Game.Name} · {StateLabel}";
 }
 public interface IPowerSessionPlatform
 {

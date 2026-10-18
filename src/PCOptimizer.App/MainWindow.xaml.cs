@@ -202,6 +202,14 @@ public partial class MainWindow : Window
                             string.Join("\n", operation.Changes.Select(c => $"{ExecutableTweaks.Get(c.TweakId).Name}: {c.Before.Display} → {c.After.Display} · {c.State}")));
                 }
                 catch (Exception ex) { Add("RESPALDO DE AJUSTES NO DISPONIBLE", "Se conservó el registro original", ex.Message); }
+                try
+                {
+                    foreach (var session in sessionEngine.List().Take(40))
+                        Add("SESIÓN GAMING · " + session.StateLabel, session.Game.Name,
+                            $"{session.CreatedUtc.ToLocalTime():g} · ID {session.Id:N}\nPlan original: {session.PreviousPlan:D}\nPlan temporal: {session.TemporaryPlan:D}\n" +
+                            $"Intento de aplicación registrado: {(session.ApplyAttempted ? "Sí" : "No")}\n{session.Error}");
+                }
+                catch (Exception ex) { Add("SESIONES GAMING NO DISPONIBLES", "Se conservaron los registros", ex.Message); }
                 if (model.Cards.Count == 0) Add("SIN CAMBIOS", "Todavía no hay operaciones registradas", "Los diagnósticos solo consultan información.");
                 break;
             default:
