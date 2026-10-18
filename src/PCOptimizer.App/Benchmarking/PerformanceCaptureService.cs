@@ -52,6 +52,7 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
             await sampling; // Observe completion before freezing the trace, including cancellation/failure paths.
         }
         var end = Stopwatch.GetTimestamp();
+        self.Refresh();
         var trace = new PerformanceTrace(1, Guid.NewGuid(), Stopwatch.Frequency, start, end, utc,
             observations.ToArray(), limitations.Take(100).ToArray(), Math.Max(0, (self.TotalProcessorTime - cpu).TotalMilliseconds));
         PerformanceTrace.Validate(trace);

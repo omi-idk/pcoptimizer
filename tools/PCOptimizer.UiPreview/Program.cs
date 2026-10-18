@@ -199,7 +199,7 @@ internal static class Program
                         if (name.StartsWith("performance"))
                         {
                             var position = chart.TransformToAncestor(scroll).Transform(new Point());
-                            scroll.ScrollToVerticalOffset(scroll.VerticalOffset + position.Y - 70);
+                            scroll.ScrollToVerticalOffset(scroll.VerticalOffset + position.Y - 140);
                         }
                         else scroll.ScrollToTop();
                     }

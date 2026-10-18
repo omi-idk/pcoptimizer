@@ -13,6 +13,9 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
     public bool CaptureSensors { get; set; }
     public PerformanceReport? PerformanceReport { get; private set; }
     public PerformanceTrace? Telemetry => telemetry;
+    public SensorSeriesOption[] SensorSeries { get; private set; } = [];
+    private SensorSeriesOption? selectedSensor;
+    public SensorSeriesOption? SelectedSensor { get => selectedSensor; set { selectedSensor = value; Changed(); } }
     public string PerformanceEvidence => PerformanceReport is not { } report ? "Activa sensores durante una captura nueva para analizar coincidencias. Las importaciones antiguas conservan sus métricas sin sincronización inventada." :
         string.Join("\n\n", report.Findings.Select(f => $"{f.Finding}\nEvidencia: {f.Evidence}\nHipótesis: {f.Hypothesis}\nConfianza: {f.Confidence}\nFalta: {f.MissingInformation}\nRecomendación: {f.Recommendation}\nRiesgo: {f.Risk}\nPrueba: {f.Experiment}"));
     public string PerformanceCoverage => PerformanceReport is not { } r ? "Sin experimento correlacionado." :
@@ -178,6 +181,7 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
         var session = BuildSession();
         var result = await Task.Run(() => PerformanceAnalysis.Calculate(session, token), token);
         PerformanceReport = result;
+        RefreshSensorSeries();
         foreach (var name in new[] { nameof(Telemetry), nameof(PerformanceReport), nameof(PerformanceEvidence), nameof(PerformanceCoverage), nameof(PerformanceLimits) }) Changed(name);
     }
     public async Task ExportReportAsync(string path, CancellationToken token)
@@ -243,8 +247,17 @@ internal sealed class BenchmarkViewModel(IBenchmarkSessionStore store, IPresentM
         finally { if (File.Exists(temp)) File.Delete(temp); }
         Status = "Exportación terminada. JSON incluye contexto y definición; CSV contiene las muestras del stream seleccionado.";
     }
+    private void RefreshSensorSeries()
+    {
+        SensorSeries = telemetry?.Observations.SelectMany(o => o.Readings)
+            .Select(r => new SensorSeriesOption(r.Metric, r.Device, r.Source, r.Unit)).Distinct().ToArray() ?? [];
+        if (SelectedSensor is null || !SensorSeries.Contains(SelectedSensor))
+            SelectedSensor = SensorSeries.FirstOrDefault(s => s.Metric == SensorMetric.GpuUtilizationPercent) ?? SensorSeries.FirstOrDefault();
+        Changed(nameof(SensorSeries));
+    }
     private void NotifyResult()
     {
+        RefreshSensorSeries();
         foreach (var name in new[] { nameof(ContextReadOnly), nameof(Frames), nameof(Summary), nameof(StreamLabel), nameof(Average), nameof(Low1), nameof(Low01), nameof(Percentiles), nameof(Coverage), nameof(Evidence), nameof(Telemetry), nameof(PerformanceReport), nameof(PerformanceEvidence), nameof(PerformanceCoverage), nameof(PerformanceLimits) }) Changed(name);
     }
     public event PropertyChangedEventHandler? PropertyChanged;

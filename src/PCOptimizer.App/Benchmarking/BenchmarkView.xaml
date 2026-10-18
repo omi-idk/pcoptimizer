@@ -82,8 +82,9 @@
         <Border Style="{StaticResource Card}" Margin="0,12,0,0">
           <StackPanel>
             <TextBlock Text="PERFORMANCE INTELLIGENCE · EXPERIMENTAL" Style="{StaticResource SectionLabel}"/>
-            <TextBlock Text="Frametime (arriba) y carga (abajo), con el mismo eje QPC. Los puntos no se interpolan; la temperatura no demuestra throttling." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
-            <local:CorrelatedChart Frames="{Binding Frames}" Trace="{Binding Telemetry}" Height="270" AutomationProperties.Name="Frametimes y sensores con reloj común QPC"/>
+            <TextBlock Text="Frametime (arriba) y sensor elegido (abajo), con el mismo eje QPC. Los puntos no se interpolan; la temperatura no demuestra throttling." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+            <ComboBox ItemsSource="{Binding SensorSeries}" SelectedItem="{Binding SelectedSensor}" IsEnabled="{Binding IsIdle}" Margin="0,10,0,0" AutomationProperties.Name="Sensor y dispositivo de la gráfica correlacionada" ToolTip="Selecciona la métrica y el dispositivo; no se presupone que esta GPU renderice el juego."/>
+            <local:CorrelatedChart Frames="{Binding Frames}" Trace="{Binding Telemetry}" Series="{Binding SelectedSensor}" Height="270" AutomationProperties.Name="Frametimes y sensores con reloj común QPC"/>
             <TextBlock Text="{Binding PerformanceCoverage}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
             <TextBlock Text="{Binding PerformanceEvidence}" TextWrapping="Wrap" Margin="0,12,0,0"/>
             <Expander Header="Método, fuentes y límites" Margin="0,10,0,0">
