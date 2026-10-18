@@ -137,9 +137,16 @@ internal static class Program
         dialog.ConfigureDesignPreview(game,plan,session);
         var root=(FrameworkElement)dialog.Content; root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
         root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily); root.SetValue(TextElement.FontSizeProperty,13.0);
-        root.SetValue(Panel.BackgroundProperty,dialog.Background);
-        dialog.Content=null; root.Width=850; root.Height=650; root.Measure(new Size(850,650)); root.Arrange(new Rect(0,0,850,650)); root.UpdateLayout();
-        var bitmap=new RenderTargetBitmap(850,650,96,96,PixelFormats.Pbgra32);bitmap.Render(root);
+        dialog.Content=null;
+        root.ClearValue(FrameworkElement.WidthProperty); root.ClearValue(FrameworkElement.HeightProperty);
+        var host=new Border {Background=dialog.Background,Child=root,Width=850,Height=650};
+        host.Measure(new Size(850,650)); host.Arrange(new Rect(0,0,850,650)); host.UpdateLayout();
+        var texts=Descendants<TextBlock>(host).Select(t=>t.Text).ToArray();
+        if (!texts.Contains(game.Name) || !texts.Contains(plan.Name) || texts.Any(t=>t.StartsWith("GameIdentity {") || t.StartsWith("PowerPlan {")))
+            throw new InvalidOperationException("Gaming-session selectors did not render their display names.");
+        if(root.ActualWidth+root.Margin.Left+root.Margin.Right>850.5 || root.ActualHeight+root.Margin.Top+root.Margin.Bottom>650.5)
+            throw new InvalidOperationException("Gaming-session dialog content exceeds its viewport.");
+        var bitmap=new RenderTargetBitmap(850,650,96,96,PixelFormats.Pbgra32);bitmap.Render(host);
         var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
         using(var output=File.Create(Path.Combine(directory,"gaming-sessions.png"))) encoder.Save(output);
         dialog.Close(); Console.WriteLine("Rendered gaming sessions with illustrative data and a provider that rejects mutations.");
