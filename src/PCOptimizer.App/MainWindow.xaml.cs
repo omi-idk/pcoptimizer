@@ -51,10 +51,10 @@ public partial class MainWindow : Window
                 model.Status = "Operación de benchmarks finalizada. Revisa el resultado en su panel.";
             }
         };
-        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); };
+        Loaded += async (_, _) => { if (visualPreview) return; RefreshRecoverySessions(); await RefreshAsync(); NotifyPendingSessions(); };
         Closing += (_, e) =>
         {
-            if (model.IsIdle && !BenchmarkPanel.IsBusy) return;
+            if (model.IsIdle && !BenchmarkPanel.IsBusy && sessionsWindow?.ControlsActiveSession != true) return;
             e.Cancel = true;
             model.Status = "Espera a que termine la operación antes de cerrar.";
         };
@@ -262,7 +262,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task<RecoverySession?> PrepareRecoveryAsync(IReadOnlyList<RecoveryAction> actions, bool manual = false)
+    private async Task<RecoverySession?> PrepareRecoveryAsync(IReadOnlyList<RecoveryAction> actions, bool manual = false, Window? reviewOwner = null)
     {
         // Save the intended changes before elevation or any application/system change.
         var session = recoveryStore.Begin(actions);
@@ -286,7 +286,7 @@ public partial class MainWindow : Window
         session = recoveryStore.SetPoint(session.Id, null, "Sin nuevo punto confirmado");
         RefreshRecoverySessions(session.Id);
         if (manual) { model.Status = failure ?? "No se confirmó un punto nuevo."; return null; }
-        var decision = MessageBox.Show(this,
+        var decision = MessageBox.Show(reviewOwner ?? this,
             $"{failure}\n\nNo se ha iniciado la operación. El registro local de acciones no sustituye un punto de restauración ni una copia de archivos.\n\n¿Continuar con la operación SIN un nuevo punto confirmado? Elige No para cancelar y revisar Protección del sistema.",
             "Punto de restauración no confirmado", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
         if (decision != MessageBoxResult.Yes)

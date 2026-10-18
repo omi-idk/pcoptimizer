@@ -1,0 +1,38 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="PCOptimizer.App.GamingSessionsWindow" Title="Sesiones gaming · energía temporal" Width="850" Height="650" MinWidth="700" MinHeight="540" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" WindowStartupLocation="CenterOwner">
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel>
+      <TextBlock Text="Sesión gaming reversible" FontSize="24" FontWeight="SemiBold"/>
+      <TextBlock Text="Selecciona un juego abierto y otro plan existente. Se guarda el original y se intenta restaurarlo al salir. Puede aparecer UAC tanto al aplicar como al restaurar; no se modifican procesos del juego." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,12,0,16"/>
+    </StackPanel>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+        <StackPanel x:Name="ControlsPanel">
+          <TextBlock Text="Proceso en ejecución · PID y hora de inicio" Style="{StaticResource SectionLabel}"/>
+          <ComboBox x:Name="Games" DisplayMemberPath="Name" Margin="0,0,0,12"/>
+          <TextBlock Text="Plan temporal · puede aumentar consumo y temperatura sin mejorar FPS" Style="{StaticResource SectionLabel}"/>
+          <ComboBox x:Name="Plans" DisplayMemberPath="Name" Margin="0,0,0,12"/>
+          <WrapPanel>
+            <Button Content="Actualizar" Click="Refresh"/>
+            <Button Content="Revisar e iniciar" Click="StartSession" Style="{StaticResource PrimaryButton}"/>
+            <Button Content="Esperar inicio de un ejecutable…" Click="WatchExecutable"/>
+            <Button Content="Detener espera" Click="StopWatching"/>
+          </WrapPanel>
+          <TextBlock Text="Sesiones pendientes de recuperar" Style="{StaticResource SectionLabel}" Margin="0,20,0,8"/>
+          <ListBox x:Name="Pending" DisplayMemberPath="DisplayName" Height="130"/>
+          <WrapPanel Margin="0,12,0,0">
+            <Button Content="Revisar y restaurar la seleccionada" Click="RestoreSelected"/>
+            <Button Content="Dejar pendiente y detener supervisión" Click="LeavePending"/>
+            <Button Content="Conservar un cambio externo" Click="AcceptExternal"/>
+          </WrapPanel>
+        </StackPanel>
+        <TextBlock Text="La restauración automática espera si hay otra operación o benchmark en curso. Si se cierra inesperadamente la aplicación, el registro queda pendiente para recuperarlo al volver a abrirla. No se cierran aplicaciones ni se cambian afinidades/prioridades. No se ha medido un beneficio de FPS por activar este plan." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,18,0,0"/>
+      </StackPanel>
+    </ScrollViewer>
+    <TextBlock x:Name="Status" Grid.Row="2" Text="Actualiza para consultar planes y procesos." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,16,0,0"/>
+  </Grid>
+</Window>

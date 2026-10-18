@@ -15,7 +15,9 @@ internal static class WindowsCommands
     [DllImport("kernel32.dll")]
     private static extern uint GetOEMCP();
 
-    public static async Task<string> ReadAsync(string executable, params string[] arguments)
+    public static Task<string> ReadAsync(string executable, params string[] arguments) => ReadCancelableAsync(executable, CancellationToken.None, arguments);
+
+    public static async Task<string> ReadCancelableAsync(string executable, CancellationToken cancellationToken, params string[] arguments)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         var encoding = executable.Equals(PowerCfg, StringComparison.OrdinalIgnoreCase)
@@ -30,11 +32,14 @@ internal static class WindowsCommands
         using var process = Process.Start(start) ?? throw new InvalidOperationException("No se pudo iniciar la consulta de Windows.");
         var output = process.StandardOutput.ReadToEndAsync();
         var error = process.StandardError.ReadToEndAsync();
-        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(45));
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeout.CancelAfter(TimeSpan.FromSeconds(45));
         try { await process.WaitForExitAsync(timeout.Token); }
         catch (OperationCanceledException)
         {
-            process.Kill(entireProcessTree: true);
+            if (!process.HasExited) process.Kill(entireProcessTree: true);
+            await process.WaitForExitAsync();
+            cancellationToken.ThrowIfCancellationRequested();
             throw new TimeoutException("La consulta de Windows tardó demasiado. Puedes volver a intentarlo.");
         }
         if (process.ExitCode != 0)

@@ -19,6 +19,7 @@ internal sealed record InstalledDriver(string Name, string Provider, string Vers
         _ => "https://support.microsoft.com/windows/update-drivers-through-device-manager-in-windows"
     };
 }
+internal sealed record WindowsDriverOffer(string Title, string HardwareId, string Manufacturer, string Provider, string Class, string DriverDate);
 internal sealed record DiskHealth(string Model, string Health, string Operational, long Size,
     long? Temperature, long? Wear, long? PowerOnHours, long? ReadErrors, long? WriteErrors, string? ReliabilityError);
 internal sealed record SoundDevice(string Name, string Manufacturer, string Status);
@@ -50,6 +51,21 @@ internal static class WindowsDiagnostics
         })
         ConvertTo-Json -InputObject $drivers -Depth 4 -Compress
         """);
+
+    internal const string WindowsDriverOffersScript = """
+        $session = New-Object -ComObject Microsoft.Update.Session
+        $session.ClientApplicationID = 'PCOptimizer read-only driver inventory'
+        $searcher = $session.CreateUpdateSearcher()
+        $result = $searcher.Search("IsInstalled=0 and IsHidden=0 and Type='Driver'")
+        $offers = @($result.Updates | ForEach-Object {
+            [pscustomobject]@{Title=[string]$_.Title; HardwareId=[string]$_.DriverHardwareID;
+                Manufacturer=[string]$_.DriverManufacturer; Provider=[string]$_.DriverProvider;
+                Class=[string]$_.DriverClass;
+                DriverDate=if ($_.DriverVerDate) {$_.DriverVerDate.ToString('yyyy-MM-dd')} else {'No informada'}}
+        })
+        ConvertTo-Json -InputObject $offers -Depth 4 -Compress
+        """;
+    public static Task<WindowsDriverOffer[]> GetWindowsDriverOffersAsync() => QueryAsync<WindowsDriverOffer[]>(WindowsDriverOffersScript);
 
     private const string DiskHealthScript = """
         $disks = @(Get-PhysicalDisk | ForEach-Object {
