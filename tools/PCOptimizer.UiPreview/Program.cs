@@ -163,9 +163,19 @@ internal static class Program
                 {
                     ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
-                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740), ("performance", "Benchmarks", 1400, 880), ("performance-compact", "Benchmarks", 1120, 740)
+                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740), ("performance", "Benchmarks", 1400, 880), ("performance-compact", "Benchmarks", 1120, 740), ("performance-unavailable", "Benchmarks", 1120, 740)
                 })
                 {
+                    if (name == "performance-unavailable")
+                    {
+                        var missingTrace = previewTrace with { Observations = previewTrace.Observations.Select(o => o with
+                            { Readings = o.Readings.Select(r => r with { Value = null, Availability = SensorAvailability.Unavailable }).ToArray() }).ToArray() };
+                        var view = (BenchmarkView)window.FindName("BenchmarkPanel");
+                        view.ConfigureDesignPreview(new ImportedCapture(new string('A',64), new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1), missingTrace);
+                        var module = (BenchmarkViewModel)view.DataContext;
+                        if (module.PerformanceReport!.Associations.Any(a => a.MatchedFrames != 0))
+                            throw new InvalidOperationException("Unavailable sensor fixture gained false coverage.");
+                    }
                     window.Width = width;
                     window.Height = height;
                     window.ShowDesignSection(section);

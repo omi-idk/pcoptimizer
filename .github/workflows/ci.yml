@@ -35,6 +35,15 @@ jobs:
         run: |
           dotnet publish src/PCOptimizer.App/PCOptimizer.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false "-p:NuGetLockFilePath=$env:RUNNER_TEMP/pcoptimizer-publish.lock.json" -o artifacts/PCOptimizer-win-x64
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $deps = Get-Content artifacts/PCOptimizer-win-x64/PCOptimizer.App.deps.json -Raw | ConvertFrom-Json -AsHashtable
+          foreach ($runtime in @('Microsoft.NETCore.App.Runtime.win-x64', 'Microsoft.WindowsDesktop.App.Runtime.win-x64')) {
+            if (-not $deps.libraries.ContainsKey("runtimepack.$runtime/10.0.13")) {
+              throw "Runtime version changed: verify and update the shipped official runtime notices before publishing."
+            }
+          }
+          foreach ($notice in @('DOTNET-LICENSE.txt', 'DOTNET-THIRD-PARTY-NOTICES.txt', 'WPF-LICENSE.txt', 'WPF-THIRD-PARTY-NOTICES.txt')) {
+            if (-not (Test-Path "artifacts/PCOptimizer-win-x64/licenses/runtime-10.0.13/$notice")) { throw "Missing runtime notice: $notice" }
+          }
           Copy-Item docs/primera-prueba.md artifacts/PCOptimizer-win-x64/LEEME-PRIMERO.md
           Copy-Item SECURITY.md artifacts/PCOptimizer-win-x64/SECURITY.md
           Copy-Item docs/BENCHMARKING.md artifacts/PCOptimizer-win-x64/BENCHMARKING.md

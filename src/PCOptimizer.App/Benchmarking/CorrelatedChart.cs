@@ -56,6 +56,7 @@ public sealed class CorrelatedChart : FrameworkElement
                 dc.DrawLine(pen, new(top.Left + i, top.Bottom), new(top.Left + i, top.Bottom - top.Height * columns[i] / max));
             Label($"{max:N1} ms", 0, top.Top);
         }
+        if (timed.Length == 0) Label("Sin timestamps QPC de frames en este rango", top.Left + 10, top.Top + 10);
         Label("0", 18, bottom.Bottom - 12);
         Label("0 s", top.Left, bottom.Bottom + 8);
         Label($"{(trace.EndedQpc - trace.StartedQpc) / (double)trace.QpcFrequency:N1} s QPC", Math.Max(top.Left, top.Right - 90), bottom.Bottom + 8);
@@ -63,6 +64,11 @@ public sealed class CorrelatedChart : FrameworkElement
         var points = trace.Observations.SelectMany(o => o.Readings.Select(r => (Observation: o, Reading: r)))
             .Where(x => x.Reading.Metric == series.Metric && x.Reading.Device == series.Device && x.Reading.Source == series.Source
                 && PerformanceAnalysis.IsUsable(x.Observation, x.Reading, trace.QpcFrequency)).ToArray();
+        if (points.Length == 0)
+        {
+            Label("N/D · sin lecturas utilizables de esta serie; revisa cobertura y límites", bottom.Left + 10, bottom.Top + 16);
+            return;
+        }
         var percent = series.Unit == "%";
         var maximum = percent ? 100 : Math.Max(1, points.Select(p => p.Reading.Value ?? 0).DefaultIfEmpty().Max() * 1.05);
         Label($"{maximum:N0} {series.Unit}", 0, bottom.Top);
