@@ -57,6 +57,7 @@ internal static class WindowsDiagnostics
         $session.ClientApplicationID = 'PCOptimizer read-only driver inventory'
         $searcher = $session.CreateUpdateSearcher()
         $result = $searcher.Search("IsInstalled=0 and IsHidden=0 and Type='Driver'")
+        if ([int]$result.ResultCode -ne 2) { throw ('La búsqueda de drivers no se completó correctamente; código ' + $result.ResultCode) }
         $offers = @($result.Updates | ForEach-Object {
             [pscustomobject]@{Title=[string]$_.Title; HardwareId=[string]$_.DriverHardwareID;
                 Manufacturer=[string]$_.DriverManufacturer; Provider=[string]$_.DriverProvider;
