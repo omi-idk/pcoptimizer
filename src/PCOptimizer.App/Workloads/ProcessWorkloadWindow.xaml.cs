@@ -16,7 +16,11 @@ public partial class ProcessWorkloadWindow : Window
         model.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(model.IsBusy)) BusyChanged?.Invoke(this, EventArgs.Empty); };
         Closing += (_, e) => { if (model.IsBusy) { e.Cancel = true; model.Cancel(); } };
     }
-    internal void ConfigureDesignPreview(ProcessWorkloadCapture capture) => model.SetCapture(capture, null, null);
+    internal void ConfigureDesignPreview(ProcessWorkloadCapture capture)
+    {
+        model.SetCapture(capture, null, null);
+        DesignBanner.Visibility = Visibility.Visible;
+    }
     private async void Capture(object sender, RoutedEventArgs e) => await model.RunAsync(model.CaptureAsync);
     private void Cancel(object sender, RoutedEventArgs e) => model.Cancel();
     private void SelectPlan(object sender, RoutedEventArgs e) { SelectedPlan = model.Plan.Tweaks; DialogResult = true; }

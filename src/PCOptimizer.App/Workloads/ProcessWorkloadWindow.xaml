@@ -2,6 +2,7 @@
   <Grid Margin="24">
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <StackPanel>
+      <TextBlock x:Name="DesignBanner" Visibility="Collapsed" Text="VISTA PREVIA · DATOS ILUSTRATIVOS · NO SON MEDICIONES DE TU EQUIPO" Foreground="#EDB96F" FontSize="10" Margin="0,0,0,8"/>
       <TextBlock Text="Procesos y objetivos gaming" FontSize="25" FontWeight="SemiBold"/>
       <TextBlock Text="CPU normalizada y 100% por procesador lógico · E/S de archivos, red y dispositivos · dos instantáneas, sin atribución causal" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,7,0,14"/>
       <WrapPanel IsEnabled="{Binding IsIdle}">
@@ -25,6 +26,12 @@
       <TextBlock Text="{Binding Coverage}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
     </StackPanel>
     <DataGrid Grid.Row="3" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" RowBackground="#18202C" AlternatingRowBackground="#1D2634" GridLinesVisibility="None" BorderBrush="{StaticResource Line}" RowHeight="32" EnableRowVirtualization="True" EnableColumnVirtualization="True" SelectionMode="Single" FrozenColumnCount="2" AutomationProperties.Name="Carga observada por proceso">
+      <DataGrid.Resources>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#294665"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#24374F"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#EDF3FA"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#EDF3FA"/>
+      </DataGrid.Resources>
       <DataGrid.ColumnHeaderStyle><Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="#253247"/><Setter Property="Foreground" Value="{StaticResource Text}"/><Setter Property="Padding" Value="10"/></Style></DataGrid.ColumnHeaderStyle>
       <DataGrid.Columns>
         <DataGridTextColumn Header="Proceso" Binding="{Binding Name}" Width="*" MinWidth="180"/>

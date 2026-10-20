@@ -48,6 +48,8 @@ jobs:
           Copy-Item SECURITY.md artifacts/PCOptimizer-win-x64/SECURITY.md
           Copy-Item docs/BENCHMARKING.md artifacts/PCOptimizer-win-x64/BENCHMARKING.md
           Copy-Item docs/RESOURCE_AND_GAMING_SESSIONS.md artifacts/PCOptimizer-win-x64/RESOURCE_AND_GAMING_SESSIONS.md
+          New-Item -ItemType Directory -Path artifacts/PCOptimizer-win-x64/research -Force | Out-Null
+          Copy-Item docs/research/WZCONTROL_REVIEW.md artifacts/PCOptimizer-win-x64/research/WZCONTROL_REVIEW.md
           Copy-Item docs/PROCESS_WORKLOADS.md artifacts/PCOptimizer-win-x64/PROCESS_WORKLOADS.md
           Copy-Item docs/PERFORMANCE_INTELLIGENCE.md artifacts/PCOptimizer-win-x64/PERFORMANCE_INTELLIGENCE.md
           Copy-Item docs/PERFIL_PC_WARZONE.md artifacts/PCOptimizer-win-x64/PERFIL_PC_WARZONE.md

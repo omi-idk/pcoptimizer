@@ -300,6 +300,7 @@ internal static class Program
         foreach(var (width,height) in new[]{(1100,790),(880,650)})
         {
             var dialog=new ProcessWorkloadWindow(new WorkloadFixtureProbe());dialog.ConfigureDesignPreview(WorkloadFixture());
+            if(width==880)((ProcessWorkloadViewModel)dialog.DataContext).Goal=GamingGoal.Streaming;
             var root=(FrameworkElement)dialog.Content;root.DataContext=dialog.DataContext;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
             root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);
             dialog.Content=null;
