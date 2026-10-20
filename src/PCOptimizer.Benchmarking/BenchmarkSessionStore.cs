@@ -70,5 +70,6 @@ public sealed class BenchmarkSessionStore(string directory) : IBenchmarkSessionS
             session.Context.WindowsVersion, session.Context.Settings, session.Context.Scenario })
             if (value is null || value.Length > 2000) throw new InvalidDataException("Contexto de sesión inválido.");
         _ = BenchmarkStatistics.Calculate(session.Frames);
+        if (session.Telemetry is { } trace) PerformanceTrace.Validate(trace);
     }
 }

@@ -86,6 +86,7 @@ internal sealed class MainViewModel : INotifyPropertyChanged
     private string subtitle = "Hardware, configuración y actividad de tu equipo.";
     private string status = "Consultando Windows…";
     private bool isIdle;
+    public bool UsesGameBarClips { get; set; } = true;
     private PowerPlan? selectedPlan;
     private string searchText = "";
     private string selectedCategory = "Todas las categorías";

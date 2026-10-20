@@ -8,10 +8,11 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.5.0-preview.1</Version>
+    <Version>0.6.0-preview.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../PCOptimizer.Core/PCOptimizer.Core.csproj" />
+    <Content Include="../../licenses/runtime-10.0.13/*" Link="licenses/runtime-10.0.13/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../licenses/PresentMon-MIT.txt" Link="licenses/PresentMon-MIT.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../licenses/WinUtil-MIT.txt" Link="licenses/WinUtil-MIT.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

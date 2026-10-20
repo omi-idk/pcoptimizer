@@ -1,0 +1,55 @@
+<Window x:Class="PCOptimizer.App.Workloads.ProcessWorkloadWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="PCOptimizer · Procesos y objetivos gaming" Width="1100" Height="790" MinWidth="880" MinHeight="650" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" WindowStartupLocation="CenterOwner">
+  <Grid Margin="24">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel>
+      <TextBlock x:Name="DesignBanner" Visibility="Collapsed" Text="VISTA PREVIA · DATOS ILUSTRATIVOS · NO SON MEDICIONES DE TU EQUIPO" Foreground="#EDB96F" FontSize="10" Margin="0,0,0,8"/>
+      <TextBlock Text="Procesos y objetivos gaming" FontSize="25" FontWeight="SemiBold"/>
+      <TextBlock Text="CPU normalizada y 100% por procesador lógico · E/S de archivos, red y dispositivos · dos instantáneas, sin atribución causal" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,7,0,14"/>
+      <WrapPanel IsEnabled="{Binding IsIdle}">
+        <Button Content="Medir procesos" Click="Capture" Style="{StaticResource PrimaryButton}"/>
+        <Button Content="Guardar captura" Click="Save"/><Button Content="Abrir captura" Click="Load"/><Button Content="Exportar informe" Click="Export"/>
+      </WrapPanel>
+    </StackPanel>
+    <Grid Grid.Row="1" Margin="0,12,0,0" IsEnabled="{Binding IsIdle}">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="260"/></Grid.ColumnDefinitions>
+      <StackPanel Margin="0,0,12,0"><TextBlock Text="Juego elegido voluntariamente · PID + inicio" Foreground="{StaticResource Muted}" Margin="0,0,0,6"/>
+        <ComboBox ItemsSource="{Binding Games}" SelectedItem="{Binding Game}" AutomationProperties.Name="Proceso del juego">
+          <ComboBox.ItemTemplate><DataTemplate><TextBlock><Run Text="{Binding Name}"/><Run Text=" · PID "/><Run Text="{Binding ProcessId}"/><Run Text=" · "/><Run Text="{Binding StartedUtc, StringFormat=HH:mm:ss}"/></TextBlock></DataTemplate></ComboBox.ItemTemplate>
+        </ComboBox>
+      </StackPanel>
+      <StackPanel Grid.Column="1"><TextBlock Text="Objetivo" Foreground="{StaticResource Muted}" Margin="0,0,0,6"/>
+        <ComboBox ItemsSource="{Binding Goals}" SelectedValuePath="Value" DisplayMemberPath="Label" SelectedValue="{Binding Goal}" AutomationProperties.Name="Objetivo gaming"/>
+      </StackPanel>
+    </Grid>
+    <StackPanel Grid.Row="2" Margin="0,12,0,10">
+      <WrapPanel IsEnabled="{Binding IsIdle}"><CheckBox Content="Conservar chat de voz" IsChecked="{Binding KeepVoice}" Margin="0,0,20,0"/><CheckBox Content="Uso clips o captura de Game Bar" IsChecked="{Binding UsesClips}"/></WrapPanel>
+      <TextBlock Text="{Binding Coverage}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+    </StackPanel>
+    <DataGrid Grid.Row="3" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" RowBackground="#18202C" AlternatingRowBackground="#1D2634" GridLinesVisibility="None" BorderBrush="{StaticResource Line}" RowHeight="32" EnableRowVirtualization="True" EnableColumnVirtualization="True" SelectionMode="Single" FrozenColumnCount="2" AutomationProperties.Name="Carga observada por proceso">
+      <DataGrid.Resources>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#294665"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#24374F"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#EDF3FA"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#EDF3FA"/>
+      </DataGrid.Resources>
+      <DataGrid.ColumnHeaderStyle><Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="#253247"/><Setter Property="Foreground" Value="{StaticResource Text}"/><Setter Property="Padding" Value="10"/></Style></DataGrid.ColumnHeaderStyle>
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Proceso" Binding="{Binding Name}" Width="*" MinWidth="180"/>
+        <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="80"/>
+        <DataGridTextColumn Header="CPU capacidad" Binding="{Binding Cpu}" Width="125"/>
+        <DataGridTextColumn Header="CPU (1 lógico=100%)" Binding="{Binding Core}" Width="170"/>
+        <DataGridTextColumn Header="Lectura KiB/s" Binding="{Binding Read}" Width="115"/>
+        <DataGridTextColumn Header="Escritura KiB/s" Binding="{Binding Write}" Width="125"/>
+      </DataGrid.Columns>
+    </DataGrid>
+    <StackPanel Grid.Row="4" Margin="0,12,0,0">
+      <Expander Header="Evidencia y recomendación de la fila" IsExpanded="True"><ScrollViewer MaxHeight="95" VerticalScrollBarVisibility="Auto"><TextBlock Text="{Binding Details}" TextWrapping="Wrap" Margin="0,6,0,8"/></ScrollViewer></Expander>
+      <Expander Header="Ajustes propuestos para este objetivo · revisión antes de aplicar"><StackPanel><TextBlock Text="{Binding Plan.Explanation}" TextWrapping="Wrap" Margin="0,6,0,8"/><TextBlock Text="{Binding Plan.Validation}" TextWrapping="Wrap" Foreground="{StaticResource Muted}"/></StackPanel></Expander>
+    </StackPanel>
+    <DockPanel Grid.Row="5" Margin="0,12,0,0">
+      <Button DockPanel.Dock="Right" Content="Revisar ajustes del objetivo" Click="SelectPlan" IsEnabled="{Binding IsIdle}"/>
+      <Button DockPanel.Dock="Right" Content="Cancelar medición" Click="Cancel" IsEnabled="{Binding IsBusy}"/>
+      <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+    </DockPanel>
+  </Grid>
+</Window>

@@ -13,6 +13,6 @@ public static class PresentMonVersion
         return ["--process_id", processId.ToString(System.Globalization.CultureInfo.InvariantCulture),
             "--output_file", outputPath, "--session_name", sessionName, "--timed",
             durationSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture), "--terminate_after_timed",
-            "--terminate_on_proc_exit", "--no_console_stats", "--track_frame_type"];
+            "--terminate_on_proc_exit", "--no_console_stats", "--track_frame_type", "--qpc_time"];
     }
 }

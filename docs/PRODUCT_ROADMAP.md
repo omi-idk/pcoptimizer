@@ -37,3 +37,29 @@ En esta rama se implementó la primera entrega de medición: módulo separado, c
 - Pendientes: correlación sincronizada, display/generated FPS, protocolo completo persistente, medición del consumo de la app, bufferbloat bajo carga controlada, recomendaciones de drivers verificadas, validación Windows física y matriz de juegos/anticheats. Se conservan los criterios de aceptación originales; este avance no los declara completados por estar documentados.
 
 [Funcionamiento, fuentes y pruebas](RESOURCE_AND_GAMING_SESSIONS.md).
+
+## Plan comercial actualizado y avance 0.6
+
+El [nuevo prompt comercial completo](requirements/PCOptimizer-Ultimate-comercial-recibido.md) amplía el requisito anterior. Se preserva la base integrada Preview 0.5; este incremento no reconstruye la aplicación ni completa todos los hitos.
+
+| Hito | Estado de esta entrega / criterio restante |
+| --- | --- |
+| 0.6 Performance Intelligence | **Primer incremento funcional:** QPC en PresentMon y sensores optativos CPU global/memoria/NVML; sesión unificada y persistida, análisis de coincidencias con cobertura, gráfica temporal común, informe y cancelación. Pendiente ampliar sensores, alinear eventos Present, capturar contexto automáticamente y validar física/overhead. |
+| 0.7 Optimization Intelligence | Pendiente: recomendaciones por capacidades, contratos enriquecidos, objetivos adaptativos y flujo revisión→un cambio→A/B→conservar/revertir con experimento persistente. Se conservan los 41 ejecutores existentes. |
+| 0.8 Universal Gaming Optimizer | Parcial por las sesiones de energía/perfil experimental existentes; faltan Booster ampliado, familias de hardware, proveedores adicionales y mejor diagnóstico de procesos/drivers/pantalla/red. |
+| 0.9 Product Hardening | Parcial: controles de seguridad/recuperación y CI existentes. Faltan MVVM/DI restante, integración Windows con UAC/reinicio/fallos, matriz física, accesibilidad y presupuesto de overhead. |
+| 1.0 Commercial Readiness | No alcanzado: firma, instalador, actualización autenticada, licencias de distribución verificadas y validación multi-equipo siguen pendientes. Sin DRM, pagos o cuentas en esta fase. |
+
+Criterios 0.6: modelo/contexto, correlación con QPC suficiente, ausencias explícitas, anomalías documentadas, hallazgos, persistencia/reapertura, exportación, gráfica, cancelación y mediciones sin cambios están implementados en este incremento. CI valida código y flujo con fixtures; no convierte una simulación en evidencia de mejora. Los resultados verificables y el procedimiento Windows están en [Performance Intelligence](PERFORMANCE_INTELLIGENCE.md). No se declara completa una release comercial por compilar.
+
+
+## Avance posterior a la revisión de WZControl
+
+Implementados en Preview 0.6 incremento 2: medición voluntaria de CPU/E/S de procesos por PID/creación, disponibilidad explícita, objetivos Streaming/Competitivo/Equilibrado/Laptop con selección de ajustes existentes, contexto y JSON reabrible, informe y ventana WPF. No hay nuevas escrituras nativas ni terminación de procesos. La [revisión estática](research/WZCONTROL_REVIEW.md) fija lo observado y qué se implementa de forma propia.
+
+Pendientes: correlación de estas observaciones de procesos con frametimes, GPU/memoria por proceso, editor de configuración de juego por versión con atomicidad/conflictos, objetivos y cambios unidos al protocolo A/B, validación física/anticheat/overhead. No se declaran completados los hitos 0.7–1.0.
+
+
+## Experiencia similar al referente · incremento 3
+
+Inicio ahora expone objetivos, análisis, procesos, recursos en vivo, benchmarks y recuperación. El monitor optativo reutiliza el colector de sensores, con lease de operaciones, selección estable, antigüedad explícita, cierre/parada/exportación y una sola consulta NVML nativa pendiente global. [Matriz funcional](WZCONTROL_PARITY.md) separa lo implementado de lo pendiente. PR #10 consolidado directo a main; ya no depende de fusionar #9 antes. Continúan pendientes FPS en vivo continuo, editor de configuración del juego, perfiles oficiales de drivers, diagnóstico causal y validación física.

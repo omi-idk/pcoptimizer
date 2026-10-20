@@ -1,4 +1,4 @@
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bench="clr-namespace:PCOptimizer.App.Benchmarking" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" x:Class="PCOptimizer.App.MainWindow" Title="PCOptimizer · Preview 0.5" Width="1400" Height="880" MinWidth="1100" MinHeight="700" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" FontSize="13" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bench="clr-namespace:PCOptimizer.App.Benchmarking" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" x:Class="PCOptimizer.App.MainWindow" Title="PCOptimizer · Preview 0.6" Width="1400" Height="880" MinWidth="1100" MinHeight="700" Background="{StaticResource Canvas}" Foreground="{StaticResource Text}" FontFamily="Segoe UI" FontSize="13" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize">
   <shell:WindowChrome.WindowChrome>
     <shell:WindowChrome CaptionHeight="36" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
   </shell:WindowChrome.WindowChrome>
@@ -63,7 +63,7 @@
           <StackPanel Orientation="Horizontal" Margin="16,0,0,0" VerticalAlignment="Center">
             <TextBlock Text="" Style="{StaticResource Glyph}" Foreground="{StaticResource Accent}" FontSize="14"/>
             <TextBlock Text="PCOptimizer" FontWeight="SemiBold" FontSize="12"/>
-            <TextBlock Text="  /  PREVIEW 0.5" Foreground="{StaticResource Muted}" FontSize="10" Margin="8,2,0,0"/>
+            <TextBlock Text="  /  PREVIEW 0.6" Foreground="{StaticResource Muted}" FontSize="10" Margin="8,2,0,0"/>
             <TextBlock x:Name="PreviewLabel" Visibility="Collapsed" Text="  ·  VISTA PREVIA DE DISEÑO" Foreground="#EDB96F" FontSize="10" Margin="14,2,0,0"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True">
@@ -205,13 +205,33 @@
                       <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                      <TextBlock Text="CONFIGURACIÓN BAJO TU CONTROL" Style="{StaticResource SectionLabel}" Foreground="#A7CCFF"/>
-                      <TextBlock Text="Prepara Windows para tu forma de jugar." FontSize="23" FontWeight="SemiBold"/>
-                      <TextBlock Text="Ajustes por categoría, perfiles revisables y respaldo de valores antes de escribir." Foreground="#B0C0D7" Margin="0,10,24,0"/>
+                      <TextBlock Text="TU CENTRO DE CONTROL GAMING" Style="{StaticResource SectionLabel}" Foreground="#A7CCFF"/>
+                      <TextBlock Text="Analiza. Ajusta. Mide. Recupera." FontSize="23" FontWeight="SemiBold"/>
+                      <TextBlock Text="Elige un objetivo, revisa cambios y contrasta resultados con mediciones." TextWrapping="Wrap" Foreground="#B0C0D7" Margin="0,10,24,0"/>
                     </StackPanel>
-                    <Button Grid.Column="1" Content="Abrir ajustes" Tag="Optimización" Click="GoToSection" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="Analizar mi PC" Click="AnalyzeGamingHome" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center"/>
                   </Grid>
                 </Border>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,18">
+                  <StackPanel>
+                    <TextBlock Text="¿CÓMO VAS A JUGAR?" Style="{StaticResource SectionLabel}"/>
+                    <TextBlock Text="Los objetivos preparan ajustes reales para revisión. No se aplica nada desde estos botones." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,10"/>
+                    <CheckBox Content="Uso clips o captura de Game Bar · conservar por defecto" IsChecked="{Binding UsesGameBarClips}" IsEnabled="{Binding IsIdle}" Margin="0,0,0,10"/>
+                    <WrapPanel IsEnabled="{Binding IsIdle}">
+                      <Button Content="Equilibrado" Tag="Balanced" Click="SelectHomeGoal"/>
+                      <Button Content="Competitivo" Tag="Competitive" Click="SelectHomeGoal"/>
+                      <Button Content="Gaming + streaming" Tag="Streaming" Click="SelectHomeGoal"/>
+                      <Button Content="Laptop gaming" Tag="Laptop" Click="SelectHomeGoal"/>
+                    </WrapPanel>
+                    <TextBlock Text="Streaming conserva grabadores y voz; laptop respeta energía del fabricante. Las decisiones de gráficos y FPS requieren contexto del juego y pantalla." TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"/>
+                  </StackPanel>
+                </Border>
+                <WrapPanel Margin="0,0,0,18" IsEnabled="{Binding IsIdle}">
+                  <Button Content="Recursos en vivo" Click="OpenLiveMonitor"/>
+                  <Button Content="Medir FPS y frametimes" Tag="Benchmarks" Click="GoToSection"/>
+                  <Button Content="Procesos y aplicaciones" Click="OpenProcessWorkloads"/>
+                  <Button Content="Recuperar cambios" Tag="Respaldo y recuperación" Click="GoToSection"/>
+                </WrapPanel>
                 <TextBlock Text="Hardware detectado" Style="{StaticResource Heading}"/>
                 <ItemsControl ItemsSource="{Binding Cards}" ItemTemplate="{StaticResource InfoCardTemplate}">
                   <ItemsControl.ItemsPanel>
@@ -225,8 +245,8 @@
                   <UniformGrid Columns="3">
                     <Button Tag="Gaming" Click="GoToSection" Padding="18" Margin="0,0,12,0" HorizontalContentAlignment="Left">
                       <StackPanel>
-                        <TextBlock Text="Perfil Gaming" FontWeight="SemiBold"/>
-                        <TextBlock Text="Captura, ratón y atajos" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0"/>
+                        <TextBlock Text="Diagnóstico gaming" FontWeight="SemiBold"/>
+                        <TextBlock Text="Hardware, sensores y procesos" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,6,0,0"/>
                       </StackPanel>
                     </Button>
                     <Button Tag="Instalación rápida" Click="GoToSection" Padding="18" Margin="0,0,12,0" HorizontalContentAlignment="Left">
@@ -320,7 +340,7 @@
                         <TextBlock Text="Gaming" FontWeight="SemiBold" FontSize="14"/>
                         <TextBlock Text="{Binding GamingCount}" Foreground="#80B2FF" FontSize="10" Margin="10,3,0,0"/>
                       </DockPanel>
-                      <TextBlock Text="Captura, ratón y atajos" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0"/>
+                      <TextBlock Text="Hardware, sensores y procesos" Foreground="{StaticResource Muted}" FontSize="10" Margin="0,7,0,0"/>
                     </StackPanel>
                   </Button>
                   <Button Tag="intensive" Click="ChooseTweakProfile" Margin="0,0,0,0">
@@ -625,6 +645,8 @@
                 </StackPanel>
                 <StackPanel x:Name="GamingMetricsPanel" Visibility="Collapsed">
                   <WrapPanel>
+                    <Button Content="Recursos en vivo" Click="OpenLiveMonitor" IsEnabled="{Binding IsIdle}"/>
+                    <Button Content="Procesos y objetivos gaming" Click="OpenProcessWorkloads" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Inventario detallado" Click="InspectHardware" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Contadores actuales" Click="MeasureLoad" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Analizar recursos · 20 muestras" Click="CaptureResources" IsEnabled="{Binding IsIdle}"/>

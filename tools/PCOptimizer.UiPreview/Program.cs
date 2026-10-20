@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Text;
 using PCOptimizer.App;
 using PCOptimizer.Core;
+using PCOptimizer.App.Workloads;
+using PCOptimizer.App.Monitoring;
 using PCOptimizer.Benchmarking;
 using PCOptimizer.App.Benchmarking;
 
@@ -44,6 +46,89 @@ internal static class Program
         finally { File.Delete(fake); }
     }
 
+    private sealed class MissingGpuProvider : IGpuTelemetryProvider
+    {
+        public int Reads { get; private set; }
+        public Task<NvidiaProbeResult> ReadAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested(); Reads++;
+            return Task.FromResult(new NvidiaProbeResult([], "GPU fixture intentionally unavailable."));
+        }
+    }
+    private static async Task ValidatePerformanceCapture()
+    {
+        var gpu = new MissingGpuProvider();
+        var service = new PerformanceCaptureService(gpu);
+        var result = await service.CaptureAsync(async token => { await Task.Delay(1100, token); return "fixture.csv"; }, CancellationToken.None);
+        PerformanceTrace.Validate(result.Trace);
+        if (result.Trace.Observations.Length < 2 || !result.Trace.Observations.SelectMany(o => o.Readings).Any(r => r.Metric == SensorMetric.MemoryUsedPercent && r.Value.HasValue))
+            throw new InvalidOperationException("Read-only Windows memory sampling did not produce a bounded trace.");
+        var reads = gpu.Reads;
+        await Task.Delay(600);
+        if (gpu.Reads != reads) throw new InvalidOperationException("Sampler remained active after capture.");
+        using var cancel = new CancellationTokenSource(100);
+        var canceled = false;
+        try { await service.CaptureAsync(async token => { await Task.Delay(15000, token); return "unused.csv"; }, cancel.Token); }
+        catch (OperationCanceledException) { canceled = true; }
+        if (!canceled) throw new InvalidOperationException("Capture cancellation was not propagated.");
+        reads = gpu.Reads;
+        await Task.Delay(600);
+        if (gpu.Reads != reads) throw new InvalidOperationException("Sampler remained active after cancellation.");
+        Console.WriteLine("Read-only performance sampler: missing GPU, real Windows memory, stop and cancellation passed. No game or system modifications.");
+    }
+    private sealed class FixturePresentMon(string csvPath) : IPresentMonCaptureService
+    {
+        public Task<BenchmarkCapability> CheckAsync(string executable, CancellationToken token) => Task.FromResult(new BenchmarkCapability(CapabilityState.ValidationRequired, "Test fixture; no helper executed."));
+        public async Task<string> CaptureAsync(string executable, CaptureTarget target, int seconds, CancellationToken token)
+        {
+            await Task.Delay(650, token);
+            var qpc = System.Diagnostics.Stopwatch.GetTimestamp();
+            await File.WriteAllTextAsync(csvPath, $"Application,ProcessID,SwapChainAddress,MsBetweenPresents,CPUStartQPC\nfixture.exe,{target.Id},0x1,10,{qpc - 1000}\nfixture.exe,{target.Id},0x1,20,{qpc}\n", token);
+            return csvPath;
+        }
+    }
+    private static async Task ValidatePerformanceWorkflow()
+    {
+        var folder = Path.Combine(Path.GetTempPath(), "pcoptimizer-performance-smoke-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(folder);
+        try
+        {
+            var csv = Path.Combine(folder, "fixture.csv");
+            var store = new BenchmarkSessionStore(Path.Combine(folder, "sessions"));
+            var capture = new FixturePresentMon(csv);
+            var model = new BenchmarkViewModel(store, capture, new PerformanceCaptureService(new MissingGpuProvider()));
+            using var self = System.Diagnostics.Process.GetCurrentProcess();
+            model.SelectedTarget = new(self.Id, self.StartTime.ToUniversalTime(), "fixture");
+            model.CaptureSensors = true;
+            await model.ConfigureExecutableAsync("test fixture", CancellationToken.None);
+            await model.CaptureAsync(CancellationToken.None);
+            if (model.Telemetry?.TargetProcessId != self.Id || model.PerformanceReport is null)
+                throw new InvalidOperationException("Capture workflow did not attach and analyze its trace.");
+            await model.SaveAsync(CancellationToken.None);
+            var reopened = new BenchmarkViewModel(store, capture);
+            await reopened.RefreshHistoryAsync(CancellationToken.None);
+            reopened.SelectedHistory = reopened.History.Single();
+            await reopened.LoadAsync(CancellationToken.None);
+            if (reopened.Telemetry?.CaptureId != model.Telemetry.CaptureId || reopened.PerformanceReport?.Frames != 2)
+                throw new InvalidOperationException("Reopening lost the trace or report.");
+            var markdown = Path.Combine(folder, "report.md");
+            await reopened.ExportReportAsync(markdown, CancellationToken.None);
+            if (!File.ReadAllText(markdown).Contains("Sin atribución concluyente")) throw new InvalidOperationException("Report export is incomplete.");
+            await reopened.ImportAsync(csv, CancellationToken.None);
+            if (reopened.Telemetry is not null || reopened.PerformanceReport is not null)
+                throw new InvalidOperationException("A manual import retained sensors from a different operation.");
+            Console.WriteLine("Performance workflow: fixture CSV + read-only memory, save/reopen, report and stale-trace reset passed. No PresentMon helper/game executed.");
+        }
+        finally { Directory.Delete(folder, true); }
+    }
+
+    private static bool IsAncestor(DependencyObject ancestor, DependencyObject child)
+    {
+        for (var current = VisualTreeHelper.GetParent(child); current is not null; current = VisualTreeHelper.GetParent(current))
+            if (ReferenceEquals(current, ancestor)) return true;
+        return false;
+    }
+
     [STAThread]
     private static void Main(string[] args)
     {
@@ -59,23 +144,42 @@ internal static class Program
         window.ConfigureResourceDesignPreview(new ResourceCapture(DateTimeOffset.UtcNow,
             Enumerable.Range(0,20).Select(i=>new ResourceSample(i,[new("0",95),new("1",10)],6000,32000,60,0)).ToArray(),
             ["Datos ilustrativos de la vista; no se midió ni modificó Windows."]));
-        var previewFrames = Enumerable.Range(0, 3600).Select(i => new FrameSample(i % 377 == 0 ? 55 : 8 + Math.Sin(i * .07), 3, 6, true, "Application")).ToArray();
+        var previewFrames = Enumerable.Range(0, 3600).Select(i => new FrameSample(i % 377 == 0 ? 55 : 8 + Math.Sin(i * .07), 3, 6, true, "Application") { CpuStartQpc = 1000000 + i * 10000L }).ToArray();
+        var previewTrace = new PerformanceTrace(1, Guid.NewGuid(), 1000000, 999999, 37000000, DateTimeOffset.UtcNow,
+            Enumerable.Range(0,72).Select(i => new SensorObservation(1000000 + i * 500000, 1001000 + i * 500000, DateTimeOffset.UtcNow,
+                [new(SensorMetric.GpuUtilizationPercent, "GPU ilustrativa", "Fixture de diseño", "%", 60 + 30 * Math.Sin(i * .3), SensorAvailability.Available, "Datos simulados de diseño; no medición."),
+                 new(SensorMetric.MemoryUsedPercent, "Sistema ilustrativo", "Fixture de diseño", "%", 55, SensorAvailability.Available, "Datos simulados de diseño; no medición.")])).ToArray(),
+            ["Datos simulados exclusivamente para revisar el diseño. No pertenecen al equipo del propietario."], 0);
         ((BenchmarkView)window.FindName("BenchmarkPanel")).ConfigureDesignPreview(new ImportedCapture(new string('A',64),
-            new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1));
+            new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1), previewTrace);
         _ = window.Dispatcher.InvokeAsync(async () =>
         {
             try
             {
                 await ValidateBenchmarkIsolation(window);
+                await ValidatePerformanceCapture();
+                await ValidatePerformanceWorkflow();
+                await ValidateProcessWorkloads();
+                await ValidateLiveMonitor();
                 await ValidateElevatedScriptSyntax();
                 await ValidateReadOnlyProbes();
                 foreach (var (name, section, width, height) in new[]
                 {
-                    ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
+                    ("overview", "Inicio", 1400, 880), ("overview-compact", "Inicio", 1120, 740), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
-                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740)
+                    ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740), ("performance", "Benchmarks", 1400, 880), ("performance-compact", "Benchmarks", 1120, 740), ("performance-unavailable", "Benchmarks", 1120, 740)
                 })
                 {
+                    if (name == "performance-unavailable")
+                    {
+                        var missingTrace = previewTrace with { Observations = previewTrace.Observations.Select(o => o with
+                            { Readings = o.Readings.Select(r => r with { Value = null, Availability = SensorAvailability.Unavailable }).ToArray() }).ToArray() };
+                        var view = (BenchmarkView)window.FindName("BenchmarkPanel");
+                        view.ConfigureDesignPreview(new ImportedCapture(new string('A',64), new Dictionary<CaptureStream, FrameSample[]> { [new("juego-ilustrativo.exe",123,"0x1")] = previewFrames }, 1), missingTrace);
+                        var module = (BenchmarkViewModel)view.DataContext;
+                        if (module.PerformanceReport!.Associations.Any(a => a.MatchedFrames != 0))
+                            throw new InvalidOperationException("Unavailable sensor fixture gained false coverage.");
+                    }
                     window.Width = width;
                     window.Height = height;
                     window.ShowDesignSection(section);
@@ -101,6 +205,18 @@ internal static class Program
                     visual.Measure(new Size(width, height));
                     visual.Arrange(new Rect(0, 0, width, height));
                     visual.UpdateLayout();
+                    if (section == "Benchmarks")
+                    {
+                        var benchmark = (BenchmarkView)window.FindName("BenchmarkPanel");
+                        var chart = Descendants<CorrelatedChart>(benchmark).Single();
+                        var scroll = Descendants<ScrollViewer>(benchmark).First(v => IsAncestor(v, chart));
+                        if (name.StartsWith("performance"))
+                        {
+                            var position = chart.TransformToAncestor(scroll).Transform(new Point());
+                            scroll.ScrollToVerticalOffset(scroll.VerticalOffset + position.Y - 140);
+                        }
+                        else scroll.ScrollToTop();
+                    }
                     visual.UpdateLayout();
                     var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
                     bitmap.Render(visual);
@@ -113,6 +229,8 @@ internal static class Program
                     window.Content = visual;
                 }
                 RenderSessionsDesign(directory);
+                RenderWorkloadDesign(directory);
+                RenderLiveDesign(directory);
             }
             catch (Exception ex) { Console.Error.WriteLine(ex); Environment.ExitCode = 1; }
             finally { window.Close(); app.Shutdown(); Dispatcher.ExitAllFrames(); }
@@ -126,6 +244,120 @@ internal static class Program
         public Task<bool> IsGameRunningAsync(GameIdentity game) => Task.FromResult(false);
         public Task ActivateAsync(Guid plan) => throw new InvalidOperationException("Design renderer cannot change power plans.");
     }
+    private static async Task ValidateLiveMonitor()
+    {
+        var blocked=new LiveMonitorViewModel(_=>throw new InvalidOperationException("Blocked monitor called provider."),()=>false,()=>throw new InvalidOperationException("Unowned gate released."));
+        await blocked.StartAsync();if(blocked.IsRunning)throw new InvalidOperationException("Monitor ignored shared gate.");
+        var gpu=new MissingGpuProvider();var held=false;IProgress<SensorObservation>? publisher=null;
+        var monitor=new LiveMonitorViewModel(p=>{publisher=p;return new PerformanceCaptureService(gpu,p);},()=>{held=true;return true;},()=>held=false);
+        var running=monitor.StartAsync();await Task.Delay(650);
+        if(!monitor.IsRunning || !held || monitor.Series.Length==0)throw new InvalidOperationException("Live monitor did not expose native system observations.");
+        monitor.Selected=monitor.Series.First(s=>s.Metric==SensorMetric.CpuTotalPercent);var selection=monitor.Selected;
+        await Task.Delay(600);
+        if(monitor.Selected!=selection)throw new InvalidOperationException("Live refresh reset selected sensor.");
+        await monitor.StopAsync();await running;
+        if(monitor.IsRunning || held || monitor.Trace is null || monitor.Points.Length==0)throw new InvalidOperationException("Monitor failed to stop/freeze its trace/release gate.");
+        var reads=gpu.Reads;var points=monitor.Points.Length;
+        publisher!.Report(new SensorObservation(1,2,DateTimeOffset.UtcNow,[]));await Task.Delay(550);
+        if(gpu.Reads!=reads || monitor.Points.Length!=points)throw new InvalidOperationException("A stopped monitor accepted a late observation or kept polling.");
+        var path=Path.Combine(Path.GetTempPath(),"pcoptimizer-live-"+Guid.NewGuid().ToString("N")+".json");
+        try{await monitor.ExportAsync(path,CancellationToken.None);var trace=System.Text.Json.JsonSerializer.Deserialize<PerformanceTrace>(await File.ReadAllTextAsync(path))!;PerformanceTrace.Validate(trace);}
+        finally{File.Delete(path);}
+        var failed=new LiveMonitorViewModel(_=>throw new IOException("Fixture failure"),()=>{held=true;return true;},()=>held=false);
+        await failed.StartAsync();if(failed.IsRunning || held)throw new InvalidOperationException("Provider failure kept monitor lease.");
+        Console.WriteLine("Live monitor passed: native memory/CPU with absent GPU, opt-in start/stop, selected-series stability, late callback rejection, gate/failure and JSON export. No FPS or game was measured.");
+    }
+    private static void RenderLiveDesign(string directory)
+    {
+        var trace=new PerformanceTrace(1,Guid.NewGuid(),1000,1000,61001,DateTimeOffset.UtcNow,
+            Enumerable.Range(0,60).Select(i=>new SensorObservation(1000+i*1000,1001+i*1000,DateTimeOffset.UtcNow,
+            [new(SensorMetric.CpuTotalPercent,"Sistema ilustrativo","Fixture de diseño","%",40+15*Math.Sin(i*.2),SensorAvailability.Available,"Datos ilustrativos; no medición física.")])).ToArray(),["Datos ilustrativos."],0);
+        foreach(var(width,height)in new[]{(1050,760),(850,650)})
+        {
+            var dialog=new LiveMonitorWindow(()=>false,()=>{},()=>{});dialog.ConfigureDesignPreview(trace);
+            var root=(FrameworkElement)dialog.Content;root.DataContext=dialog.DataContext;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);dialog.Content=null;
+            var host=new Border{Background=dialog.Background,Child=root,Width=width,Height=height};host.Measure(new Size(width,height));host.Arrange(new Rect(0,0,width,height));host.UpdateLayout();
+            if(!Descendants<TextBlock>(host).Any(t=>t.Text.Contains("Fixture de diseño")))throw new InvalidOperationException("Live sensor source did not render.");
+            var bitmap=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);bitmap.Render(host);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            using(var output=File.Create(Path.Combine(directory,$"live-{width}.png")))encoder.Save(output);dialog.Close();
+        }
+        Console.WriteLine("Rendered live monitor at normal/compact sizes with labeled illustrative data.");
+    }
+
+    private static ProcessWorkloadCapture WorkloadFixture()
+    {
+        var time=DateTimeOffset.UtcNow;
+        var browser=new GameIdentity(123,time,"chrome");var stream=new GameIdentity(124,time,"obs64");
+        return new(1,Guid.NewGuid(),time,100,5000,1000,8,
+            [new(browser,1000,10000000,1000,1000),new(stream,1001,10000000,1000,1000)],
+            [new(browser,3000,30000000,51000,31000),new(stream,3001,35000000,21000,91000)],2,3,
+            ["Datos ilustrativos de diseño, no del equipo del propietario."]);
+    }
+    private sealed class WorkloadFixtureProbe : IProcessWorkloadProbe
+    {
+        public Task<ProcessWorkloadCapture> CaptureAsync(CancellationToken token)
+        {token.ThrowIfCancellationRequested();return Task.FromResult(WorkloadFixture());}
+    }
+    private static async Task ValidateProcessWorkloads()
+    {
+        var blocked=new ProcessWorkloadViewModel(new WorkloadFixtureProbe(),()=>false,()=>throw new InvalidOperationException("Unowned gate released."));
+        var called=false;
+        await blocked.RunAsync(_=> {called=true;return Task.CompletedTask;});
+        if(called || blocked.IsBusy)throw new InvalidOperationException("Workload operation ignored shared gate.");
+        var released=false;
+        var faulted=new ProcessWorkloadViewModel(new WorkloadFixtureProbe(),()=>true,()=>released=true);
+        await faulted.RunAsync(_=>throw new IOException("Fixture failure."));
+        if(!released || faulted.IsBusy)throw new InvalidOperationException("Workload failure retained the shared gate.");
+        var probe=new WindowsProcessWorkloadProbe();
+        var capture=await probe.CaptureAsync(CancellationToken.None);ProcessWorkloads.Validate(capture);
+        var self=capture.After.FirstOrDefault(r=>r.Identity.ProcessId==Environment.ProcessId);
+        if(self is null || !ProcessWorkloads.Analyze(capture,new(null,self.Identity,false,true)).Any(r=>r.Role==WorkloadRole.Collector && r.CpuCapacityPercent.HasValue))
+            throw new InvalidOperationException("Limited-information native process probe did not observe its own process identity/counters.");
+        using(var cancel=new CancellationTokenSource(100))
+        {
+            var canceled=false;
+            try{await probe.CaptureAsync(cancel.Token);}catch(OperationCanceledException){canceled=true;}
+            if(!canceled)throw new InvalidOperationException("Native workload probe did not honor cancellation.");
+        }
+        var directory=Path.Combine(Path.GetTempPath(),"pcoptimizer-workload-smoke-"+Guid.NewGuid().ToString("N"));
+        try
+        {
+            var model=new ProcessWorkloadViewModel(new WorkloadFixtureProbe());
+            await model.CaptureAsync(CancellationToken.None);model.Game=model.Games.First();model.Goal=GamingGoal.Streaming;
+            var path=Path.Combine(directory,"capture.json");await model.SaveAsync(path,CancellationToken.None);
+            var loaded=new ProcessWorkloadViewModel(new WorkloadFixtureProbe());await loaded.LoadAsync(path,CancellationToken.None);
+            if(loaded.Game!=model.Game || loaded.Goal!=GamingGoal.Streaming || loaded.Rows.Count!=2)
+                throw new InvalidOperationException("Workload save/reopen lost context.");
+            await loaded.ExportReportAsync(Path.Combine(directory,"report.json"),CancellationToken.None);
+            var before=loaded.Rows.Count;
+            await File.WriteAllTextAsync(Path.Combine(directory,"bad.json"),"{}");
+            var rejected=false;
+            try{await loaded.LoadAsync(Path.Combine(directory,"bad.json"),CancellationToken.None);}catch(InvalidDataException){rejected=true;}
+            if(!rejected || loaded.Rows.Count!=before)throw new InvalidOperationException("Invalid workload import changed previous result.");
+        }
+        finally{if(Directory.Exists(directory))Directory.Delete(directory,true);}
+        Console.WriteLine("Workloads: real read-only process CPU/IO identity, cancellation, fixture context roundtrip and malformed import passed. No process changed or terminated.");
+    }
+    private static void RenderWorkloadDesign(string directory)
+    {
+        foreach(var (width,height) in new[]{(1100,790),(880,650)})
+        {
+            var dialog=new ProcessWorkloadWindow(new WorkloadFixtureProbe());dialog.ConfigureDesignPreview(WorkloadFixture());
+            if(width==880)((ProcessWorkloadViewModel)dialog.DataContext).Goal=GamingGoal.Streaming;
+            var root=(FrameworkElement)dialog.Content;root.DataContext=dialog.DataContext;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
+            root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);
+            dialog.Content=null;
+            var host=new Border{Background=dialog.Background,Child=root,Width=width,Height=height};
+            host.Measure(new Size(width,height));host.Arrange(new Rect(0,0,width,height));host.UpdateLayout();
+            if(!Descendants<TextBlock>(host).Any(t=>t.Text=="chrome"))throw new InvalidOperationException("Workload table failed to render fixture process names.");
+            var bitmap=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);bitmap.Render(host);
+            var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            using(var output=File.Create(Path.Combine(directory,$"workloads-{width}.png")))encoder.Save(output);
+            dialog.Close();
+        }
+        Console.WriteLine("Rendered process workload window at normal and compact sizes with illustrative fixtures.");
+    }
+
     private static void RenderSessionsDesign(string directory)
     {
         var platform = new DesignPowerPlatform();

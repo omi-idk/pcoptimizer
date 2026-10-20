@@ -95,7 +95,7 @@ public partial class MainWindow
             catch (Exception ex) { choice.SetUnavailable(ex.Message); }
         }
         model.IsIdle = true;
-        model.Status = "Vista previa de diseño con datos ilustrativos. No se consultó ni modificó Windows.";
+        model.Status = "Vista previa de diseño con datos ilustrativos. No son mediciones de tu equipo.";
         Render();
     }
     internal void ShowDesignSection(string name)
