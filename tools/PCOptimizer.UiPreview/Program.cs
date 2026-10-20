@@ -300,7 +300,7 @@ internal static class Program
         foreach(var (width,height) in new[]{(1100,790),(880,650)})
         {
             var dialog=new ProcessWorkloadWindow(new WorkloadFixtureProbe());dialog.ConfigureDesignPreview(WorkloadFixture());
-            var root=(FrameworkElement)dialog.Content;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
+            var root=(FrameworkElement)dialog.Content;root.DataContext=dialog.DataContext;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
             root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);
             dialog.Content=null;
             var host=new Border{Background=dialog.Background,Child=root,Width=width,Height=height};

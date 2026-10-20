@@ -32,20 +32,20 @@ internal sealed class WindowsProcessWorkloadProbe : IProcessWorkloadProbe
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token); deadline.CancelAfter(TimeSpan.FromSeconds(45));
         try
         {
-        var start = Stopwatch.GetTimestamp(); var utc = DateTimeOffset.UtcNow;
-        var before = Snapshot(deadline.Token);
-        await Task.Delay(2000, deadline.Token);
-        var after = Snapshot(deadline.Token);
-        var result = new ProcessWorkloadCapture(1, Guid.NewGuid(), utc, start, Stopwatch.GetTimestamp(), Stopwatch.Frequency, Environment.ProcessorCount,
-            before.Rows, after.Rows, before.Unavailable, after.Unavailable,
-            ["Metadatos de procesos accesibles mediante QUERY_LIMITED_INFORMATION; procesos protegidos/no legibles se omiten y cuentan como cobertura ausente.",
+            var start = Stopwatch.GetTimestamp(); var utc = DateTimeOffset.UtcNow;
+            var before = Snapshot(deadline.Token);
+            await Task.Delay(2000, deadline.Token);
+            var after = Snapshot(deadline.Token);
+            var result = new ProcessWorkloadCapture(1, Guid.NewGuid(), utc, start, Stopwatch.GetTimestamp(), Stopwatch.Frequency, Environment.ProcessorCount,
+                before.Rows, after.Rows, before.Unavailable, after.Unavailable,
+                ["Metadatos de procesos accesibles mediante QUERY_LIMITED_INFORMATION; procesos protegidos/no legibles se omiten y cuentan como cobertura ausente.",
                 "No se leen módulos ni memoria privada, no hay inyección, cambios de prioridad/afinidad ni terminación de procesos. No se activa SeDebugPrivilege.",
                 "CPU normalizada por Environment.ProcessorCount (capacidad disponible para PCOptimizer, no necesariamente toda la máquina). No mide GPU por proceso ni atribuye spikes.",
                 "Los nombres son etiquetas de metadatos, no firmas ni prueba de que una aplicación pueda cerrarse sin consecuencias."]);
-        ProcessWorkloads.Validate(result); return result;
+            ProcessWorkloads.Validate(result); return result;
         }
-        catch(OperationCanceledException) when(!token.IsCancellationRequested && deadline.IsCancellationRequested)
-        {throw new TimeoutException("La consulta de procesos superó 45 segundos. No se conserva una captura parcial.");}
+        catch (OperationCanceledException) when (!token.IsCancellationRequested && deadline.IsCancellationRequested)
+        { throw new TimeoutException("La consulta de procesos superó 45 segundos. No se conserva una captura parcial."); }
     }, token);
 
     private static (ProcessCounter[] Rows, int Unavailable) Snapshot(CancellationToken token)

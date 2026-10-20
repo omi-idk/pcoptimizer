@@ -46,7 +46,7 @@ internal sealed class ProcessWorkloadViewModel(IProcessWorkloadProbe probe, Func
     public async Task RunAsync(Func<CancellationToken, Task> action)
     {
         if (IsBusy) return;
-        if (acquire is not null && !acquire()) { Status="Hay otra operación en curso. Espera a que termine antes de medir o gestionar capturas."; return; }
+        if (acquire is not null && !acquire()) { Status = "Hay otra operación en curso. Espera a que termine antes de medir o gestionar capturas."; return; }
         IsBusy = true; using var cancel = new CancellationTokenSource(); operation = cancel;
         try { await action(cancel.Token); }
         catch (OperationCanceledException) { Status = "Cancelado; se conserva el resultado anterior. No se publicaron datos parciales."; }
