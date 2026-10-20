@@ -9,6 +9,7 @@ using System.Text;
 using PCOptimizer.App;
 using PCOptimizer.Core;
 using PCOptimizer.App.Workloads;
+using PCOptimizer.App.Monitoring;
 using PCOptimizer.Benchmarking;
 using PCOptimizer.App.Benchmarking;
 
@@ -159,11 +160,12 @@ internal static class Program
                 await ValidatePerformanceCapture();
                 await ValidatePerformanceWorkflow();
                 await ValidateProcessWorkloads();
+                await ValidateLiveMonitor();
                 await ValidateElevatedScriptSyntax();
                 await ValidateReadOnlyProbes();
                 foreach (var (name, section, width, height) in new[]
                 {
-                    ("overview", "Inicio", 1400, 880), ("tweaks", "Optimización", 1400, 880),
+                    ("overview", "Inicio", 1400, 880), ("overview-compact", "Inicio", 1120, 740), ("tweaks", "Optimización", 1400, 880),
                     ("tweaks-compact", "Optimización", 1120, 740), ("applications", "Instalación rápida", 1400, 880),
                     ("resources", "Gaming", 1400, 880), ("network", "Red", 1400, 880), ("drivers", "Drivers", 1400, 880), ("energy", "Energía", 1400, 880), ("recovery", "Respaldo y recuperación", 1400, 880), ("benchmarks", "Benchmarks", 1400, 880), ("benchmarks-compact", "Benchmarks", 1120, 740), ("performance", "Benchmarks", 1400, 880), ("performance-compact", "Benchmarks", 1120, 740), ("performance-unavailable", "Benchmarks", 1120, 740)
                 })
@@ -228,6 +230,7 @@ internal static class Program
                 }
                 RenderSessionsDesign(directory);
                 RenderWorkloadDesign(directory);
+                RenderLiveDesign(directory);
             }
             catch (Exception ex) { Console.Error.WriteLine(ex); Environment.ExitCode = 1; }
             finally { window.Close(); app.Shutdown(); Dispatcher.ExitAllFrames(); }
@@ -241,6 +244,46 @@ internal static class Program
         public Task<bool> IsGameRunningAsync(GameIdentity game) => Task.FromResult(false);
         public Task ActivateAsync(Guid plan) => throw new InvalidOperationException("Design renderer cannot change power plans.");
     }
+    private static async Task ValidateLiveMonitor()
+    {
+        var blocked=new LiveMonitorViewModel(_=>throw new InvalidOperationException("Blocked monitor called provider."),()=>false,()=>throw new InvalidOperationException("Unowned gate released."));
+        await blocked.StartAsync();if(blocked.IsRunning)throw new InvalidOperationException("Monitor ignored shared gate.");
+        var gpu=new MissingGpuProvider();var held=false;IProgress<SensorObservation>? publisher=null;
+        var monitor=new LiveMonitorViewModel(p=>{publisher=p;return new PerformanceCaptureService(gpu,p);},()=>{held=true;return true;},()=>held=false);
+        var running=monitor.StartAsync();await Task.Delay(650);
+        if(!monitor.IsRunning || !held || monitor.Series.Length==0)throw new InvalidOperationException("Live monitor did not expose native system observations.");
+        monitor.Selected=monitor.Series.First(s=>s.Metric==SensorMetric.CpuTotalPercent);var selection=monitor.Selected;
+        await Task.Delay(600);
+        if(monitor.Selected!=selection)throw new InvalidOperationException("Live refresh reset selected sensor.");
+        await monitor.StopAsync();await running;
+        if(monitor.IsRunning || held || monitor.Trace is null || monitor.Points.Length==0)throw new InvalidOperationException("Monitor failed to stop/freeze its trace/release gate.");
+        var reads=gpu.Reads;var points=monitor.Points.Length;
+        publisher!.Report(new SensorObservation(1,2,DateTimeOffset.UtcNow,[]));await Task.Delay(550);
+        if(gpu.Reads!=reads || monitor.Points.Length!=points)throw new InvalidOperationException("A stopped monitor accepted a late observation or kept polling.");
+        var path=Path.Combine(Path.GetTempPath(),"pcoptimizer-live-"+Guid.NewGuid().ToString("N")+".json");
+        try{await monitor.ExportAsync(path,CancellationToken.None);var trace=System.Text.Json.JsonSerializer.Deserialize<PerformanceTrace>(await File.ReadAllTextAsync(path))!;PerformanceTrace.Validate(trace);}
+        finally{File.Delete(path);}
+        var failed=new LiveMonitorViewModel(_=>throw new IOException("Fixture failure"),()=>{held=true;return true;},()=>held=false);
+        await failed.StartAsync();if(failed.IsRunning || held)throw new InvalidOperationException("Provider failure kept monitor lease.");
+        Console.WriteLine("Live monitor passed: native memory/CPU with absent GPU, opt-in start/stop, selected-series stability, late callback rejection, gate/failure and JSON export. No FPS or game was measured.");
+    }
+    private static void RenderLiveDesign(string directory)
+    {
+        var trace=new PerformanceTrace(1,Guid.NewGuid(),1000,1000,61001,DateTimeOffset.UtcNow,
+            Enumerable.Range(0,60).Select(i=>new SensorObservation(1000+i*1000,1001+i*1000,DateTimeOffset.UtcNow,
+            [new(SensorMetric.CpuTotalPercent,"Sistema ilustrativo","Fixture de diseño","%",40+15*Math.Sin(i*.2),SensorAvailability.Available,"Datos ilustrativos; no medición física.")])).ToArray(),["Datos ilustrativos."],0);
+        foreach(var(width,height)in new[]{(1050,760),(850,650)})
+        {
+            var dialog=new LiveMonitorWindow(()=>false,()=>{},()=>{});dialog.ConfigureDesignPreview(trace);
+            var root=(FrameworkElement)dialog.Content;root.DataContext=dialog.DataContext;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);dialog.Content=null;
+            var host=new Border{Background=dialog.Background,Child=root,Width=width,Height=height};host.Measure(new Size(width,height));host.Arrange(new Rect(0,0,width,height));host.UpdateLayout();
+            if(!Descendants<TextBlock>(host).Any(t=>t.Text.Contains("Fixture de diseño")))throw new InvalidOperationException("Live sensor source did not render.");
+            var bitmap=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);bitmap.Render(host);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            using(var output=File.Create(Path.Combine(directory,$"live-{width}.png")))encoder.Save(output);dialog.Close();
+        }
+        Console.WriteLine("Rendered live monitor at normal/compact sizes with labeled illustrative data.");
+    }
+
     private static ProcessWorkloadCapture WorkloadFixture()
     {
         var time=DateTimeOffset.UtcNow;

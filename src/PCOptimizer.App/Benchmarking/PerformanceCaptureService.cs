@@ -11,7 +11,7 @@ internal interface IPerformanceCaptureService
 }
 
 // Opt-in and bounded to one capture. No timers or providers remain active in the background afterwards.
-internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPerformanceCaptureService
+internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu, IProgress<SensorObservation>? progress = null, TimeSpan? samplingInterval = null) : IPerformanceCaptureService
 {
     [StructLayout(LayoutKind.Sequential)]
     private struct MemoryStatus
@@ -29,6 +29,8 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
     public async Task<PerformanceCaptureResult> CaptureAsync(Func<CancellationToken, Task<string>> capture, CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
+        if (samplingInterval is { } interval && (interval.TotalMilliseconds < 500 || interval.TotalSeconds > 10))
+            throw new ArgumentOutOfRangeException(nameof(samplingInterval));
         var start = Stopwatch.GetTimestamp();
         var utc = DateTimeOffset.UtcNow;
         using var self = Process.GetCurrentProcess();
@@ -38,7 +40,7 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
         var observations = new List<SensorObservation>();
         var limitations = new HashSet<string>
         {
-            "Muestreo solicitado cada 500 ms, sin recuperar ticks perdidos; consultas lentas reducen cobertura.",
+            $"Muestreo solicitado cada {(samplingInterval ?? TimeSpan.FromMilliseconds(500)).TotalMilliseconds:N0} ms, sin recuperar ticks perdidos; consultas lentas reducen cobertura.",
             "Sin sensores CPU térmicos, clocks efectivos, I/O ni atribución por proceso. CPU total GetSystemTimes puede estar limitada a un grupo en equipos >64 procesadores.",
             "Sin telemetría AMD/Intel en este incremento; no disponer de NVML no significa GPU ausente o inactiva.",
             "Coste CPU del proceso completo registrado como observación; falta ensayo externo A/B para cuantificar el overhead y el coste de PresentMon."
@@ -61,6 +63,8 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
 
     private async Task SampleLoopAsync(List<SensorObservation> observations, HashSet<string> limits, CancellationToken token)
     {
+        var cadence = samplingInterval ?? TimeSpan.FromMilliseconds(500);
+        void Record(SensorObservation observation) { observations.Add(observation); progress?.Report(observation); }
         long? previousTotal = null, previousIdle = null;
         var previousCpuQpc = Stopwatch.GetTimestamp();
         try
@@ -82,9 +86,10 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
                     ? 100.0 * (1 - (idle - pi) / (double)(total - p)) : null;
                 readings.Add(new(SensorMetric.CpuTotalPercent, "Sistema", "GetSystemTimes", "%", load,
                     load.HasValue ? SensorAvailability.Available : SensorAvailability.Unavailable,
-                    $"Promedio global desde lectura anterior ({(now - previousCpuQpc) / (double)Stopwatch.Frequency:F3} s); primera lectura no disponible. No identifica el hilo del juego.") { AggregationSeconds = (now - previousCpuQpc) / (double)Stopwatch.Frequency });
+                    $"Promedio global desde lectura anterior ({(now - previousCpuQpc) / (double)Stopwatch.Frequency:F3} s); primera lectura no disponible. No identifica el hilo del juego.")
+                { AggregationSeconds = (now - previousCpuQpc) / (double)Stopwatch.Frequency });
                 previousTotal = cpuOk ? total : null; previousIdle = cpuOk ? idle : null; previousCpuQpc = now;
-                observations.Add(new(start, Stopwatch.GetTimestamp(), DateTimeOffset.UtcNow, readings.ToArray()));
+                Record(new(start, Stopwatch.GetTimestamp(), DateTimeOffset.UtcNow, readings.ToArray()));
 
                 start = Stopwatch.GetTimestamp();
                 var result = await gpu.ReadAsync(token).ConfigureAwait(false);
@@ -93,7 +98,7 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
                     || actualStart < start || actualEnd > end || actualEnd < actualStart))
                 {
                     limits.Add("Se omitió una respuesta NVML sin ventana QPC propia de esta consulta; una lectura nativa anterior no se reetiqueta como nueva.");
-                    await Task.Delay(500, token).ConfigureAwait(false);
+                    await Task.Delay(cadence, token).ConfigureAwait(false);
                     continue;
                 }
                 if (result.Devices.Length == 0) limits.Add(result.Status);
@@ -110,8 +115,8 @@ internal sealed class PerformanceCaptureService(IGpuTelemetryProvider gpu) : IPe
                     Add(SensorMetric.GpuPowerWatts, device.PowerWatts);
                     Add(SensorMetric.GpuVramUsedMiB, device.VramUsed / (double?)(1024 * 1024));
                 }
-                if (gpuReadings.Count > 0) observations.Add(new(result.ReadStartQpc!.Value, result.ReadEndQpc!.Value, DateTimeOffset.UtcNow, gpuReadings.ToArray()));
-                await Task.Delay(500, token).ConfigureAwait(false);
+                if (gpuReadings.Count > 0) Record(new(result.ReadStartQpc!.Value, result.ReadEndQpc!.Value, DateTimeOffset.UtcNow, gpuReadings.ToArray()));
+                await Task.Delay(cadence, token).ConfigureAwait(false);
             }
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested) { }

@@ -176,6 +176,29 @@ public partial class MainWindow
         }
         finally { resourceCancellation = null; }
     }
+    private Monitoring.LiveMonitorWindow? liveMonitor;
+    private void OpenLiveMonitor(object sender, RoutedEventArgs e)
+    {
+        if(liveMonitor is not null){liveMonitor.Activate();return;}
+        if(!model.IsIdle)return;
+        liveMonitor=new Monitoring.LiveMonitorWindow(
+            ()=>{if(!model.IsIdle)return false;model.IsIdle=false;return true;},()=>model.IsIdle=true,
+            ()=>SelectNavigation(this,"Benchmarks")) {Owner=this};
+        liveMonitor.Closed+=(_,_)=>liveMonitor=null;
+        liveMonitor.Show();
+    }
+    private void SelectHomeGoal(object sender,RoutedEventArgs e)
+    {
+        if(!model.IsIdle || ((FrameworkElement)sender).Tag is not string value || !Enum.TryParse<GamingGoal>(value,out var goal))return;
+        var plan=GamingGoals.Plan(goal,model.UsesGameBarClips);
+        model.LoadProfile(plan.Tweaks);SelectNavigation(this,"Optimización");
+        model.Status=plan.Explanation+" "+plan.Validation;
+    }
+    private void AnalyzeGamingHome(object sender,RoutedEventArgs e)
+    {
+        if(!model.IsIdle)return;
+        SelectNavigation(this,"Gaming");InspectHardware(sender,e);
+    }
     private void OpenProcessWorkloads(object sender, RoutedEventArgs e)
     {
         if (!model.IsIdle) return;

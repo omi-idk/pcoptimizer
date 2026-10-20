@@ -2,11 +2,13 @@
 
 ## Incremento propio tras revisar WZControl
 
-Rama `feature/gaming-workload-review` sobre `7cd6b41`, la última versión coherente de 0.6 del PR #9 todavía abierto; `main` permanece `f7231eb`. Se conserva esa dependencia explícita para no perder el trabajo no fusionado. El ZIP aportado se revisó como datos, sin ejecutar instaladores/código, y no se incorpora a la distribución. [Hallazgos y límites](research/WZCONTROL_REVIEW.md).
+Rama `feature/gaming-workload-review` incluye el trabajo 0.6 y sus incrementos. El PR #10 se consolidó directamente contra `main` (`f7231eb`), sin necesidad de fusionar primero #9 y sin cambios directos a la principal. El ZIP aportado se revisó como datos, sin ejecutar instaladores/código, y no se incorpora a la distribución. [Hallazgos y límites](research/WZCONTROL_REVIEW.md).
 
 Se añadieron dominio `ProcessWorkloads`/`GamingGoals`, proveedor Windows de metadatos con un mismo handle limitado para identidad/contadores/ruta, y un módulo WPF con ViewModel/servicio inyectable. Los objetivos seleccionan ajustes del motor existente; no crean otro ejecutor. El panel no cambia procesos. Persistencia/importación validada y recomendaciones limitadas a observaciones explícitas; nombres no autentican productos. Se reduce la asignación habitual del lector de rutas, con crecimiento acotado y conservando soporte para rutas largas.
 
 Riesgos pendientes: normalización en grupos/afinidad, coste físico y límites del sondeo, integración con PresentMon, importaciones locales sin firma, pruebas reales de UAC/registro y compatibilidad de juegos. El resto de la auditoría se conserva como historia del incremento anterior.
+
+El incremento 3 reutiliza `PerformanceCaptureService` con observador/cadencia optativos para la ventana de monitor en vivo; evita duplicar interop o cálculos. ViewModel/servicio separados, guard de callbacks tardíos, selección estable y lease compartido. NVML serializa consultas entre todas las instancias para limitar llamadas nativas bloqueadas. Inicio conecta objetivos compilados con el flujo real de revisión. FPS continuos/editar configuración no se presentan como implementados. [Alcance y validación](WZCONTROL_PARITY.md).
 
 ## Revisión del primer incremento 0.6
 

@@ -33,8 +33,8 @@ internal sealed class NvidiaTelemetry : IGpuTelemetryProvider
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)] private delegate int ReadReasons(IntPtr device, out ulong reasons);
 
     internal static (int MemoryBytes, int UtilizationBytes) LayoutSizes => (Marshal.SizeOf<Memory>(), Marshal.SizeOf<Utilization>());
-    private readonly object gate = new();
-    private Task<NvidiaProbeResult>? activeRead;
+    private static readonly object gate = new();
+    private static Task<NvidiaProbeResult>? activeRead;
     public async Task<NvidiaProbeResult> ReadAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

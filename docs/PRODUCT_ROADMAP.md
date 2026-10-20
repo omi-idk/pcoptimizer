@@ -58,3 +58,8 @@ Criterios 0.6: modelo/contexto, correlación con QPC suficiente, ausencias expl�
 Implementados en Preview 0.6 incremento 2: medición voluntaria de CPU/E/S de procesos por PID/creación, disponibilidad explícita, objetivos Streaming/Competitivo/Equilibrado/Laptop con selección de ajustes existentes, contexto y JSON reabrible, informe y ventana WPF. No hay nuevas escrituras nativas ni terminación de procesos. La [revisión estática](research/WZCONTROL_REVIEW.md) fija lo observado y qué se implementa de forma propia.
 
 Pendientes: correlación de estas observaciones de procesos con frametimes, GPU/memoria por proceso, editor de configuración de juego por versión con atomicidad/conflictos, objetivos y cambios unidos al protocolo A/B, validación física/anticheat/overhead. No se declaran completados los hitos 0.7–1.0.
+
+
+## Experiencia similar al referente · incremento 3
+
+Inicio ahora expone objetivos, análisis, procesos, recursos en vivo, benchmarks y recuperación. El monitor optativo reutiliza el colector de sensores, con lease de operaciones, selección estable, antigüedad explícita, cierre/parada/exportación y una sola consulta NVML nativa pendiente global. [Matriz funcional](WZCONTROL_PARITY.md) separa lo implementado de lo pendiente. PR #10 consolidado directo a main; ya no depende de fusionar #9 antes. Continúan pendientes FPS en vivo continuo, editor de configuración del juego, perfiles oficiales de drivers, diagnóstico causal y validación física.
