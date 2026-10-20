@@ -36,6 +36,7 @@ internal sealed class WindowsProcessWorkloadProbe : IProcessWorkloadProbe
             var before = Snapshot(deadline.Token);
             await Task.Delay(2000, deadline.Token);
             var after = Snapshot(deadline.Token);
+            deadline.Token.ThrowIfCancellationRequested();
             var result = new ProcessWorkloadCapture(1, Guid.NewGuid(), utc, start, Stopwatch.GetTimestamp(), Stopwatch.Frequency, Environment.ProcessorCount,
                 before.Rows, after.Rows, before.Unavailable, after.Unavailable,
                 ["Metadatos de procesos accesibles mediante QUERY_LIMITED_INFORMATION; procesos protegidos/no legibles se omiten y cuentan como cobertura ausente.",

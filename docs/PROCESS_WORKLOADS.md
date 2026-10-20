@@ -1,6 +1,6 @@
 # Procesos y objetivos gaming · Preview 0.6 incremento 2
 
-Abre **Gaming / Uso de recursos → Procesos y objetivos gaming → Medir procesos**. Se toman dos instantáneas separadas por unos dos segundos; consultar muchos procesos añade tiempo. El límite total es 45 segundos, sin sondeo residente después. Puedes cancelar; se conserva el resultado anterior. Cerrar la ventana durante una operación solicita cancelación y espera a que termine antes de permitir el cierre.
+Abre **Gaming / Uso de recursos → Procesos y objetivos gaming → Medir procesos**. Se toman dos instantáneas separadas por unos dos segundos; consultar muchos procesos añade tiempo. Se solicita cancelar a los 45 segundos, sin sondeo residente después. Es un plazo cooperativo: una llamada nativa ya iniciada debe retornar antes de poder observar la cancelación; no se mata ningún proceso para imponerlo. Puedes cancelar; se conserva el resultado anterior. Cerrar la ventana durante una operación solicita cancelación y espera a que termine antes de permitir el cierre.
 
 Elige voluntariamente el juego por PID/inicio, el objetivo y si necesitas voz/clips. Selecciona una fila para ver cálculo, límites y recomendación. Un nombre de ejecutable es una etiqueta, no verificación de fabricante ni autorización para terminarlo. Por diseño no hay acciones para cerrar/matar procesos, cambiar afinidad/prioridad, leer memoria privada ni desactivar seguridad.
 
