@@ -625,6 +625,7 @@
                 </StackPanel>
                 <StackPanel x:Name="GamingMetricsPanel" Visibility="Collapsed">
                   <WrapPanel>
+                    <Button Content="Procesos y objetivos gaming" Click="OpenProcessWorkloads" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Inventario detallado" Click="InspectHardware" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Contadores actuales" Click="MeasureLoad" IsEnabled="{Binding IsIdle}"/>
                     <Button Content="Analizar recursos · 20 muestras" Click="CaptureResources" IsEnabled="{Binding IsIdle}"/>

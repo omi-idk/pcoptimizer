@@ -1,6 +1,14 @@
 # Auditoría de arquitectura — PCOptimizer Ultimate
 
-## Revisión actual · primer incremento 0.6
+## Incremento propio tras revisar WZControl
+
+Rama `feature/gaming-workload-review` sobre `7cd6b41`, la última versión coherente de 0.6 del PR #9 todavía abierto; `main` permanece `f7231eb`. Se conserva esa dependencia explícita para no perder el trabajo no fusionado. El ZIP aportado se revisó como datos, sin ejecutar instaladores/código, y no se incorpora a la distribución. [Hallazgos y límites](research/WZCONTROL_REVIEW.md).
+
+Se añadieron dominio `ProcessWorkloads`/`GamingGoals`, proveedor Windows de metadatos con un mismo handle limitado para identidad/contadores/ruta, y un módulo WPF con ViewModel/servicio inyectable. Los objetivos seleccionan ajustes del motor existente; no crean otro ejecutor. El panel no cambia procesos. Persistencia/importación validada y recomendaciones limitadas a observaciones explícitas; nombres no autentican productos. Se reduce la asignación habitual del lector de rutas, con crecimiento acotado y conservando soporte para rutas largas.
+
+Riesgos pendientes: normalización en grupos/afinidad, coste físico y límites del sondeo, integración con PresentMon, importaciones locales sin firma, pruebas reales de UAC/registro y compatibilidad de juegos. El resto de la auditoría se conserva como historia del incremento anterior.
+
+## Revisión del primer incremento 0.6
 
 Se revisaron remoto, ramas, commits, proyectos, locks y `ci.yml`. `origin/main` estaba en `f7231eb`, con PR #8 integrado; la rama nueva `feature/performance-intelligence` parte de ese commit. No se modificó main ni se reemplazó trabajo. El [prompt comercial completo](requirements/PCOptimizer-Ultimate-comercial-recibido.md) sustituye la limitación del texto anterior truncado.
 

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Text;
 using PCOptimizer.App;
 using PCOptimizer.Core;
+using PCOptimizer.App.Workloads;
 using PCOptimizer.Benchmarking;
 using PCOptimizer.App.Benchmarking;
 
@@ -157,6 +158,7 @@ internal static class Program
                 await ValidateBenchmarkIsolation(window);
                 await ValidatePerformanceCapture();
                 await ValidatePerformanceWorkflow();
+                await ValidateProcessWorkloads();
                 await ValidateElevatedScriptSyntax();
                 await ValidateReadOnlyProbes();
                 foreach (var (name, section, width, height) in new[]
@@ -225,6 +227,7 @@ internal static class Program
                     window.Content = visual;
                 }
                 RenderSessionsDesign(directory);
+                RenderWorkloadDesign(directory);
             }
             catch (Exception ex) { Console.Error.WriteLine(ex); Environment.ExitCode = 1; }
             finally { window.Close(); app.Shutdown(); Dispatcher.ExitAllFrames(); }
@@ -238,6 +241,79 @@ internal static class Program
         public Task<bool> IsGameRunningAsync(GameIdentity game) => Task.FromResult(false);
         public Task ActivateAsync(Guid plan) => throw new InvalidOperationException("Design renderer cannot change power plans.");
     }
+    private static ProcessWorkloadCapture WorkloadFixture()
+    {
+        var time=DateTimeOffset.UtcNow;
+        var browser=new GameIdentity(123,time,"chrome");var stream=new GameIdentity(124,time,"obs64");
+        return new(1,Guid.NewGuid(),time,100,5000,1000,8,
+            [new(browser,1000,10000000,1000,1000),new(stream,1001,10000000,1000,1000)],
+            [new(browser,3000,30000000,51000,31000),new(stream,3001,35000000,21000,91000)],2,3,
+            ["Datos ilustrativos de diseño, no del equipo del propietario."]);
+    }
+    private sealed class WorkloadFixtureProbe : IProcessWorkloadProbe
+    {
+        public Task<ProcessWorkloadCapture> CaptureAsync(CancellationToken token)
+        {token.ThrowIfCancellationRequested();return Task.FromResult(WorkloadFixture());}
+    }
+    private static async Task ValidateProcessWorkloads()
+    {
+        var blocked=new ProcessWorkloadViewModel(new WorkloadFixtureProbe(),()=>false,()=>throw new InvalidOperationException("Unowned gate released."));
+        var called=false;
+        await blocked.RunAsync(_=> {called=true;return Task.CompletedTask;});
+        if(called || blocked.IsBusy)throw new InvalidOperationException("Workload operation ignored shared gate.");
+        var released=false;
+        var faulted=new ProcessWorkloadViewModel(new WorkloadFixtureProbe(),()=>true,()=>released=true);
+        await faulted.RunAsync(_=>throw new IOException("Fixture failure."));
+        if(!released || faulted.IsBusy)throw new InvalidOperationException("Workload failure retained the shared gate.");
+        var probe=new WindowsProcessWorkloadProbe();
+        var capture=await probe.CaptureAsync(CancellationToken.None);ProcessWorkloads.Validate(capture);
+        var self=capture.After.FirstOrDefault(r=>r.Identity.ProcessId==Environment.ProcessId);
+        if(self is null || !ProcessWorkloads.Analyze(capture,new(null,self.Identity,false,true)).Any(r=>r.Role==WorkloadRole.Collector && r.CpuCapacityPercent.HasValue))
+            throw new InvalidOperationException("Limited-information native process probe did not observe its own process identity/counters.");
+        using(var cancel=new CancellationTokenSource(100))
+        {
+            var canceled=false;
+            try{await probe.CaptureAsync(cancel.Token);}catch(OperationCanceledException){canceled=true;}
+            if(!canceled)throw new InvalidOperationException("Native workload probe did not honor cancellation.");
+        }
+        var directory=Path.Combine(Path.GetTempPath(),"pcoptimizer-workload-smoke-"+Guid.NewGuid().ToString("N"));
+        try
+        {
+            var model=new ProcessWorkloadViewModel(new WorkloadFixtureProbe());
+            await model.CaptureAsync(CancellationToken.None);model.Game=model.Games.First();model.Goal=GamingGoal.Streaming;
+            var path=Path.Combine(directory,"capture.json");await model.SaveAsync(path,CancellationToken.None);
+            var loaded=new ProcessWorkloadViewModel(new WorkloadFixtureProbe());await loaded.LoadAsync(path,CancellationToken.None);
+            if(loaded.Game!=model.Game || loaded.Goal!=GamingGoal.Streaming || loaded.Rows.Count!=2)
+                throw new InvalidOperationException("Workload save/reopen lost context.");
+            await loaded.ExportReportAsync(Path.Combine(directory,"report.json"),CancellationToken.None);
+            var before=loaded.Rows.Count;
+            await File.WriteAllTextAsync(Path.Combine(directory,"bad.json"),"{}");
+            var rejected=false;
+            try{await loaded.LoadAsync(Path.Combine(directory,"bad.json"),CancellationToken.None);}catch(InvalidDataException){rejected=true;}
+            if(!rejected || loaded.Rows.Count!=before)throw new InvalidOperationException("Invalid workload import changed previous result.");
+        }
+        finally{if(Directory.Exists(directory))Directory.Delete(directory,true);}
+        Console.WriteLine("Workloads: real read-only process CPU/IO identity, cancellation, fixture context roundtrip and malformed import passed. No process changed or terminated.");
+    }
+    private static void RenderWorkloadDesign(string directory)
+    {
+        foreach(var (width,height) in new[]{(1100,790),(880,650)})
+        {
+            var dialog=new ProcessWorkloadWindow(new WorkloadFixtureProbe());dialog.ConfigureDesignPreview(WorkloadFixture());
+            var root=(FrameworkElement)dialog.Content;root.SetValue(TextElement.ForegroundProperty,dialog.Foreground);
+            root.SetValue(TextElement.FontFamilyProperty,dialog.FontFamily);root.SetValue(TextElement.FontSizeProperty,13.0);
+            dialog.Content=null;
+            var host=new Border{Background=dialog.Background,Child=root,Width=width,Height=height};
+            host.Measure(new Size(width,height));host.Arrange(new Rect(0,0,width,height));host.UpdateLayout();
+            if(!Descendants<TextBlock>(host).Any(t=>t.Text=="chrome"))throw new InvalidOperationException("Workload table failed to render fixture process names.");
+            var bitmap=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);bitmap.Render(host);
+            var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            using(var output=File.Create(Path.Combine(directory,$"workloads-{width}.png")))encoder.Save(output);
+            dialog.Close();
+        }
+        Console.WriteLine("Rendered process workload window at normal and compact sizes with illustrative fixtures.");
+    }
+
     private static void RenderSessionsDesign(string directory)
     {
         var platform = new DesignPowerPlatform();

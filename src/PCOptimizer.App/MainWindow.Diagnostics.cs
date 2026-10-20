@@ -176,6 +176,18 @@ public partial class MainWindow
         }
         finally { resourceCancellation = null; }
     }
+    private void OpenProcessWorkloads(object sender,RoutedEventArgs e)
+    {
+        if (!model.IsIdle) return;
+        var window=new Workloads.ProcessWorkloadWindow(new WindowsProcessWorkloadProbe(),
+            ()=> {if(!model.IsIdle)return false;model.IsIdle=false;return true;},()=>model.IsIdle=true) {Owner=this};
+        if(window.ShowDialog()==true && window.SelectedPlan is {} profile)
+        {
+            if(!model.IsIdle) {model.Status="Otra operación está en curso; espera y vuelve a seleccionar el objetivo.";return;}
+            model.LoadProfile(profile);SelectNavigation(this,"Optimización");
+            model.Status="Objetivo seleccionado para revisión: no se aplicó ningún cambio. Comprueba los valores, riesgos, respaldo y punto de restauración antes de aplicar.";
+        }
+    }
     private void SelectWarzoneBase(object sender, RoutedEventArgs e)
     {
         if (!model.IsIdle) return;

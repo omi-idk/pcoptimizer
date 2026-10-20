@@ -51,3 +51,10 @@ El [nuevo prompt comercial completo](requirements/PCOptimizer-Ultimate-comercial
 | 1.0 Commercial Readiness | No alcanzado: firma, instalador, actualización autenticada, licencias de distribución verificadas y validación multi-equipo siguen pendientes. Sin DRM, pagos o cuentas en esta fase. |
 
 Criterios 0.6: modelo/contexto, correlación con QPC suficiente, ausencias explícitas, anomalías documentadas, hallazgos, persistencia/reapertura, exportación, gráfica, cancelación y mediciones sin cambios están implementados en este incremento. CI valida código y flujo con fixtures; no convierte una simulación en evidencia de mejora. Los resultados verificables y el procedimiento Windows están en [Performance Intelligence](PERFORMANCE_INTELLIGENCE.md). No se declara completa una release comercial por compilar.
+
+
+## Avance posterior a la revisión de WZControl
+
+Implementados en Preview 0.6 incremento 2: medición voluntaria de CPU/E/S de procesos por PID/creación, disponibilidad explícita, objetivos Streaming/Competitivo/Equilibrado/Laptop con selección de ajustes existentes, contexto y JSON reabrible, informe y ventana WPF. No hay nuevas escrituras nativas ni terminación de procesos. La [revisión estática](research/WZCONTROL_REVIEW.md) fija lo observado y qué se implementa de forma propia.
+
+Pendientes: correlación de estas observaciones de procesos con frametimes, GPU/memoria por proceso, editor de configuración de juego por versión con atomicidad/conflictos, objetivos y cambios unidos al protocolo A/B, validación física/anticheat/overhead. No se declaran completados los hitos 0.7–1.0.
