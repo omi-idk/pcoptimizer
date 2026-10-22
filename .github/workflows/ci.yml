@@ -25,7 +25,7 @@ jobs:
           dotnet run --project tools/PCOptimizer.UiPreview/PCOptimizer.UiPreview.csproj -c Release --no-restore -- artifacts/ui-preview
       - name: Upload UI design screenshots
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: PCOptimizer-ui-preview
           path: artifacts/ui-preview/
@@ -41,7 +41,7 @@ jobs:
           Copy-Item docs/RESOURCE_AND_GAMING_SESSIONS.md artifacts/PCOptimizer-win-x64/RESOURCE_AND_GAMING_SESSIONS.md
           Copy-Item docs/PERFIL_PC_WARZONE.md artifacts/PCOptimizer-win-x64/PERFIL_PC_WARZONE.md
       - name: Upload portable preview
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: PCOptimizer-windows-x64-preview
           path: artifacts/PCOptimizer-win-x64/
